@@ -1,0 +1,1 @@
+export default (value, decimals = 2) => Number.parseFloat(value).toFixed(decimals);
