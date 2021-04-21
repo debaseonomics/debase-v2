@@ -8,6 +8,11 @@ export const StyledPoolStake = styled.div`
     gap: 30px;
 `;
 
+export const StyledCardInner = styled.div`
+    gap: 0;
+    width: 100%;
+`;
+
 export const StyledInfo = styled.div`
     position: relative;
 `;
