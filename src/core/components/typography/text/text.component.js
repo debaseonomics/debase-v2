@@ -6,5 +6,5 @@ export default styled.div`
     margin: 0;
     font-family: 'Oswald', sans-serif;
     user-select: none;
-    pointer-events: none;
+    //pointer-events: none;
 `;
