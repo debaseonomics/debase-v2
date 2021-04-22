@@ -1,4 +1,4 @@
-import { DegovEthLpPool } from './views';
+import { DegovEthLpPool, DebaseDaiLpPool } from './views';
 
 const POOLS_ROUTES = [
     {
@@ -9,7 +9,7 @@ const POOLS_ROUTES = [
     {
         label: 'Debase/Dai LP Bridge Pool',
         path: '/pools/debase-dai-lp-bridge-pool',
-        component: <div>pool example 2</div>,
+        component: <DebaseDaiLpPool />,
     },
     {
         label: 'pool3',

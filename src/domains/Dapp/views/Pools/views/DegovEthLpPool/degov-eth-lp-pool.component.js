@@ -8,6 +8,7 @@ import { ABI_INCENTIVIZER } from '@constants';
 import { Card, Spinner, List } from '@core/components';
 import { StyledPoolStake, StyledCardInner } from "@dapp/components/common/PoolStakeOld/pool-stake.styles";
 import {formatEther} from "@ethersproject/units";
+import DegovEthStake from './degov-eth-stake.component';
 
 const DegovEthLpPool = () => {
     const { active, library, account } = useWeb3React();
@@ -96,6 +97,7 @@ const DegovEthLpPool = () => {
                                 <List data={poolListData} />
                             </StyledCardInner>
                         </Card>
+                        <DegovEthStake />
                     </StyledPoolStake>
                   </Grid>
               )}
