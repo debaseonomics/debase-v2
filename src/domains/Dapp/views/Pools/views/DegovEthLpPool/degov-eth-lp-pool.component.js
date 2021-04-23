@@ -49,12 +49,6 @@ const DegovEthLpPool = () => {
     const { data: totalSupplyLp } = useSWR([ CONTRACT_ADDRESS.degovEthLp, 'totalSupply' ], {
         fetcher: fetcher(library, ABI_INCENTIVIZER)
     });
-    const days = blockDuration ? blockDuration * 14 / 86400 : 7;
-    const tokenAmount = rewardPercentage && debaseTotalSupply ? parseFloat(formatEther(rewardPercentage)).toFixed(4) * parseEther('1') / parseFloat(formatEther(debaseTotalSupply)) : 0;
-    // const rewardTokenPerDay = tokenAmount / days;
-    // const rewardTokenPrice = reserves ? parseFloat(formatEther(reserves[1])) / parseFloat(formatEther(totalSupplyLp)) : 0;
-    // const totalStakedBalance = totalSupply;
-    // const lpTokenPrice = reserves ? parseFloat(formatEther(reserves[1])) / parseFloat(formatEther(totalSupply)) : 0;
 
     // List data arrays
     const poolListData = [
@@ -104,7 +98,7 @@ const DegovEthLpPool = () => {
             label: 'APR',
             value: reserves && blockDuration && rewardPercentage &&  totalSupply && totalSupplyLp && debaseTotalSupply ?
                 parseFloat(
-                    (parseFloat(formatEther(rewardPercentage)) * parseEther('1') / parseFloat(formatEther(debaseTotalSupply)))
+                    (parseFloat(formatEther(rewardPercentage)).toFixed(4) * 100 * parseEther('1') / parseFloat(formatEther(debaseTotalSupply)))
                     / (blockDuration * 14 / 86400) * parseFloat(formatEther(reserves[1])) / parseFloat(formatEther(totalSupplyLp)) * 365 / (parseFloat(formatEther(totalSupply)) * parseFloat(formatEther(reserves[1])) / parseFloat(formatEther(totalSupply)))
                 ).toFixed(4) * 100 + ' %'
                 : <Spinner size="xsmall" />,
