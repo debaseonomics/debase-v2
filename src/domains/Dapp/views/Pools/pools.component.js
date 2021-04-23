@@ -4,7 +4,6 @@ import { useWeb3React } from '@web3-react/core';
 
 import { TextSmall } from '@core/components';
 import { Section, DisconnectedWalletCard, Grid, PoolCard } from '@dapp/components';
-import { StyledPools } from './pools.styles';
 import POOLS_ROUTES from './pools.routes';
 
 const Pools = ()  => {
@@ -13,11 +12,11 @@ const Pools = ()  => {
     const { active } = useWeb3React();
 
     const renderIncentivizerPools = () => {
-        if (!active) return <DisconnectedWalletCard />
+        if (!active) return <DisconnectedWalletCard />;
         return (
             <Grid>
                 <PoolCard
-                    label="Degov/ETH LP POOL"
+                    label="DEGOV/ETH LP POOL"
                     info="tooltip info"
                     routePath="/pools/degov-eth-lp-pool"
                     isActive={true}
@@ -35,22 +34,13 @@ const Pools = ()  => {
         return (
             <Grid>
                 <PoolCard
-                    label="DEBASE/DAI LP POOL"
+                    label="DEBASE/ETH LP POOL"
                     info="tooltip info"
                     routePath="/pools/debase-dai-lp-bridge-pool"
                     isActive={true}
                 >
                     <TextSmall>
-                        Pool that bridges DEBASE/DAI LP deposits you have made on the DEBASE/DAI LP bridge on Ethereum. To
-                        allow you to mine UwU in return.
-                        <br />
-                        <br />
-                        This pool will give out a total of 15000 UwU over its life time. With initially giving out 7500 UwU
-                        over a period of 3.5 days. After which the given will half to 3750 UwU given again over a period of
-                        another 3.5 days.
-                        <br />
-                        <br />
-                        This reward halving process will until the 15000 UwU are distributed.
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                     </TextSmall>
                 </PoolCard>
             </Grid>
@@ -78,7 +68,7 @@ const Pools = ()  => {
                 const { label, path, component } = route;
                 return (
                     <Route
-                        key={label}
+                        key={label + i}
                         path={path}
                     >
                         {component}
