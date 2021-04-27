@@ -59,6 +59,9 @@ const DegovEthLpPool = () => {
     const { data: ethDaiReserves } = useSWR([ CONTRACT_ADDRESS.ethDaiPool, 'getReserves' ], {
         fetcher: fetcher(library, ABI_UNI)
     });
+    const { data: wethBalance } = useSWR([ CONTRACT_ADDRESS.weth, 'balanceOf', CONTRACT_ADDRESS.degovEthLp ], {
+        fetcher: fetcher(library, ABI_INCENTIVIZER)
+    });
 
     // List data arrays
     const poolListData = [
@@ -106,9 +109,9 @@ const DegovEthLpPool = () => {
     const highlightData = [
         {
             label: 'APR',
-            value: reserves && blockDuration && rewardPercentage &&  totalSupply && totalSupplyLp && debaseTotalSupply && daiBalance && debaseBalance && ethDaiReserves ?
+            value: reserves && blockDuration && rewardPercentage &&  totalSupply && totalSupplyLp && debaseTotalSupply && daiBalance && debaseBalance && ethDaiReserves && wethBalance ?
                 (rewardPercentage * debaseTotalSupply
-                    / (blockDuration * 14 / 86400) * (daiBalance / debaseBalance) * 365 / (totalSupply * (ethDaiReserves[0] / ethDaiReserves[1])) / Math.pow(10, 18)
+                    / (blockDuration * 14 / 86400) * (daiBalance / debaseBalance) * 365 / (totalSupply * (2 * wethBalance * (ethDaiReserves[0] / ethDaiReserves[1]) / totalSupplyLp)) / Math.pow(10, 18)
                  * 100).toFixed(2) + '% (Approx.)'
                 : <Spinner size="xsmall" />,
         }
