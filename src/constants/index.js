@@ -12,6 +12,7 @@ import ABI_UNI from './abi-uni.constant';
 import ABI_VESTING from './abi-vesting.constant';
 import ABI_ORACLE from './abi-oracle.constant';
 import ABI_RANDOMNUMBER from './abi-randomnumber.constant';
+import ABI_DEBASETESTNET from './abi-debasetestnet.constant';
 import CONTRACT_ADDRESS from './contract-address.constant';
 import OWNERSHIP_ADDRESS from './ownership-address.constant';
 export {
@@ -29,6 +30,7 @@ export {
     ABI_RANDOMNUMBER,
     ABI_THRESHOLDCOUNTER,
     ABI_THRESHOLDCOUNTER_V2,
+    ABI_DEBASETESTNET,
     CONTRACT_ADDRESS,
     OWNERSHIP_ADDRESS
 };

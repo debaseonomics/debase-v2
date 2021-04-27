@@ -4,7 +4,7 @@ import {fetcher,parseNumToUsFormat} from '@utils';
 import CONTRACT_ADDRESS from "@constants/contract-address.constant";
 import { DisconnectedWalletCard, Grid, Section } from "@dapp/components";
 import useSWR from 'swr';
-import { ABI_THRESHOLDCOUNTER, ABI_LP, ABI_RANDOMNUMBER } from '@constants';
+import { ABI_THRESHOLDCOUNTER, ABI_LP, ABI_RANDOMNUMBER, ABI_DEBASETESTNET } from '@constants';
 import { Card, Spinner, List, Button } from '@core/components';
 import { StyledPoolStake, StyledCardInner } from "@dapp/components/common/PoolStakeOld/pool-stake.styles";
 import { formatEther, formatUnits } from "@ethersproject/units";
@@ -55,6 +55,15 @@ const DebaseDaiLpPool = () => {
     });
     const { data: randomThreshold } = useSWR([ CONTRACT_ADDRESS.stabilizerPool, 'normalDistribution', randomNumber ? parseInt(formatEther(randomNumber)) % 100 : 0 ], {
         fetcher: fetcher(library, ABI_THRESHOLDCOUNTER)
+    });
+    const { data: debaseReward } = useSWR([ CONTRACT_ADDRESS.debase, 'rewardsDebase', CONTRACT_ADDRESS.debaseTest], {
+        fetcher: fetcher(library, ABI_DEBASETESTNET)
+    });
+    const { data: mph88Reward } = useSWR([ CONTRACT_ADDRESS.debaseTest, 'rewardDistributedMPH'], {
+        fetcher: fetcher(library, ABI_DEBASETESTNET)
+    });
+    const { data: crvReward } = useSWR([ CONTRACT_ADDRESS.debaseTest, 'crvReward'], {
+        fetcher: fetcher(library, ABI_DEBASETESTNET)
     });
 
     // List data arrays
@@ -122,6 +131,18 @@ const DebaseDaiLpPool = () => {
         {
             label: 'TVL',
             value: '$' + parseNumToUsFormat('752037.01057')
+        },
+        {
+            label: 'Pool Reward(Debase)',
+            value: debaseReward
+        },
+        {
+            label: 'Pool Reward(88Mph)',
+            value: mph88Reward
+        },
+        {
+            label: 'Pool Reward(CRV)',
+            value: crvReward
         }
     ];
     const highlightData = [
