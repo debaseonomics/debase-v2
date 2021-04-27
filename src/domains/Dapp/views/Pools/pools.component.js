@@ -4,7 +4,6 @@ import { useWeb3React } from '@web3-react/core';
 
 import { TextSmall } from '@core/components';
 import { Section, DisconnectedWalletCard, Grid, PoolCard } from '@dapp/components';
-import { StyledPools } from './pools.styles';
 import POOLS_ROUTES from './pools.routes';
 
 const Pools = ()  => {
@@ -12,35 +11,33 @@ const Pools = ()  => {
     const { path } = useRouteMatch();
     const { active } = useWeb3React();
 
-    const renderPools = () => {
-        if (!active) return <DisconnectedWalletCard />
+    const renderIncentivizerPools = () => {
+        //if (!active) return <DisconnectedWalletCard />;
         return (
             <Grid>
                 <PoolCard
-                    label="pool example"
+                    label="DEGOV/ETH LP POOL"
                     info="tooltip info"
-                    routePath="/pools/pool1"
-                    isActive
+                    routePath="/pools/degov-eth-lp-pool"
+                    isActive={true}
                 >
                     <TextSmall>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                     </TextSmall>
                 </PoolCard>
+            </Grid>
+        );
+    };
+
+    const renderStabilizersPools = () => {
+       // if (!active) return <DisconnectedWalletCard />
+        return (
+            <Grid>
                 <PoolCard
-                    label="pool example"
+                    label="DEBASE/ETH LP POOL"
                     info="tooltip info"
-                    routePath="/pools/pool2"
-                    isActive
-                >
-                    <TextSmall>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    </TextSmall>
-                </PoolCard>
-                <PoolCard
-                    label="pool example"
-                    info="tooltip info"
-                    routePath="/pools/pool3"
-                    isActive
+                    routePath="/pools/debase-dai-lp-bridge-pool"
+                    isActive={true}
                 >
                     <TextSmall>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -52,26 +49,28 @@ const Pools = ()  => {
 
     return (
         <Switch>
-            <Route exact path={path}>
-                <Section
+            {!active ? <DisconnectedWalletCard /> :
+                <Route exact path={path}>
+                    <Section
                         label="Stabilizers"
                         info="**update** info about stabilizers"
-                >
-                    <DisconnectedWalletCard />
-                </Section>
-                <Section
-                    label="Incentivizers"
-                    info="**update** info about incentivizers"
-                >
-                    {renderPools()}
-                </Section>
-            </Route>
+                    >
+                        {renderStabilizersPools()}
+                    </Section>
+                    <Section
+                        label="Incentivizers"
+                        info="**update** info about incentivizers"
+                    >
+                        {renderIncentivizerPools()}
+                    </Section>
+                </Route>
+            }
 
             {POOLS_ROUTES.map((route, i) => {
                 const { label, path, component } = route;
                 return (
                     <Route
-                        key={label}
+                        key={label + i}
                         path={path}
                     >
                         {component}

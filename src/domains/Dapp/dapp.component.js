@@ -277,6 +277,9 @@ class Dapp extends React.Component {
 			treasuryData.mph88Balance = treasuryBalance.totalMPHEarned ? parseNumToUsFormat(treasuryBalance.totalMPHEarned * 0.21) : 'err';
 			treasuryData.daiBalance = treasuryBalance.totalDepositByPool && treasuryBalance.totalDepositByPool[0] && treasuryBalance.totalDepositByPool[0].totalActiveDeposit ? parseNumToUsFormat(treasuryBalance.totalDepositByPool[0].totalActiveDeposit * 0.21) : 'err';
 
+			// treasuryData.mph88Balance = 'err';
+			// treasuryData.daiBalance = 'err';
+
 			ui.isLoading.treasuryData = false;
 
 			return { ui, treasuryData };
@@ -355,7 +358,7 @@ class Dapp extends React.Component {
 															</Switch>
 														</StyledContent>
 													</StyledPageInner>
-												
+
 											</StyledPage>
 										</Router>
 									</StyledDapp>
