@@ -12,7 +12,7 @@ const Pools = ()  => {
     const { active } = useWeb3React();
 
     const renderIncentivizerPools = () => {
-        if (!active) return <DisconnectedWalletCard />;
+        //if (!active) return <DisconnectedWalletCard />;
         return (
             <Grid>
                 <PoolCard
@@ -30,7 +30,7 @@ const Pools = ()  => {
     };
 
     const renderStabilizersPools = () => {
-        if (!active) return <DisconnectedWalletCard />
+       // if (!active) return <DisconnectedWalletCard />
         return (
             <Grid>
                 <PoolCard
@@ -49,20 +49,22 @@ const Pools = ()  => {
 
     return (
         <Switch>
-            <Route exact path={path}>
-                <Section
+            {!active ? <DisconnectedWalletCard /> :
+                <Route exact path={path}>
+                    <Section
                         label="Stabilizers"
                         info="**update** info about stabilizers"
-                >
-                    {renderStabilizersPools()}
-                </Section>
-                <Section
-                    label="Incentivizers"
-                    info="**update** info about incentivizers"
-                >
-                    {renderIncentivizerPools()}
-                </Section>
-            </Route>
+                    >
+                        {renderStabilizersPools()}
+                    </Section>
+                    <Section
+                        label="Incentivizers"
+                        info="**update** info about incentivizers"
+                    >
+                        {renderIncentivizerPools()}
+                    </Section>
+                </Route>
+            }
 
             {POOLS_ROUTES.map((route, i) => {
                 const { label, path, component } = route;
