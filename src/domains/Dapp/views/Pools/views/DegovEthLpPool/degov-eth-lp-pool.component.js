@@ -9,6 +9,7 @@ import { Card, Spinner, List } from '@core/components';
 import { StyledPoolStake, StyledCardInner } from "@dapp/components/common/PoolStakeOld/pool-stake.styles";
 import {formatEther, parseEther} from "@ethersproject/units";
 import DegovEthStake from './degov-eth-stake.component';
+import axios from "axios";
 
 const DegovEthLpPool = () => {
     const { active, library, account } = useWeb3React();
@@ -48,6 +49,15 @@ const DegovEthLpPool = () => {
     });
     const { data: totalSupplyLp } = useSWR([ CONTRACT_ADDRESS.degovEthLp, 'totalSupply' ], {
         fetcher: fetcher(library, ABI_INCENTIVIZER)
+    });
+    const { data: daiBalance } = useSWR([ CONTRACT_ADDRESS.dai, 'balanceOf', CONTRACT_ADDRESS.debaseDaiLp ], {
+       fetcher: fetcher(library, ABI_INCENTIVIZER)
+    });
+    const { data: debaseBalance } = useSWR([ CONTRACT_ADDRESS.debase, 'balanceOf', CONTRACT_ADDRESS.debaseDaiLp ], {
+        fetcher: fetcher(library, ABI_INCENTIVIZER)
+    });
+    const { data: ethDaiReserves } = useSWR([ CONTRACT_ADDRESS.ethDaiPool, 'getReserves' ], {
+        fetcher: fetcher(library, ABI_UNI)
     });
 
     // List data arrays
@@ -96,11 +106,10 @@ const DegovEthLpPool = () => {
     const highlightData = [
         {
             label: 'APR',
-            value: reserves && blockDuration && rewardPercentage &&  totalSupply && totalSupplyLp && debaseTotalSupply ?
-                parseFloat(
-                    (parseFloat(formatEther(rewardPercentage)).toFixed(4) * 100 * parseEther('1') / parseFloat(formatEther(debaseTotalSupply)))
-                    / (blockDuration * 14 / 86400) * parseFloat(formatEther(reserves[1])) / parseFloat(formatEther(totalSupplyLp)) * 365 / (parseFloat(formatEther(totalSupply)) * parseFloat(formatEther(reserves[1])) / parseFloat(formatEther(totalSupply)))
-                ).toFixed(4) * 100 + ' %'
+            value: reserves && blockDuration && rewardPercentage &&  totalSupply && totalSupplyLp && debaseTotalSupply && daiBalance && debaseBalance && ethDaiReserves ?
+                (rewardPercentage * debaseTotalSupply
+                    / (blockDuration * 14 / 86400) * (daiBalance / debaseBalance) * 365 / (totalSupply * (ethDaiReserves[0] / ethDaiReserves[1])) / Math.pow(10, 18)
+                 * 100).toFixed(2) + '% (Approx.)'
                 : <Spinner size="xsmall" />,
         }
     ];
