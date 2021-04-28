@@ -59,7 +59,7 @@ const DebaseDaiLpPool = () => {
     const { data: debaseReward } = useSWR([ CONTRACT_ADDRESS.debase, 'rewardsDebase', CONTRACT_ADDRESS.debaseTest], {
         fetcher: fetcher(library, ABI_DEBASETESTNET)
     });
-    const { data: mph88Reward } = useSWR([ CONTRACT_ADDRESS.debaseTest, 'rewardDistributedMPH'], {
+    const { data: mph88Reward } = useSWR([ CONTRACT_ADDRESS.debaseTest, 'mph88Reward'], {
         fetcher: fetcher(library, ABI_DEBASETESTNET)
     });
     const { data: crvReward } = useSWR([ CONTRACT_ADDRESS.debaseTest, 'crvReward'], {
