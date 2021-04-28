@@ -13,38 +13,39 @@ const Pools = () => {
 	const { active, library } = useWeb3React();
 
 	const { data: debaseDaiPoolEnabled, mutate: getDebaseDaiPoolEnabled } = useSWR(
-		[ CONTRACT_ADDRESS.debaseDaiPool, 'poolEnabled' ],
+		[ CONTRACT_ADDRESS.debaseDaiV3Pool, 'poolEnabled' ],
 		{
 			fetcher: fetcher(library, ABI_POOL)
 		}
 	);
 
 	const { data: debaseEthPoolEnabled, mutate: getDebaseEthPoolEnabled } = useSWR(
+		[ CONTRACT_ADDRESS.debaseEthPool, 'poolEnabled' ],
+		{
+			fetcher: fetcher(library, ABI_POOL)
+		}
+	);
+
+	const { data: degovEthPoolEnabled, mutate: getDegovEthPoolEnabled } = useSWR(
 		[ CONTRACT_ADDRESS.degovEthPool, 'poolEnabled' ],
 		{
 			fetcher: fetcher(library, ABI_POOL)
 		}
 	);
 
-	// const { data: uwuBusdLpMiningPool, mutate: getUwUBusdLpMiningPool } = useSWR(
-	// 	[ CONTRACT_ADDRESS.uwuBusdLpMiningPool, 'poolEnabled' ],
-	// 	{
-	// 		fetcher: fetcher(library, ABI_POOL)
-	// 	}
-	// );
-
 	useEffect(
 		() => {
 			library &&
 				library.on('block', () => {
 					getDebaseDaiPoolEnabled(undefined, true);
+					getDegovEthPoolEnabled(undefined, true);
 					getDebaseEthPoolEnabled(undefined, true);
 				});
 			return () => {
 				library && library.removeAllListeners('block');
 			};
 		},
-		[ library, getDebaseDaiPoolEnabled, getDebaseEthPoolEnabled ]
+		[ library, getDebaseDaiPoolEnabled, getDegovEthPoolEnabled, getDebaseEthPoolEnabled ]
 	);
 
 	const renderPools = () => {
@@ -66,10 +67,10 @@ const Pools = () => {
 					<br />
 					This reward halving process will until the 700000 UwU are distributed.
 				</PoolCard>
-				{/* <PoolCard
+				<PoolCard
 					label="DEBASE/ETH LP Pool"
 					routePath="/pools/debase-eth-lp-pool"
-					isActive={debaseBridgePoolEnabled ? debaseBridgePoolEnabled : false}
+					isActive={debaseEthPoolEnabled ? debaseEthPoolEnabled : false}
 				>
 					Pool that bridges DEBASE deposits you have made on the DEBASE bridge on Ethereum. To allow you to
 					mine UwU in return.
@@ -81,11 +82,11 @@ const Pools = () => {
 					<br />
 					<br />
 					This reward halving process will until the 10000 UwU are distributed.
-				</PoolCard> */}
+				</PoolCard>
 				<PoolCard
 					label="DEGOV/ETH LP Pool"
 					routePath="/pools/degov-eth-lp-pool"
-					isActive={debaseEthPoolEnabled ? debaseEthPoolEnabled : false}
+					isActive={degovEthPoolEnabled ? degovEthPoolEnabled : false}
 				>
 					Pool that bridges DEBASE/DAI LP deposits you have made on the DEBASE/DAI LP bridge on Ethereum. To
 					allow you to mine UwU in return.
@@ -105,7 +106,7 @@ const Pools = () => {
 	return (
 		<Switch>
 			<Route exact path={path}>
-				<Section label="Pools">{renderPools()}</Section>
+				<Section>{renderPools()}</Section>
 			</Route>
 
 			{POOLS_ROUTES.map((route, i) => {

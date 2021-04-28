@@ -51,9 +51,6 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 		fetcher: fetcher(library, poolABI)
 	});
 
-	const { data: earned, mutate: getEarned } = useSWR([ poolAddress, 'earned', account ], {
-		fetcher: fetcher(library, poolABI)
-	});
 	const { data: userStakedBalance, mutate: getUserStakedBalance } = useSWR([ poolAddress, 'balanceOf', account ], {
 		fetcher: fetcher(library, poolABI)
 	});
@@ -67,6 +64,18 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 		fetcher: fetcher(library, poolABI)
 	});
 
+	const { data: mphReward, mutate: getMphReward } = useSWR([ poolAddress, 'mph88Reward' ], {
+		fetcher: fetcher(library, poolABI)
+	});
+
+	const { data: crvReward, mutate: getCrvReward } = useSWR([ poolAddress, 'crvReward' ], {
+		fetcher: fetcher(library, poolABI)
+	});
+
+	const { data: earned, mutate: getEarned } = useSWR([ poolAddress, 'earned', account ], {
+		fetcher: fetcher(library, poolABI)
+	});
+
 	useEffect(
 		() => {
 			library.on('block', () => {
@@ -75,12 +84,23 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 				getWalletBalance(undefined, true);
 				getTotalStakedBalance(undefined, true);
 				getPoolEnabled(undefined, true);
+				getMphReward(undefined, true);
+				getCrvReward(undefined, true);
 			});
 			return () => {
 				library && library.removeAllListeners('block');
 			};
 		},
-		[ library, getEarned, getPoolEnabled, getUserStakedBalance, getWalletBalance, getTotalStakedBalance ]
+		[
+			library,
+			getEarned,
+			getPoolEnabled,
+			getUserStakedBalance,
+			getWalletBalance,
+			getTotalStakedBalance,
+			getMphReward,
+			getCrvReward
+		]
 	);
 
 	// List data arrays
@@ -129,8 +149,21 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 			label: 'DEBASE Reward',
 			value: balance ? parseFloat(formatEther(balance)) : <Spinner size="xsmall" />,
 			tooltip: 'Current pool rewards available'
+		},
+		{
+			label: 'MPH88 Reward',
+			value: mphReward ? parseFloat(formatEther(mphReward)) : <Spinner size="xsmall" />,
+			tooltip: 'Current pool rewards available'
+		},
+
+		{
+			label: 'CRV Reward',
+			value: crvReward ? parseFloat(formatEther(crvReward)) : <Spinner size="xsmall" />,
+			tooltip: 'Current pool rewards available'
 		}
 	];
+
+	console.log(earned);
 
 	const userListData = [
 		{
@@ -149,7 +182,17 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 		},
 		{
 			label: 'Earned (Debase)',
-			value: earned ? parseFloat(formatEther(earned)).toFixed(4) * 1 : <Spinner size="xsmall" />,
+			value: earned !== undefined ? parseFloat(formatEther(earned[0])) : <Spinner size="xsmall" />,
+			tooltip: 'Amount of Debase reward you have earned.'
+		},
+		{
+			label: 'Earned (MPH88)',
+			value: earned !== undefined ? parseFloat(formatEther(earned[1])) : <Spinner size="xsmall" />,
+			tooltip: 'Amount of Debase reward you have earned.'
+		},
+		{
+			label: 'Earned (CRV)',
+			value: earned !== undefined ? parseFloat(formatEther(earned[2])) : <Spinner size="xsmall" />,
 			tooltip: 'Amount of Debase reward you have earned.'
 		}
 	];

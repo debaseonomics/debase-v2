@@ -5,20 +5,20 @@ import { CONTRACT_ADDRESS } from '@constants';
 import { Section, Grid, PoolStake, DisconnectedWalletCard } from '@dapp/components';
 import { ABI_INCENTIVIZER } from '@constants/index';
 
-const DebaseEthLpPool = () => {
+const DebaseDaiLpPool = () => {
 	const { active } = useWeb3React();
 
 	return (
 		<Fragment>
-			<Section label="Degov Eth Lp Pool" info="**update**">
+			<Section label="Debase Dai Lp Pool" info="**update**">
 				{!active ? (
 					<DisconnectedWalletCard />
 				) : (
 					<Grid>
 						<PoolStake
-							poolAddress={CONTRACT_ADDRESS.degovEthPool}
-							lpAddress={CONTRACT_ADDRESS.degovEthLp}
-							stakeText="DEGOV/ETH LP"
+							poolAddress={CONTRACT_ADDRESS.debaseDaiV3Pool}
+							lpAddress={CONTRACT_ADDRESS.debaseDaiLp}
+							stakeText="DEBASE/DAI LP"
 							poolABI={ABI_INCENTIVIZER}
 						/>
 					</Grid>
@@ -28,4 +28,4 @@ const DebaseEthLpPool = () => {
 	);
 };
 
-export default DebaseEthLpPool;
+export default DebaseDaiLpPool;
