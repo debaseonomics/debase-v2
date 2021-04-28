@@ -14,7 +14,7 @@ import PoolStake from "@dapp/components/common/PoolStakeOld/pool-stake.component
 /* import context */
 import { SnackbarManagerContext } from '@dapp/components';
 
-const ThresholdCounterStake = ({ info }) => {
+const DegovEthStake = ({ info }) => {
 
     const { account, library } = useWeb3React();
 
@@ -32,11 +32,11 @@ const ThresholdCounterStake = ({ info }) => {
 
     /* static data */
     const rewardTokenAddress = CONTRACT_ADDRESS.debase;
-    const stakeTokenAddress = CONTRACT_ADDRESS.debaseDaiLp;
-    const poolAddress = CONTRACT_ADDRESS.stabilizerPool;
-    const percents = false;
+    const stakeTokenAddress = CONTRACT_ADDRESS.degovEthLp;
+    const poolAddress = CONTRACT_ADDRESS.degovEthPool;
+    const percents = true;
     const unit = 18;
-    const tokenText = 'Dai-lp';
+    const tokenText = 'Degov/Eth-Lp';
     const rewardText = 'Debase';
 
     /* fetch pool data */
@@ -50,10 +50,10 @@ const ThresholdCounterStake = ({ info }) => {
         fetcher: fetcher(library, ABI_LP)
     });
     const { data: stakeBalance, mutate: getStakeBalance } = useSWR([ poolAddress, 'balanceOf', account ], {
-        fetcher: fetcher(library, ABI_POOL)
+        fetcher: fetcher(library, ABI_LP)
     });
     const { data: rewardBalance, mutate: getRewardBalance } = useSWR([ poolAddress, 'earned', account ], {
-        fetcher: fetcher(library, ABI_POOL)
+        fetcher: fetcher(library, ABI_LP)
     });
 
     /* list data */
@@ -174,7 +174,7 @@ const ThresholdCounterStake = ({ info }) => {
     const handleClaimRewardThenUnstake = async () => {
         setClaimUnstakeLoading(true);
         const poolContract = new Contract(poolAddress, ABI_POOL, library.getSigner());
-        const tokenContract = new Contract(stakeTokenAddress, ABI_POOL, library.getSigner());
+        const tokenContract = new Contract(stakeTokenAddress, ABI_LP, library.getSigner());
 
         try {
             const transaction = await poolContract.exit();
@@ -339,4 +339,4 @@ const ThresholdCounterStake = ({ info }) => {
 
 };
 
-export default ThresholdCounterStake;
+export default DegovEthStake;

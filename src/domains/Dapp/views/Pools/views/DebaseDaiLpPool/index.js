@@ -1,2 +1,2 @@
-import DebaseDaiLpPool from './debase-dai-lp-pool.component';
-export default DebaseDaiLpPool;
+import DebaseEthLpPool from './degov-eth-lp-pool.component';
+export default DebaseEthLpPool;
