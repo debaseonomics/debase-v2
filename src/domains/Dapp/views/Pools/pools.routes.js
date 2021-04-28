@@ -10,12 +10,12 @@ const POOLS_ROUTES = [
 		label: 'Debase/Dai LP Pool',
 		path: '/pools/debase-dai-lp-pool',
 		component: <DebaseDaiLpPool />
-	},
-	{
-		label: 'Debase/Eth LP Pool',
-		path: '/pools/debase-eth-lp-pool',
-		component: <DebaseEthLpPool />
 	}
+	// {
+	// 	label: 'Debase/Eth LP Pool',
+	// 	path: '/pools/debase-eth-lp-pool',
+	// 	component: <DebaseEthLpPool />
+	// }
 ];
 
 export default POOLS_ROUTES;

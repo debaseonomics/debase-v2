@@ -8,7 +8,8 @@ const ABI_INCENTIVIZER = [
 	'function enableUserLpLimit() public view returns (bool)',
 	'function revokeReward() public view returns (bool)',
 	'function totalSupply() public view returns (uint256)',
-	'function balanceOf(address) public view returns (uint256)'
+	'function balanceOf(address) public view returns (uint256)',
+	'function earned(address account) public view returns (uint256)'
 ];
 
 export default ABI_INCENTIVIZER;

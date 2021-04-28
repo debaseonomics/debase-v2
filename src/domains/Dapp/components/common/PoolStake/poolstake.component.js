@@ -3,17 +3,17 @@ import useSWR from 'swr';
 import { useWeb3React } from '@web3-react/core';
 import { formatEther, parseUnits } from 'ethers/lib/utils';
 import { Contract } from 'ethers/lib/ethers';
-import { DateTime } from 'luxon';
 import { ABI_POOL, ABI_LP } from '@constants';
-import { fetcher, calcDateDifference } from '@utils';
+import { fetcher } from '@utils';
 import { Card, List, Button, Input, Flexbox, Spinner } from '@core/components';
-import { PoolCard } from '@dapp/components';
-import { SnackbarManagerContext } from '@dapp/managers';
 import { StyledPoolStake, StyledCardInner } from './poolstake.styles';
 import { parseEther } from 'ethers/lib/utils';
-import { CONTRACT_ADDRESS, ABI_UNI } from '@constants';
+import { CONTRACT_ADDRESS } from '@constants';
+import ABI_INCENTIVIZER from '@constants/abi-incentivizer.constant';
+import { SnackbarManagerContext } from '@dapp/components/index';
+import InfoCard from '../InfoCard/infocard.component';
 
-const MiningPoolCard = ({ label, type, tooltip, poolAddress, lpAddress, stakeText }) => {
+const PoolStake = ({ label, tooltip, poolAddress, lpAddress, stakeText }) => {
 	const { library, account } = useWeb3React();
 
 	const [ isStakeLoading, setIsStakeLoading ] = useState(false);
@@ -28,144 +28,108 @@ const MiningPoolCard = ({ label, type, tooltip, poolAddress, lpAddress, stakeTex
 
 	const { openSnackbar } = useContext(SnackbarManagerContext);
 
-	// Current halving reward
-	const { data: initReward, mutate: getInitReward } = useSWR([ poolAddress, 'initReward' ], {
-		fetcher: fetcher(library, ABI_POOL)
-	});
-
 	const { data: poolEnabled, mutate: getPoolEnabled } = useSWR([ poolAddress, 'poolEnabled' ], {
-		fetcher: fetcher(library, ABI_POOL)
+		fetcher: fetcher(library, ABI_INCENTIVIZER)
+	});
+	const { data: rewardPercentage } = useSWR([ poolAddress, 'rewardPercentage' ], {
+		fetcher: fetcher(library, ABI_INCENTIVIZER)
+	});
+	const { data: blockDuration } = useSWR([ poolAddress, 'blockDuration' ], {
+		fetcher: fetcher(library, ABI_INCENTIVIZER)
+	});
+	const { data: poolLpLimit } = useSWR([ poolAddress, 'poolLpLimit' ], {
+		fetcher: fetcher(library, ABI_INCENTIVIZER)
+	});
+	const { data: enableUserLpLimit } = useSWR([ poolAddress, 'enableUserLpLimit' ], {
+		fetcher: fetcher(library, ABI_INCENTIVIZER)
 	});
 
-	// Max earnable reward
-	const { data: maxReward, mutate: getMaxReward } = useSWR([ poolAddress, 'maxReward' ], {
-		fetcher: fetcher(library, ABI_POOL)
-	});
-	// claimed rewards
-	const { data: rewardDistributed, mutate: getRewardDistributed } = useSWR([ poolAddress, 'rewardDistributed' ], {
-		fetcher: fetcher(library, ABI_POOL)
-	});
-	// timestamp -> show next halving in (days)
-	const { data: periodFinish, mutate: getPeriodFinish } = useSWR([ poolAddress, 'periodFinish' ], {
-		fetcher: fetcher(library, ABI_POOL)
+	const { data: enablePoolLpLimit } = useSWR([ poolAddress, 'enablePoolLpLimit' ], {
+		fetcher: fetcher(library, ABI_INCENTIVIZER)
 	});
 
-	const { data: duration, mutate: getDuration } = useSWR([ poolAddress, 'duration' ], {
-		fetcher: fetcher(library, ABI_POOL)
+	const { data: userLpLimit } = useSWR([ poolAddress, 'userLpLimit' ], {
+		fetcher: fetcher(library, ABI_INCENTIVIZER)
 	});
 
-	// if zero don't show claim button
 	const { data: earned, mutate: getEarned } = useSWR([ poolAddress, 'earned', account ], {
-		fetcher: fetcher(library, ABI_POOL)
+		fetcher: fetcher(library, ABI_INCENTIVIZER)
 	});
-
-	// value how much a user has staked into pool
 	const { data: userStakedBalance, mutate: getUserStakedBalance } = useSWR([ poolAddress, 'balanceOf', account ], {
-		fetcher: fetcher(library, ABI_POOL)
+		fetcher: fetcher(library, ABI_INCENTIVIZER)
 	});
-	// current wallet balance of token -> use as max value in input field
 	const { data: walletBalance, mutate: getWalletBalance } = useSWR([ lpAddress, 'balanceOf', account ], {
-		fetcher: fetcher(library, ABI_LP)
+		fetcher: fetcher(library, ABI_INCENTIVIZER)
 	});
-	// total amount staked by everyone
 	const { data: totalStakedBalance, mutate: getTotalStakedBalance } = useSWR([ poolAddress, 'totalSupply' ], {
-		fetcher: fetcher(library, ABI_LP)
+		fetcher: fetcher(library, ABI_INCENTIVIZER)
 	});
-
-	const { data: reserves, mutate: getReserves } = useSWR([ CONTRACT_ADDRESS.uwuBusdLp, 'getReserves' ], {
-		fetcher: fetcher(library, ABI_UNI)
-	});
-
-	const { data: pairSupply, mutate: getPairSupply } = useSWR([ CONTRACT_ADDRESS.uwuBusdLp, 'totalSupply' ], {
-		fetcher: fetcher(library, ABI_UNI)
+	const { data: balance } = useSWR([ CONTRACT_ADDRESS.debase, 'balanceOf', poolAddress ], {
+		fetcher: fetcher(library, ABI_INCENTIVIZER)
 	});
 
 	useEffect(
 		() => {
 			library.on('block', () => {
-				getMaxReward(undefined, true);
-				getInitReward(undefined, true);
-				getRewardDistributed(undefined, true);
-				getPeriodFinish(undefined, true);
 				getEarned(undefined, true);
 				getUserStakedBalance(undefined, true);
 				getWalletBalance(undefined, true);
 				getTotalStakedBalance(undefined, true);
 				getPoolEnabled(undefined, true);
-				getDuration(undefined, true);
-				getReserves(undefined, true);
-				getPairSupply(undefined, true);
 			});
 			return () => {
 				library && library.removeAllListeners('block');
 			};
 		},
-		[
-			library,
-			getMaxReward,
-			getInitReward,
-			getRewardDistributed,
-			getPeriodFinish,
-			getEarned,
-			getPoolEnabled,
-			getUserStakedBalance,
-			getWalletBalance,
-			getTotalStakedBalance,
-			getDuration,
-			getReserves,
-			getPairSupply
-		]
+		[ library, getEarned, getPoolEnabled, getUserStakedBalance, getWalletBalance, getTotalStakedBalance ]
 	);
 
 	// List data arrays
 	const poolListData = [
 		{
-			label: 'Total Staked in Pool (' + stakeText + ')',
-			value: totalStakedBalance ? (
-				parseFloat(formatEther(totalStakedBalance)).toFixed(4) * 1
+			label: 'Reward',
+			value: rewardPercentage ? (
+				parseFloat(formatEther(rewardPercentage)).toFixed(4) * 100 + ' %'
 			) : (
 				<Spinner size="xsmall" />
 			),
-			tooltip: 'Total amount of tokens staked into the pool.'
+			tooltip: 'Percentage of stabilizer rewards contract requested as reward per reward duration'
 		},
 		{
-			label: 'Total Pool Rewards',
-			value: maxReward ? parseFloat(formatEther(maxReward)).toFixed(2) * 1 : <Spinner size="xsmall" />,
-			tooltip: 'Total UwU rewards the pool will give over its lifetime.'
+			label: 'Block Duration',
+			value: blockDuration ? blockDuration + ' Blocks' : <Spinner size="xsmall" />,
+			tooltip: 'Period within which pool reward is distributed'
 		},
 		{
-			label: 'Total Rewards Claimed',
-			value: rewardDistributed ? (
-				parseFloat(formatEther(rewardDistributed)).toFixed(2) * 1
-			) : (
-				<Spinner size="xsmall" />
-			),
-			tooltip: 'Total UwU rewards claimed from the pool until now.'
+			label: 'User Lp Limit',
+			value: enableUserLpLimit !== undefined ? enableUserLpLimit ? 'True' : 'False' : <Spinner size="xsmall" />,
+			tooltip: 'Pool staking/withdraw usage status'
 		},
 		{
-			label: 'Halving Period',
-			value: duration ? (
-				parseFloat(duration.toNumber() / (60 * 60)).toFixed(2) * 1 + ' Hours'
-			) : (
-				<Spinner size="xsmall" />
-			),
-			tooltip: 'Period over which the pool reward halves.'
+			label: 'Pool Lp Limit',
+			value: enablePoolLpLimit !== undefined ? enablePoolLpLimit ? 'True' : 'False' : <Spinner size="xsmall" />,
+			tooltip: 'Pool staking/withdraw usage status'
 		},
 		{
-			label: 'Current Period Reward (UwU)',
-			value: initReward ? parseFloat(formatEther(initReward)).toFixed(4) * 1 : <Spinner size="xsmall" />,
-			tooltip: 'Reward for the current halving period.'
+			label: 'User Lp Limit',
+			value: userLpLimit ? formatEther(userLpLimit) + ' LP' : <Spinner size="xsmall" />,
+			tooltip: 'LP limit per wallet'
 		},
 		{
-			label: 'Next Halving',
+			label: 'Total Pool Limit',
 			value:
-				poolEnabled && periodFinish ? (
-					DateTime.fromSeconds(periodFinish.toNumber()).toRelative({ round: false })
+				poolLpLimit && totalStakedBalance ? (
+					parseFloat(formatEther(totalStakedBalance)).toFixed(2) + ' / ' + formatEther(poolLpLimit) + ' LP'
 				) : (
 					<Spinner size="xsmall" />
 				),
-			valueType: '',
-			tooltip: 'Time since the last rebase happened'
+			tooltip: 'Total LP limit per pool'
+		},
+
+		{
+			label: 'Current Pool Reward',
+			value: balance ? parseFloat(formatEther(balance)) : <Spinner size="xsmall" />,
+			tooltip: 'Current pool rewards available'
 		}
 	];
 	const userListData = [
@@ -187,37 +151,6 @@ const MiningPoolCard = ({ label, type, tooltip, poolAddress, lpAddress, stakeTex
 			label: 'Earned (UwU)',
 			value: earned ? parseFloat(formatEther(earned)).toFixed(4) * 1 : <Spinner size="xsmall" />,
 			tooltip: 'Amount of UwU reward you have earned.'
-		}
-	];
-
-	const aprListData = [
-		{
-			label: 'APR',
-			type: 'bridge',
-			value: 'N/A',
-			tooltip: 'Current Pool APR'
-		},
-		{
-			label: 'APR',
-			type: 'mining',
-			value:
-				initReward && reserves && duration && pairSupply && totalStakedBalance ? (
-					parseFloat(
-						parseFloat(formatEther(reserves[1])) /
-							parseFloat(formatEther(reserves[0])) *
-							365 *
-							parseFloat(formatEther(initReward)) /
-							3.5 /
-							(2 *
-								(parseFloat(formatEther(reserves[1])) / parseFloat(formatEther(pairSupply))) *
-								parseFloat(formatEther(totalStakedBalance)))
-					).toFixed(4) *
-						100 +
-					' %'
-				) : (
-					<Spinner size="xsmall" />
-				),
-			tooltip: 'Current Pool APR'
 		}
 	];
 
@@ -303,27 +236,16 @@ const MiningPoolCard = ({ label, type, tooltip, poolAddress, lpAddress, stakeTex
 
 	return (
 		<StyledPoolStake>
-			<Card>
+			<InfoCard>
 				<StyledCardInner>
 					<List data={poolListData} />
-					<List
-						color="primary"
-						data={
-							type === 'bridge' ? (
-								userListData.filter((ele) => !ele.label.includes('Unstaked'))
-							) : (
-								userListData
-							)
-						}
-					/>
-					<List color="secundary" data={aprListData.filter((ele) => type == ele.type)} />
+					<List color="primary" data={userListData} />
 				</StyledCardInner>
-			</Card>
+			</InfoCard>
 
 			{poolEnabled && (
-				<Card gutter={20}>
-					{isStakingActive &&
-					type === 'mining' && (
+				<InfoCard gutter={20}>
+					{isStakingActive && (
 						<Flexbox direction="horizontal" gap="10px">
 							<Input value={stakeInputValue} placeholder="Stake amount" onChange={onChangeStakeInput} />
 							<Button color="primary" onClick={handleMaxStake}>
@@ -331,15 +253,10 @@ const MiningPoolCard = ({ label, type, tooltip, poolAddress, lpAddress, stakeTex
 							</Button>
 						</Flexbox>
 					)}
-
-					{type === 'mining' && (
-						<Button isLoading={isStakeLoading} onClick={handleStake}>
-							stake
-						</Button>
-					)}
-
-					{isUnstakingActive &&
-					type === 'mining' && (
+					<Button isLoading={isStakeLoading} onClick={handleStake}>
+						stake
+					</Button>
+					{isUnstakingActive && (
 						<Flexbox direction="horizontal" gap="10px">
 							<Input
 								value={unstakeInputValue}
@@ -351,20 +268,16 @@ const MiningPoolCard = ({ label, type, tooltip, poolAddress, lpAddress, stakeTex
 							</Button>
 						</Flexbox>
 					)}
-
-					{type === 'mining' && (
-						<Button isLoading={isUnstakeLoading} onClick={handleUnstake}>
-							unstake
-						</Button>
-					)}
-
+					<Button isLoading={isUnstakeLoading} onClick={handleUnstake}>
+						unstake
+					</Button>
 					<Button isLoading={isClaimLoading} onClick={handleClaim}>
 						claim reward
 					</Button>
-				</Card>
+				</InfoCard>
 			)}
 		</StyledPoolStake>
 	);
 };
 
-export default MiningPoolCard;
+export default PoolStake;
