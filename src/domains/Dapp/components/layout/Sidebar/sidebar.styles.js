@@ -7,6 +7,7 @@ export const StyledSidebar = styled.div`
     gap: 20px;
     width: 240px;
     margin: 30px;
+    overflow: auto;
 `;
 
 export const StyledLogo = styled.div`
