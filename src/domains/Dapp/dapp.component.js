@@ -39,7 +39,7 @@ import {
 	StyledContent
 } from './dapp.styles';
 
-const injectedConnector = new InjectedConnector({ supportedChainIds: [1] });
+const injectedConnector = new InjectedConnector({ supportedChainIds: [1, 4, 42, 1337] });
 
 class Dapp extends React.Component {
 
