@@ -5,6 +5,8 @@ import mph88LogoPNG from './mph88.png';
 import placeholderTokenPNG from './empty.png';
 import cursorPNG from './cursor.png';
 import crossPNG from './cross.png';
+import debaseLogoSVG from './logo.svg';
+import homeBackgroundSVG from './landing_bg.png';
 export {
     debaseLogoPNG,
     degovLogoPNG,
@@ -12,5 +14,7 @@ export {
     mph88LogoPNG,
     placeholderTokenPNG,
     cursorPNG,
-    crossPNG
+    crossPNG,
+    debaseLogoSVG,
+    homeBackgroundSVG,
 };
