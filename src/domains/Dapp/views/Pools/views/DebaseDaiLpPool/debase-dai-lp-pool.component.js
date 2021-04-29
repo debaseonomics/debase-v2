@@ -134,15 +134,15 @@ const DebaseDaiLpPool = () => {
         },
         {
             label: 'Pool Reward(Debase)',
-            value: debaseReward
+            value: debaseReward ? debaseReward : <Spinner size="xsmall" />
         },
         {
             label: 'Pool Reward(88Mph)',
-            value: mph88Reward
+            value: mph88Reward ? mph88Reward : <Spinner size="xsmall" />
         },
         {
             label: 'Pool Reward(CRV)',
-            value: crvReward
+            value: crvReward ? crvReward : <Spinner size="xsmall" />
         }
     ];
     const highlightData = [
