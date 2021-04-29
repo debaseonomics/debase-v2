@@ -7,12 +7,12 @@ import { Contract } from 'ethers';
 
 import { Button, List, Spinner } from '@core/components';
 import { SnackbarManagerContext } from '@dapp/managers';
-import { LabeledCard, Grid } from '@dapp/components';
-import { StyledGridItem } from './rebase.styles.js';
-import { CONTRACT_ADDRESS, ABI_ORCHESTRATOR, ABI_DEBASEPOLICY, ABI_UNI } from '@constants';
+import { CONTRACT_ADDRESS, ABI_ORCHESTRATOR, ABI_DEBASEPOLICY } from '@constants';
 import { fetcher, calcDateDifference } from '@utils';
 import { DisconnectedWalletCard } from '@dapp/components/index';
-import { Countdown } from '@core/components/index';
+import { InfoCard } from '@dapp/components/common/index.js';
+import { StyledRebase, StyledRebaseInner } from './rebase.styles';
+import { DateTime } from 'luxon';
 
 const Rebase = () => {
 	const { library, active } = useWeb3React();
@@ -40,12 +40,7 @@ const Rebase = () => {
 			fetcher: fetcher(library, ABI_DEBASEPOLICY)
 		}
 	);
-	const { data: useDefaultRebaseLag, mutate: getUseDefaultRebaseLag } = useSWR(
-		[ CONTRACT_ADDRESS.debasePolicy, 'useDefaultRebaseLag' ],
-		{
-			fetcher: fetcher(library, ABI_DEBASEPOLICY)
-		}
-	);
+
 	const { data: defaultPositiveRebaseLag, mutate: getDefaultPositiveRebaseLag } = useSWR(
 		[ CONTRACT_ADDRESS.debasePolicy, 'defaultPositiveRebaseLag' ],
 		{
@@ -70,16 +65,7 @@ const Rebase = () => {
 			fetcher: fetcher(library, ABI_DEBASEPOLICY)
 		}
 	);
-	const { data: rebaseWindowLengthSec, mutate: getRebaseWindowLengthSec } = useSWR(
-		[ CONTRACT_ADDRESS.debasePolicy, 'rebaseWindowLengthSec' ],
-		{
-			fetcher: fetcher(library, ABI_DEBASEPOLICY)
-		}
-	);
 
-	const { data: reserves, mutate: getReserves } = useSWR([ CONTRACT_ADDRESS.debaseDaiLp, 'getReserves' ], {
-		fetcher: fetcher(library, ABI_UNI)
-	});
 	const { data: lastRebaseTimestampSec, mutate: getLastRebaseTimestampSec } = useSWR(
 		[ CONTRACT_ADDRESS.debasePolicy, 'lastRebaseTimestampSec' ],
 		{
@@ -94,13 +80,10 @@ const Rebase = () => {
 					getPriceTargetRate(undefined, true);
 					getUpperDeviationThreshold(undefined, true);
 					getLowerDeviationThreshold(undefined, true);
-					getUseDefaultRebaseLag(undefined, true);
 					getDefaultPositiveRebaseLag(undefined, true);
 					getDefaultNegativeRebaseLag(undefined, true);
 					getMinRebaseTimeIntervalSec(undefined, true);
 					getRebaseWindowOffsetSec(undefined, true);
-					getRebaseWindowLengthSec(undefined, true);
-					getReserves(undefined, true);
 					getLastRebaseTimestampSec(undefined, true);
 				});
 			return () => {
@@ -112,13 +95,10 @@ const Rebase = () => {
 			getPriceTargetRate,
 			getUpperDeviationThreshold,
 			getLowerDeviationThreshold,
-			getUseDefaultRebaseLag,
 			getDefaultPositiveRebaseLag,
 			getDefaultNegativeRebaseLag,
 			getMinRebaseTimeIntervalSec,
 			getRebaseWindowOffsetSec,
-			getRebaseWindowLengthSec,
-			getReserves,
 			getLastRebaseTimestampSec
 		]
 	);
@@ -154,7 +134,7 @@ const Rebase = () => {
 			tooltip: 'The negative deviation from the target price within not to rebase'
 		},
 		{
-			label: 'Rebase time period',
+			label: 'Minimum rebase period',
 			value: minRebaseTimeIntervalSec ? (
 				(minRebaseTimeIntervalSec.toNumber() / (60 * 60)).toString() + ' Hours'
 			) : (
@@ -164,49 +144,31 @@ const Rebase = () => {
 			tooltip: 'Time period after which a rebase can occur'
 		},
 		{
-			label: 'Rebase offset',
-			value: rebaseWindowOffsetSec ? rebaseWindowOffsetSec.toNumber() : <Spinner size="xsmall" />,
+			label: 'Rebase Happens At',
+			value: rebaseWindowOffsetSec ? (
+				DateTime.fromSeconds(rebaseWindowOffsetSec.toNumber()).toFormat('t')
+			) : (
+				<Spinner size="xsmall" />
+			),
 			valueType: '',
 			tooltip: 'The number of seconds from the beginning of the rebase interval, where the rebase window begins'
 		},
 		{
-			label: 'Rebase window',
-			value: rebaseWindowLengthSec ? rebaseWindowLengthSec.toNumber() : <Spinner size="xsmall" />,
-			valueType: '',
-			tooltip: 'The length of time within which a rebase can occur'
-		},
-		{
-			label: 'Use default lag',
-			value:
-				useDefaultRebaseLag !== undefined ? useDefaultRebaseLag ? 'True' : 'False' : <Spinner size="xsmall" />,
-			valueType: '',
-			tooltip: 'Flag to allow usage of default supply smoothing'
-		},
-		{
-			label: 'Default upper lag',
+			label: 'Upper lag',
 			value: defaultPositiveRebaseLag ? defaultPositiveRebaseLag.toNumber() : <Spinner size="xsmall" />,
 			valueType: '',
 			tooltip: 'Default supply smoothing to use for positive supply changes'
 		},
 		{
-			label: 'Default lower lag',
+			label: 'Lower lag',
 			value: defaultNegativeRebaseLag ? defaultNegativeRebaseLag.toNumber() : <Spinner size="xsmall" />,
 			valueType: '',
 			tooltip: 'Default supply smoothing to use for negative supply changes'
 		}
 	];
 
-	const liveData = [
-		{
-			label: 'Current price',
-			value: reserves ? (
-				parseFloat(parseFloat(formatEther(reserves[0])) / parseFloat(formatEther(reserves[1]))).toFixed(2)
-			) : (
-				<Spinner size="xsmall" />
-			),
-			valueType: 'dai',
-			tooltip: 'Current market price of debase in relation to dai'
-		},
+	/* list data */
+	const lastRebaseData = [
 		{
 			label: 'Last rebase',
 			value: lastRebaseTimestampSec ? (
@@ -237,24 +199,22 @@ const Rebase = () => {
 		}
 		setRebaseLoading(false);
 	};
+
 	if (!active) return <DisconnectedWalletCard />;
 	return (
-		<Grid>
-			<StyledGridItem>
-				<LabeledCard label="time remaining" gutter={40}>
-					<Countdown endDate="2021-04-03" />
-				</LabeledCard>
-				<LabeledCard isLoading={false} label="current data" color="primary">
-					<List data={liveData} />
-				</LabeledCard>
+		<StyledRebase>
+			<InfoCard>
+				<StyledRebaseInner>
+					<List data={rebaseParamsListData} />
+					<List data={lastRebaseData} color="primary" />
+				</StyledRebaseInner>
+			</InfoCard>
+			<InfoCard gutter={20}>
 				<Button isLoading={rebaseLoading} isDisabled={rebaseLoading} onClick={(e) => onClickFireRebase(e)}>
 					fire rebase
 				</Button>
-			</StyledGridItem>
-			<LabeledCard isLoading={false} label="rebasing parameters" color="primary">
-				<List data={rebaseParamsListData} />
-			</LabeledCard>
-		</Grid>
+			</InfoCard>
+		</StyledRebase>
 	);
 };
 
