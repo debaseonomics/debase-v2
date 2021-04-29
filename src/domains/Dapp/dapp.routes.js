@@ -17,7 +17,7 @@ import {
 const DAPP_ROUTES = [
     {
         label: 'dashboard',
-        path: '/',
+        path: '/dashboard',
         icon: <DashboardIcon />,
         component: <Dashboard />
     },

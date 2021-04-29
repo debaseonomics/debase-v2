@@ -1,2 +1,3 @@
 import Dapp from './Dapp';
-export { Dapp };
+import Home from './Home';
+export { Dapp, Home };
