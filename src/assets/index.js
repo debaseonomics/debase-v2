@@ -1,4 +1,4 @@
-import { bladerunnerWOFF } from './fonts';
+import { bladerunnerWOFF, brandonGrotesqueLight } from './fonts';
 import {
     debaseLogoPNG,
     degovLogoPNG,
@@ -6,7 +6,9 @@ import {
     mph88LogoPNG,
     placeholderTokenPNG,
     cursorPNG,
-    crossPNG
+    crossPNG,
+    debaseLogoSVG,
+    homeBackgroundSVG
 } from './img';
 import {
     AddIcon,
@@ -43,6 +45,7 @@ export {
 
     // FONTS
     bladerunnerWOFF,
+    brandonGrotesqueLight,
 
     // IMAGES
     debaseLogoPNG,
@@ -52,6 +55,8 @@ export {
     placeholderTokenPNG,
     cursorPNG,
     crossPNG,
+    debaseLogoSVG,
+    homeBackgroundSVG,
 
     // ICONS - material
     AddIcon,
