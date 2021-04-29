@@ -6,52 +6,52 @@ import { formatEther } from 'ethers/lib/utils';
 import { Contract } from 'ethers';
 
 import { Button, List, Spinner } from '@core/components';
-import { LabeledCard, Grid, SnackbarManagerContext } from '@dapp/components';
+import { SnackbarManagerContext } from '@dapp/managers';
+import { LabeledCard, Grid } from '@dapp/components';
 import { StyledGridItem } from '../rebase.styles';
 import { CONTRACT_ADDRESS, ABI_ORCHESTRATOR, ABI_DEBASEPOLICY, ABI_UNI } from '@constants';
 import { fetcher, calcDateDifference } from '@utils';
 
-const RebaseVariables = ()  => {
-
+const RebaseVariables = () => {
 	const { library } = useWeb3React();
-	
+
 	const [ rebaseLoading, setRebaseLoading ] = useState(false);
 
-	const { handleSnackbar } = useContext(SnackbarManagerContext);
+	const { openSnackbar } = useContext(SnackbarManagerContext);
 
 	/* fetch rebase data */
-	const { data: priceTargetRate } = useSWR([CONTRACT_ADDRESS.debasePolicy, 'priceTargetRate'], {
+	const { data: priceTargetRate } = useSWR([ CONTRACT_ADDRESS.debasePolicy, 'priceTargetRate' ], {
 		fetcher: fetcher(library, ABI_DEBASEPOLICY)
 	});
-	const { data: upperDeviationThreshold } = useSWR([CONTRACT_ADDRESS.debasePolicy, 'upperDeviationThreshold'], {
+	const { data: upperDeviationThreshold } = useSWR([ CONTRACT_ADDRESS.debasePolicy, 'upperDeviationThreshold' ], {
 		fetcher: fetcher(library, ABI_DEBASEPOLICY)
 	});
-	const { data: lowerDeviationThreshold } = useSWR([CONTRACT_ADDRESS.debasePolicy, 'lowerDeviationThreshold'], {
+	const { data: lowerDeviationThreshold } = useSWR([ CONTRACT_ADDRESS.debasePolicy, 'lowerDeviationThreshold' ], {
 		fetcher: fetcher(library, ABI_DEBASEPOLICY)
 	});
-	const { data: useDefaultRebaseLag } = useSWR([CONTRACT_ADDRESS.debasePolicy, 'useDefaultRebaseLag'], {
+	const { data: useDefaultRebaseLag } = useSWR([ CONTRACT_ADDRESS.debasePolicy, 'useDefaultRebaseLag' ], {
 		fetcher: fetcher(library, ABI_DEBASEPOLICY)
 	});
-	const { data: defaultPositiveRebaseLag } = useSWR([CONTRACT_ADDRESS.debasePolicy, 'defaultPositiveRebaseLag'], {
+	const { data: defaultPositiveRebaseLag } = useSWR([ CONTRACT_ADDRESS.debasePolicy, 'defaultPositiveRebaseLag' ], {
 		fetcher: fetcher(library, ABI_DEBASEPOLICY)
 	});
-	const { data: defaultNegativeRebaseLag } = useSWR([CONTRACT_ADDRESS.debasePolicy, 'defaultNegativeRebaseLag'], {
+	const { data: defaultNegativeRebaseLag } = useSWR([ CONTRACT_ADDRESS.debasePolicy, 'defaultNegativeRebaseLag' ], {
 		fetcher: fetcher(library, ABI_DEBASEPOLICY)
 	});
-	const { data: minRebaseTimeIntervalSec } = useSWR([CONTRACT_ADDRESS.debasePolicy, 'minRebaseTimeIntervalSec'], {
+	const { data: minRebaseTimeIntervalSec } = useSWR([ CONTRACT_ADDRESS.debasePolicy, 'minRebaseTimeIntervalSec' ], {
 		fetcher: fetcher(library, ABI_DEBASEPOLICY)
 	});
-	const { data: rebaseWindowOffsetSec } = useSWR([CONTRACT_ADDRESS.debasePolicy, 'rebaseWindowOffsetSec'], {
+	const { data: rebaseWindowOffsetSec } = useSWR([ CONTRACT_ADDRESS.debasePolicy, 'rebaseWindowOffsetSec' ], {
 		fetcher: fetcher(library, ABI_DEBASEPOLICY)
 	});
-	const { data: rebaseWindowLengthSec } = useSWR([CONTRACT_ADDRESS.debasePolicy, 'rebaseWindowLengthSec'], {
+	const { data: rebaseWindowLengthSec } = useSWR([ CONTRACT_ADDRESS.debasePolicy, 'rebaseWindowLengthSec' ], {
 		fetcher: fetcher(library, ABI_DEBASEPOLICY)
 	});
 
-	const { data: reserves } = useSWR([CONTRACT_ADDRESS.debaseDaiLp, 'getReserves'], {
+	const { data: reserves } = useSWR([ CONTRACT_ADDRESS.debaseDaiLp, 'getReserves' ], {
 		fetcher: fetcher(library, ABI_UNI)
 	});
-	const { data: lastRebaseTimestampSec } = useSWR([CONTRACT_ADDRESS.debasePolicy, 'lastRebaseTimestampSec'], {
+	const { data: lastRebaseTimestampSec } = useSWR([ CONTRACT_ADDRESS.debasePolicy, 'lastRebaseTimestampSec' ], {
 		fetcher: fetcher(library, ABI_DEBASEPOLICY)
 	});
 
@@ -65,19 +65,33 @@ const RebaseVariables = ()  => {
 		},
 		{
 			label: 'Price upper deviation',
-			value: upperDeviationThreshold && priceTargetRate ? parseFloat(formatEther(upperDeviationThreshold)) + parseFloat(formatEther(priceTargetRate)) : <Spinner size="xsmall" />,
+			value:
+				upperDeviationThreshold && priceTargetRate ? (
+					parseFloat(formatEther(upperDeviationThreshold)) + parseFloat(formatEther(priceTargetRate))
+				) : (
+					<Spinner size="xsmall" />
+				),
 			valueType: 'dai',
 			tooltip: 'The positive deviation from the target price within not to rebase'
 		},
 		{
 			label: 'Price lower deviation',
-			value: lowerDeviationThreshold && priceTargetRate ? parseFloat(formatEther(priceTargetRate)) - parseFloat(formatEther(lowerDeviationThreshold)) : <Spinner size="xsmall" />,
+			value:
+				lowerDeviationThreshold && priceTargetRate ? (
+					parseFloat(formatEther(priceTargetRate)) - parseFloat(formatEther(lowerDeviationThreshold))
+				) : (
+					<Spinner size="xsmall" />
+				),
 			valueType: 'dai',
 			tooltip: 'The negative deviation from the target price within not to rebase'
 		},
 		{
 			label: 'Rebase time period',
-			value: minRebaseTimeIntervalSec ? (minRebaseTimeIntervalSec.toNumber() / (60 * 60)).toString() + ' Hours' : <Spinner size="xsmall" />,
+			value: minRebaseTimeIntervalSec ? (
+				(minRebaseTimeIntervalSec.toNumber() / (60 * 60)).toString() + ' Hours'
+			) : (
+				<Spinner size="xsmall" />
+			),
 			valueType: '',
 			tooltip: 'Time period after which a rebase can occur'
 		},
@@ -95,7 +109,8 @@ const RebaseVariables = ()  => {
 		},
 		{
 			label: 'Use default lag',
-			value: useDefaultRebaseLag !== undefined ? (useDefaultRebaseLag ? 'True' : 'False') : <Spinner size="xsmall" />,
+			value:
+				useDefaultRebaseLag !== undefined ? useDefaultRebaseLag ? 'True' : 'False' : <Spinner size="xsmall" />,
 			valueType: '',
 			tooltip: 'Flag to allow usage of default supply smoothing'
 		},
@@ -116,31 +131,38 @@ const RebaseVariables = ()  => {
 	const liveData = [
 		{
 			label: 'Current price',
-			value: reserves ? parseFloat(parseFloat(formatEther(reserves[0])) / parseFloat(formatEther(reserves[1]))).toFixed(2) : <Spinner size="xsmall" />,
+			value: reserves ? (
+				parseFloat(parseFloat(formatEther(reserves[0])) / parseFloat(formatEther(reserves[1]))).toFixed(2)
+			) : (
+				<Spinner size="xsmall" />
+			),
 			valueType: 'dai',
 			tooltip: 'Current market price of debase in relation to dai'
 		},
 		{
 			label: 'Last rebase',
-			value: lastRebaseTimestampSec ? calcDateDifference(new Date(lastRebaseTimestampSec.toNumber() * 1000), new Date()).toFixed(2) + ' day(s) ago' : <Spinner size="xsmall" />,
+			value: lastRebaseTimestampSec ? (
+				calcDateDifference(new Date(lastRebaseTimestampSec.toNumber() * 1000), new Date()).toFixed(2) +
+				' day(s) ago'
+			) : (
+				<Spinner size="xsmall" />
+			),
 			valueType: '',
 			tooltip: 'Time since the last rebase happened'
 		}
 	];
 
-	const onClickFireRebase = async e => {
+	const onClickFireRebase = async (e) => {
 		setRebaseLoading(true);
 		const orchestratorContract = new Contract(CONTRACT_ADDRESS.orchestrator, ABI_ORCHESTRATOR, library.getSigner());
 		try {
 			await orchestratorContract.rebase();
-			handleSnackbar({
-				id: 'fire-rebase-button',
+			openSnackbar({
 				message: 'Rebase successfully executed',
 				status: 'success'
 			});
 		} catch (error) {
-			handleSnackbar({
-				id: 'fire-rebase-button',
+			openSnackbar({
 				message: 'Rebase failed, please try again',
 				status: 'error'
 			});
@@ -148,34 +170,21 @@ const RebaseVariables = ()  => {
 		setRebaseLoading(false);
 	};
 
-    return (
-        <Grid>
+	return (
+		<Grid>
 			<StyledGridItem>
-				<LabeledCard
-					isLoading={false}
-					label="current data"
-					color="primary"
-				>
+				<LabeledCard isLoading={false} label="current data" color="primary">
 					<List data={liveData} />
 				</LabeledCard>
-				<Button
-					isLoading={rebaseLoading}
-					isDisabled={rebaseLoading}
-					onClick={e => onClickFireRebase(e)}
-				>
+				<Button isLoading={rebaseLoading} isDisabled={rebaseLoading} onClick={(e) => onClickFireRebase(e)}>
 					fire rebase
 				</Button>
 			</StyledGridItem>
-            <LabeledCard
-                isLoading={false}
-                label="rebasing parameters"
-                color="primary"
-            >
-                <List data={rebaseParamsListData} />
-            </LabeledCard>
-        </Grid>
-    );
-
+			<LabeledCard isLoading={false} label="rebasing parameters" color="primary">
+				<List data={rebaseParamsListData} />
+			</LabeledCard>
+		</Grid>
+	);
 };
 
 export default RebaseVariables;

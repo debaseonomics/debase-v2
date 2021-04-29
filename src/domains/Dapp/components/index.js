@@ -9,7 +9,6 @@ import {
 	PoolStakeTriple
 } from './common';
 import { Background, Navigation, Section, Sidebar, Topbar, Grid } from './layout';
-import { ModalManager, SnackbarManager, SnackbarManagerContext } from './managers';
 
 export {
 	DisconnectedWalletCard,
@@ -24,9 +23,6 @@ export {
 	Sidebar,
 	Topbar,
 	Grid,
-	ModalManager,
-	SnackbarManager,
 	PoolStake,
-	PoolStakeTriple,
-	SnackbarManagerContext
+	PoolStakeTriple
 };

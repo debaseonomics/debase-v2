@@ -9,7 +9,7 @@ import { Card, List, Button, Input, Flexbox, Spinner } from '@core/components';
 import { StyledPoolStake, StyledCardInner } from './poolstake.styles';
 import { parseEther } from 'ethers/lib/utils';
 import { CONTRACT_ADDRESS } from '@constants';
-import { SnackbarManagerContext } from '@dapp/components/index';
+import { SnackbarManagerContext } from '@dapp/managers';
 import InfoCard from '../InfoCard/infocard.component';
 
 const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
@@ -208,10 +208,10 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 			let allowance = await tokenContract.allowance(account, poolAddress);
 			let transaction;
 			if (allowance.lt(toStake)) {
-				transaction = await tokenContract.approve(poolAddress, toStake, { gasPrice: 20000000000 });
+				transaction = await tokenContract.approve(poolAddress, toStake);
 				await transaction.wait(1);
 			}
-			transaction = await poolContract.stake(toStake, { gasPrice: 20000000000 });
+			transaction = await poolContract.stake(toStake);
 			await transaction.wait(1);
 			openSnackbar({
 				message: 'Staking success',
@@ -231,7 +231,7 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 		const poolContract = new Contract(poolAddress, ABI_POOL, library.getSigner());
 		try {
 			const toWithdraw = parseEther(unstakeInputValue);
-			let transaction = await poolContract.withdraw(toWithdraw, { gasPrice: 20000000000 });
+			let transaction = await poolContract.withdraw(toWithdraw);
 			await transaction.wait(1);
 			openSnackbar({
 				message: 'Unstaking success',
@@ -249,7 +249,7 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 		setIsClaimLoading(true);
 		const poolContract = new Contract(poolAddress, ABI_POOL, library.getSigner());
 		try {
-			let transaction = await poolContract.getReward({ gasPrice: 20000000000 });
+			let transaction = await poolContract.getReward();
 			await transaction.wait(1);
 			getEarned(undefined, true);
 			openSnackbar({

@@ -15,7 +15,8 @@ import {
 	getTreasuryBalance
 } from '@api';
 import { parseFloatFixed, parseNumToUsFormat } from '@utils';
-import { Background, Sidebar, Navigation, Topbar, SnackbarManager } from '@dapp/components';
+import { Background, Sidebar, Navigation, Topbar } from '@dapp/components';
+import { ModalManagerProvider, SnackbarManagerProvider } from '@dapp/managers';
 import { UIContext, WalletContext, TokenDataContext, TokenHistoryContext, TreasuryDataContext } from '@dapp/contexts';
 import { calcRebasePercentage, calcTotalSupply } from '@dapp/utils';
 import DAPP_ROUTES from './dapp.routes';
@@ -339,33 +340,35 @@ class Dapp extends React.Component {
 					<TokenDataContext.Provider value={{ tokenData }}>
 						<TokenHistoryContext.Provider value={{ tokenHistory }}>
 							<TreasuryDataContext.Provider value={{ treasuryData }}>
-								<SnackbarManager offset={40}>
-									<Background />
-									<StyledDapp>
-										<Router>
-											<Sidebar>
-												<Navigation routes={DAPP_ROUTES} />
-											</Sidebar>
-											<StyledPage>
-												<StyledPageInner>
-													<Topbar routes={DAPP_ROUTES} />
-													<StyledContent>
-														<Switch>
-															{DAPP_ROUTES.map((route, i) => {
-																const { label, path, component } = route;
-																return (
-																	<Route exact={i === 0} key={label} path={path}>
-																		{component}
-																	</Route>
-																);
-															})}
-														</Switch>
-													</StyledContent>
-												</StyledPageInner>
-											</StyledPage>
-										</Router>
-									</StyledDapp>
-								</SnackbarManager>
+								<SnackbarManagerProvider>
+									<ModalManagerProvider>
+										<Background />
+										<StyledDapp>
+											<Router>
+												<Sidebar>
+													<Navigation routes={DAPP_ROUTES} />
+												</Sidebar>
+												<StyledPage>
+													<StyledPageInner>
+														<Topbar routes={DAPP_ROUTES} />
+														<StyledContent>
+															<Switch>
+																{DAPP_ROUTES.map((route, i) => {
+																	const { label, path, component } = route;
+																	return (
+																		<Route exact={i === 0} key={label} path={path}>
+																			{component}
+																		</Route>
+																	);
+																})}
+															</Switch>
+														</StyledContent>
+													</StyledPageInner>
+												</StyledPage>
+											</Router>
+										</StyledDapp>
+									</ModalManagerProvider>
+								</SnackbarManagerProvider>
 							</TreasuryDataContext.Provider>
 						</TokenHistoryContext.Provider>
 					</TokenDataContext.Provider>

@@ -9,7 +9,7 @@ import { Card, List, Button, Input, Flexbox, Spinner } from '@core/components';
 import { StyledPoolStake, StyledCardInner } from './poolstake.styles';
 import { parseEther } from 'ethers/lib/utils';
 import { CONTRACT_ADDRESS } from '@constants';
-import { SnackbarManagerContext } from '@dapp/components/index';
+import { SnackbarManagerContext } from '@dapp/managers';
 import InfoCard from '../InfoCard/infocard.component';
 
 const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
