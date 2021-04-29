@@ -1,93 +1,58 @@
 // CONTROLS
-import {
-    Button,
-    IconButton
-} from './controls';
+import { Button, IconButton } from './controls';
 // DATA
-import {
-    Graph,
-    List,
-    Timeline,
-    Countdown,
-    Progress
-} from './data';
+import { Graph, List, Timeline, Countdown, Progress } from './data';
 // FEEDBACK
-import {
-    Banner,
-    Spinner,
-    Tooltip,
-    Snackbar,
-    Backdrop
-} from './feedback';
+import { Banner, Spinner, Tooltip, Snackbar, Backdrop } from './feedback';
 // INPUT
-import {
-    FormField,
-    Input,
-    Slider,
-    Switch
-} from './input';
+import { FormField, Input, Slider, Switch } from './input';
 // LAYOUT
-import {
-    Card,
-    Flexbox,
-    ScrollArea,
-    Accordion
-} from './layout';
+import { Card, Flexbox, ScrollArea, Accordion, Modal } from './layout';
 // NAVIGATION
-import {
-    Tabs,
-    Tab
-} from './navigation';
+import { Tabs, Tab } from './navigation';
 // TYPOGRAPHY
-import {
-    DisplaySmall,
-    DisplayMedium,
-    DisplayLarge,
-    TextMini,
-    TextSmall,
-    TextMedium,
-    TextLarge
-} from './typography';
+import { DisplaySmall, DisplayMedium, DisplayLarge, TextMini, TextSmall, TextMedium, TextLarge } from './typography';
 // UTILS
 import { Portal } from './utils';
 
-export { 
-    // CONTROLS
-    Button,
-    IconButton,
-    // DATA
-    Graph,
-    List,
-    Timeline,
-    Countdown,
-    Progress,
-    // FEEDBACK
-    Banner,
-    Spinner, 
-    Tooltip,
-    Snackbar,
-    Backdrop,
-    // INPUT
-    FormField,
-    Input,
-    Slider,
-    Switch,
-    // LAYOUT
-    Card,
-    Flexbox,
-    ScrollArea,
-    Accordion,
-    // NAVIGATION
-    Tabs, 
-    Tab,
-    // TYPOGRAPHY
-    DisplaySmall,
-    DisplayMedium,
-    DisplayLarge,
-    TextMini,
-    TextSmall,
-    TextMedium,
-    TextLarge,
-    // UTILS
-    Portal
+export {
+	// CONTROLS
+	Button,
+	IconButton,
+	// DATA
+	Graph,
+	List,
+	Timeline,
+	Countdown,
+	Progress,
+	// FEEDBACK
+	Banner,
+	Spinner,
+	Tooltip,
+	Snackbar,
+	Backdrop,
+	// INPUT
+	FormField,
+	Input,
+	Slider,
+	Switch,
+	// LAYOUT
+	Card,
+	Flexbox,
+	ScrollArea,
+	Accordion,
+	Modal,
+	// NAVIGATION
+	Tabs,
+	Tab,
+	// TYPOGRAPHY
+	DisplaySmall,
+	DisplayMedium,
+	DisplayLarge,
+	TextMini,
+	TextSmall,
+	TextMedium,
+	TextLarge,
+	// UTILS
+	Portal
 };

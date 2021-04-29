@@ -1,7 +1,5 @@
 import DegovEthLpPool from './DegovEthLpPool';
-import DebaseDaiLpPool from "./DebaseDaiLpPool";
+import DebaseDaiLpPool from './DebaseDaiLpPool';
+import DebaseEthLpPool from './DebaseEthLpPool';
 
-export {
-    DegovEthLpPool,
-    DebaseDaiLpPool
-};
+export { DegovEthLpPool, DebaseDaiLpPool, DebaseEthLpPool };

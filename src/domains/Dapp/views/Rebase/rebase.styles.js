@@ -1,15 +1,10 @@
 import styled from 'styled-components';
 
 export const StyledRebase = styled.div`
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 60px;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
 `;
 
-export const StyledGridItem = styled.div`
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-`;
+export const StyledRebaseInner = styled.div`gap: 0;`;

@@ -1,2 +1,2 @@
-import DebaseDaiLpPool from './debase-dai-lp-pool.component';
+import DebaseDaiLpPool from './debae-dai-lp-pool.component';
 export default DebaseDaiLpPool;

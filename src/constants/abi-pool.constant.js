@@ -6,6 +6,7 @@ const ABI_POOL = [
 	'function initReward() public view returns(uint256)',
 	'function rewardRate() public view returns(uint256)',
 	'function startTime() public view returns(uint256)',
+	'function poolEnabled() public view returns(uint256)',
 	'function stake(uint256 amount)',
 	'function withdraw(uint256 amount)',
 	'function exit()',
