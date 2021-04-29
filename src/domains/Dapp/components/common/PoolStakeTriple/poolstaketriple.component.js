@@ -30,26 +30,6 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 	const { data: poolEnabled, mutate: getPoolEnabled } = useSWR([ poolAddress, 'poolEnabled' ], {
 		fetcher: fetcher(library, poolABI)
 	});
-	const { data: rewardPercentage } = useSWR([ poolAddress, 'rewardPercentage' ], {
-		fetcher: fetcher(library, poolABI)
-	});
-	const { data: blockDuration } = useSWR([ poolAddress, 'blockDuration' ], {
-		fetcher: fetcher(library, poolABI)
-	});
-	const { data: poolLpLimit } = useSWR([ poolAddress, 'poolLpLimit' ], {
-		fetcher: fetcher(library, poolABI)
-	});
-	const { data: enableUserLpLimit } = useSWR([ poolAddress, 'enableUserLpLimit' ], {
-		fetcher: fetcher(library, poolABI)
-	});
-
-	const { data: enablePoolLpLimit } = useSWR([ poolAddress, 'enablePoolLpLimit' ], {
-		fetcher: fetcher(library, poolABI)
-	});
-
-	const { data: userLpLimit } = useSWR([ poolAddress, 'userLpLimit' ], {
-		fetcher: fetcher(library, poolABI)
-	});
 
 	const { data: userStakedBalance, mutate: getUserStakedBalance } = useSWR([ poolAddress, 'balanceOf', account ], {
 		fetcher: fetcher(library, poolABI)
@@ -57,9 +37,7 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 	const { data: walletBalance, mutate: getWalletBalance } = useSWR([ lpAddress, 'balanceOf', account ], {
 		fetcher: fetcher(library, poolABI)
 	});
-	const { data: totalStakedBalance, mutate: getTotalStakedBalance } = useSWR([ poolAddress, 'totalSupply' ], {
-		fetcher: fetcher(library, poolABI)
-	});
+
 	const { data: balance } = useSWR([ CONTRACT_ADDRESS.debase, 'balanceOf', poolAddress ], {
 		fetcher: fetcher(library, poolABI)
 	});
@@ -82,7 +60,6 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 				getEarned(undefined, true);
 				getUserStakedBalance(undefined, true);
 				getWalletBalance(undefined, true);
-				getTotalStakedBalance(undefined, true);
 				getPoolEnabled(undefined, true);
 				getMphReward(undefined, true);
 				getCrvReward(undefined, true);
@@ -91,60 +68,11 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 				library && library.removeAllListeners('block');
 			};
 		},
-		[
-			library,
-			getEarned,
-			getPoolEnabled,
-			getUserStakedBalance,
-			getWalletBalance,
-			getTotalStakedBalance,
-			getMphReward,
-			getCrvReward
-		]
+		[ library, getEarned, getPoolEnabled, getUserStakedBalance, getWalletBalance, getMphReward, getCrvReward ]
 	);
 
 	// List data arrays
 	const poolListData = [
-		{
-			label: 'Reward',
-			value: rewardPercentage ? (
-				parseFloat(formatEther(rewardPercentage)).toFixed(4) * 100 + ' %'
-			) : (
-				<Spinner size="xsmall" />
-			),
-			tooltip: 'Percentage of stabilizer rewards contract requested as reward per reward duration'
-		},
-		{
-			label: 'Block Duration',
-			value: blockDuration ? blockDuration + ' Blocks' : <Spinner size="xsmall" />,
-			tooltip: 'Period within which pool reward is distributed'
-		},
-		{
-			label: 'User Lp Limit',
-			value: enableUserLpLimit !== undefined ? enableUserLpLimit ? 'True' : 'False' : <Spinner size="xsmall" />,
-			tooltip: 'Pool staking/withdraw usage status'
-		},
-		{
-			label: 'Pool Lp Limit',
-			value: enablePoolLpLimit !== undefined ? enablePoolLpLimit ? 'True' : 'False' : <Spinner size="xsmall" />,
-			tooltip: 'Pool staking/withdraw usage status'
-		},
-		{
-			label: 'User Lp Limit',
-			value: userLpLimit ? formatEther(userLpLimit) + ' LP' : <Spinner size="xsmall" />,
-			tooltip: 'LP limit per wallet'
-		},
-		{
-			label: 'Total Pool Limit',
-			value:
-				poolLpLimit && totalStakedBalance ? (
-					parseFloat(formatEther(totalStakedBalance)).toFixed(2) + ' / ' + formatEther(poolLpLimit) + ' LP'
-				) : (
-					<Spinner size="xsmall" />
-				),
-			tooltip: 'Total LP limit per pool'
-		},
-
 		{
 			label: 'DEBASE Reward',
 			value: balance ? parseFloat(formatEther(balance)) : <Spinner size="xsmall" />,
@@ -162,8 +90,6 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 			tooltip: 'Current pool rewards available'
 		}
 	];
-
-	console.log(earned);
 
 	const userListData = [
 		{

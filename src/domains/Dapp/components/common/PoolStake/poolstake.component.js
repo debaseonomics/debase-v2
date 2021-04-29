@@ -30,20 +30,8 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 	const { data: poolEnabled, mutate: getPoolEnabled } = useSWR([ poolAddress, 'poolEnabled' ], {
 		fetcher: fetcher(library, poolABI)
 	});
-	const { data: rewardPercentage } = useSWR([ poolAddress, 'rewardPercentage' ], {
-		fetcher: fetcher(library, poolABI)
-	});
-	const { data: blockDuration } = useSWR([ poolAddress, 'blockDuration' ], {
-		fetcher: fetcher(library, poolABI)
-	});
-	const { data: poolLpLimit } = useSWR([ poolAddress, 'poolLpLimit' ], {
-		fetcher: fetcher(library, poolABI)
-	});
-	const { data: enableUserLpLimit } = useSWR([ poolAddress, 'enableUserLpLimit' ], {
-		fetcher: fetcher(library, poolABI)
-	});
 
-	const { data: enablePoolLpLimit } = useSWR([ poolAddress, 'enablePoolLpLimit' ], {
+	const { data: poolLpLimit } = useSWR([ poolAddress, 'poolLpLimit' ], {
 		fetcher: fetcher(library, poolABI)
 	});
 
@@ -85,30 +73,6 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 
 	// List data arrays
 	const poolListData = [
-		{
-			label: 'Reward',
-			value: rewardPercentage ? (
-				parseFloat(formatEther(rewardPercentage)).toFixed(4) * 100 + ' %'
-			) : (
-				<Spinner size="xsmall" />
-			),
-			tooltip: 'Percentage of stabilizer rewards contract requested as reward per reward duration'
-		},
-		{
-			label: 'Block Duration',
-			value: blockDuration ? blockDuration + ' Blocks' : <Spinner size="xsmall" />,
-			tooltip: 'Period within which pool reward is distributed'
-		},
-		{
-			label: 'User Lp Limit',
-			value: enableUserLpLimit !== undefined ? enableUserLpLimit ? 'True' : 'False' : <Spinner size="xsmall" />,
-			tooltip: 'Pool staking/withdraw usage status'
-		},
-		{
-			label: 'Pool Lp Limit',
-			value: enablePoolLpLimit !== undefined ? enablePoolLpLimit ? 'True' : 'False' : <Spinner size="xsmall" />,
-			tooltip: 'Pool staking/withdraw usage status'
-		},
 		{
 			label: 'User Lp Limit',
 			value: userLpLimit ? formatEther(userLpLimit) + ' LP' : <Spinner size="xsmall" />,
