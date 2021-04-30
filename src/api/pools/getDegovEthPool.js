@@ -15,6 +15,7 @@ export default async () => {
 		const ethDaiPoolContract = await new ethers.Contract(CONTRACT_ADDRESS.ethDaiPool, ABI_UNI, provider);
 		const wethContract = await new ethers.Contract(CONTRACT_ADDRESS.weth, ABI_POOL, provider);
 
+		const enabled = await poolContract.poolEnabled();
 		const rewardPercentage = await poolContract.rewardPercentage();
 		const blockDuration = await poolContract.blockDuration();
 		const totalSupply = await poolContract.totalSupply();
@@ -24,16 +25,18 @@ export default async () => {
 		const ethDaiReserves = await ethDaiPoolContract.getReserves();
 		const wethBalance = await wethContract.balanceOf(CONTRACT_ADDRESS.degovEthLp);
 
-		return (rewardPercentage *
-			debaseTotalSupply /
-			(blockDuration * 14 / 86400) *
-			(debaseDaiReserves[0] / debaseDaiReserves[1]) *
-			365 /
-			(totalSupply * (2 * wethBalance * (ethDaiReserves[0] / ethDaiReserves[1]) / totalSupplyLp)) /
-			Math.pow(10, 18) *
-			100).toFixed(2);
+		return {
+			apr: (rewardPercentage *
+				debaseTotalSupply /
+				(blockDuration * 14 / 86400) *
+				(debaseDaiReserves[0] / debaseDaiReserves[1]) *
+				365 /
+				(totalSupply * (2 * wethBalance * (ethDaiReserves[0] / ethDaiReserves[1]) / totalSupplyLp)) /
+				Math.pow(10, 18) *
+				100).toFixed(2),
+			enabled: enabled
+		};
 	} catch (err) {
-		console.log(err);
-		return 0;
+		return { apr: 0, enabled: false };
 	}
 };

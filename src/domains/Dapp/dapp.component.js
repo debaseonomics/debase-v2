@@ -12,7 +12,8 @@ import {
 	getDegovCircSupply,
 	getRebaseHistory,
 	getDebaseYearHistory,
-	getTreasuryBalance
+	getTreasuryBalance,
+	getDegovEthPool
 } from '@api';
 import { parseFloatFixed, parseNumToUsFormat } from '@utils';
 import { Background, Sidebar, Navigation, Topbar } from '@dapp/components';
@@ -28,7 +29,6 @@ import {
 import { calcRebasePercentage, calcTotalSupply } from '@dapp/utils';
 import DAPP_ROUTES from './dapp.routes';
 import { StyledDapp, StyledPage, StyledPageInner, StyledContent } from './dapp.styles';
-import getDegovEthPoolAPR from '@api/getDegovEthPoolAPR';
 
 const injectedConnector = new InjectedConnector({ supportedChainIds: [ 1, 4 ] });
 
@@ -71,10 +71,10 @@ class Dapp extends React.Component {
 			isNoEthereumProviderError: false,
 			isUserRejectedRequestError: false
 		},
-		apr: {
-			debaseDaiPool: '',
-			debaseEthPool: '',
-			degovEthPool: ''
+		pools: {
+			debaseDaiPool: null,
+			debaseEthPool: null,
+			degovEthPool: null
 		}
 	};
 
@@ -314,15 +314,17 @@ class Dapp extends React.Component {
 		);
 	};
 
-	initPoolAprData = async (callback) => {
-		const degovEthApr = await getDegovEthPoolAPR();
+	initPoolData = async (callback) => {
+		const degovEth = await getDegovEthPool();
+
+		console.log(degovEth);
 		this.setState(
 			() => {
 				const prevState = _.cloneDeep(this.state);
-				const { apr } = prevState;
+				const { pools } = prevState;
 
-				apr.degovEthPool = degovEthApr;
-				return { apr };
+				pools.degovEthPool = degovEth;
+				return { pools };
 			},
 			() => {
 				if (callback) callback();
@@ -343,7 +345,7 @@ class Dapp extends React.Component {
 		this.initTokenData();
 		this.initTokenHistory();
 		this.initTreasuryData();
-		this.initPoolAprData();
+		this.initPoolData();
 	}
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.detectMobileViewport);
@@ -351,7 +353,7 @@ class Dapp extends React.Component {
 
 	/* COMPONENT RETURN RENDER */
 	render() {
-		const { wallet, ui, tokenData, tokenHistory, treasuryData, apr } = this.state;
+		const { wallet, ui, tokenData, tokenHistory, treasuryData, pools } = this.state;
 
 		const uiMethods = {
 			detectActiveRoute: this.detectActiveRoute
@@ -370,7 +372,7 @@ class Dapp extends React.Component {
 					<TokenDataContext.Provider value={{ tokenData }}>
 						<TokenHistoryContext.Provider value={{ tokenHistory }}>
 							<TreasuryDataContext.Provider value={{ treasuryData }}>
-								<PoolAprContext.Provider value={{ apr }}>
+								<PoolAprContext.Provider value={{ pools }}>
 									<SnackbarManagerProvider>
 										<ModalManagerProvider>
 											<Background />

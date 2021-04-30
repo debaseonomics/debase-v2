@@ -15,7 +15,7 @@ const Pools = () => {
 	const { path } = useRouteMatch();
 	const { active, library } = useWeb3React();
 
-	const { apr } = useContext(PoolAprContext);
+	const { pools } = useContext(PoolAprContext);
 
 	const { data: debaseDaiPoolEnabled, mutate: getDebaseDaiPoolEnabled } = useSWR(
 		[ CONTRACT_ADDRESS.debaseDaiV3Pool, 'poolEnabled' ],
@@ -31,26 +31,18 @@ const Pools = () => {
 		}
 	);
 
-	const { data: degovEthPoolEnabled, mutate: getDegovEthPoolEnabled } = useSWR(
-		[ CONTRACT_ADDRESS.degovEthPool, 'poolEnabled' ],
-		{
-			fetcher: fetcher(library, ABI_POOL)
-		}
-	);
-
 	useEffect(
 		() => {
 			library &&
 				library.on('block', () => {
 					getDebaseDaiPoolEnabled(undefined, true);
-					getDegovEthPoolEnabled(undefined, true);
 					getDebaseEthPoolEnabled(undefined, true);
 				});
 			return () => {
 				library && library.removeAllListeners('block');
 			};
 		},
-		[ library, getDebaseDaiPoolEnabled, getDegovEthPoolEnabled, getDebaseEthPoolEnabled ]
+		[ library, getDebaseDaiPoolEnabled, getDebaseEthPoolEnabled ]
 	);
 
 	// List data arrays
@@ -106,7 +98,7 @@ const Pools = () => {
 
 		{
 			label: 'APR',
-			value: apr.degovEthPool + ' %',
+			value: pools.degovEthPool ? pools.degovEthPool.apr + ' %' : '...',
 			tooltip: "Pool's annual percentage rate"
 		}
 	];
@@ -169,7 +161,7 @@ const Pools = () => {
 							url: 'https://app.uniswap.org/#/add/0x469e66e06fec34839e5eb1273ba85a119b8d702f/ETH'
 						}
 					]}
-					isActive={degovEthPoolEnabled ? degovEthPoolEnabled : false}
+					isActive={pools.degovEthPool ? pools.degovEthPool.enabled : false}
 				>
 					<List data={degovEthLPListData} />
 				</PoolCard>
