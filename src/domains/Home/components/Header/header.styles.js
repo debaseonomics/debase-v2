@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 export const StyledContainer = styled.div`
-    margin-top: 3px;
+    margin-top: 11px;
     display: flex;
     align-items: center;
 `;
@@ -11,11 +11,14 @@ export const StyledDebaseLogo = styled.img`
     @media only screen and (max-width: 1440px) {
         width: 212px;
     }
+    @media only screen and (max-width: 1336px) {
+        width: 215px;
+    }
     @media only screen and (max-width: 1280px) {
-        width: 190px;
+        width: 165px;
     }
     @media only screen and (max-width: 1024px) {
-        width: 153px;
+        width: 171px;
     }
 `;
 export const StyledTextContainer = styled.div`
@@ -80,11 +83,11 @@ export const StyledAuditsLink = styled.a`
     }
     @media only screen and (max-width: 1280px) {
         font-size: 16px;
-        margin-left: 9px;
+        margin-left: 23px;
     }
     @media only screen and (max-width: 1024px) {
         font-size: 14px;
-        margin-left: -27px;
+        margin-left: -11px;
     }
 `;
 export const StyledAppLink = styled.a`
@@ -96,7 +99,7 @@ export const StyledAppLink = styled.a`
     border-style: solid;
     border-width: 1px;
     border-color: #F26373;
-    height: 40px;
+    height: 48px;
     width: 148px;
     display: flex;
     align-items: center;
@@ -104,7 +107,7 @@ export const StyledAppLink = styled.a`
     
     @media only screen and (max-width: 1440px) {
         font-size: 18px;
-        width: 111px;
+        width: 147px;
         margin-left: 34px;
     }
     @media only screen and (max-width: 1280px) {
@@ -114,7 +117,7 @@ export const StyledAppLink = styled.a`
     }
     @media only screen and (max-width: 1024px) {
         font-size: 14px;
-        width: 78px;
+        width: 97px;
         margin-left: 6px;
     }
 `;

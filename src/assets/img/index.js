@@ -6,7 +6,8 @@ import placeholderTokenPNG from './empty.png';
 import cursorPNG from './cursor.png';
 import crossPNG from './cross.png';
 import debaseLogoSVG from './logo.svg';
-import homeBackgroundSVG from './landing_bg.png';
+import homeBackgroundSVG from './landing_bg_1.png';
+import rectangleSVG from './Group 5.png';
 export {
     debaseLogoPNG,
     degovLogoPNG,
@@ -17,4 +18,5 @@ export {
     crossPNG,
     debaseLogoSVG,
     homeBackgroundSVG,
+    rectangleSVG,
 };

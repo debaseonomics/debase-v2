@@ -8,7 +8,8 @@ import {
     cursorPNG,
     crossPNG,
     debaseLogoSVG,
-    homeBackgroundSVG
+    homeBackgroundSVG,
+    rectangleSVG,
 } from './img';
 import {
     AddIcon,
@@ -57,6 +58,7 @@ export {
     crossPNG,
     debaseLogoSVG,
     homeBackgroundSVG,
+    rectangleSVG,
 
     // ICONS - material
     AddIcon,
