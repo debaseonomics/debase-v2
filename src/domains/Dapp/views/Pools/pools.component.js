@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import { Section, DisconnectedWalletCard, Grid, PoolCard } from '@dapp/components';
@@ -9,10 +9,13 @@ import useSWR from 'swr';
 import fetcher from '@utils/fetcher';
 import { List } from '@core/components/index';
 import { AccountIcon, CodeIcon } from '@assets/index';
+import { PoolAprContext } from '@dapp/contexts';
 
 const Pools = () => {
 	const { path } = useRouteMatch();
 	const { active, library } = useWeb3React();
+
+	const { apr } = useContext(PoolAprContext);
 
 	const { data: debaseDaiPoolEnabled, mutate: getDebaseDaiPoolEnabled } = useSWR(
 		[ CONTRACT_ADDRESS.debaseDaiV3Pool, 'poolEnabled' ],
@@ -103,7 +106,7 @@ const Pools = () => {
 
 		{
 			label: 'APR',
-			value: '200%',
+			value: apr.degovEthPool + ' %',
 			tooltip: "Pool's annual percentage rate"
 		}
 	];
