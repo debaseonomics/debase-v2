@@ -1,49 +1,14 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Switch, Route, useRouteMatch } from 'react-router-dom';
-import { useWeb3React } from '@web3-react/core';
-import { Section, DisconnectedWalletCard, Grid, PoolCard } from '@dapp/components';
+import { Section, Grid, PoolCard } from '@dapp/components';
 import POOLS_ROUTES from './pools.routes';
-import CONTRACT_ADDRESS from '@constants/contract-address.constant';
-import ABI_POOL from '@constants/abi-pool.constant';
-import useSWR from 'swr';
-import fetcher from '@utils/fetcher';
 import { List } from '@core/components/index';
 import { AccountIcon, CodeIcon } from '@assets/index';
 import { PoolAprContext } from '@dapp/contexts';
 
 const Pools = () => {
 	const { path } = useRouteMatch();
-	const { active, library } = useWeb3React();
-
 	const { pools } = useContext(PoolAprContext);
-
-	const { data: debaseDaiPoolEnabled, mutate: getDebaseDaiPoolEnabled } = useSWR(
-		[ CONTRACT_ADDRESS.debaseDaiV3Pool, 'poolEnabled' ],
-		{
-			fetcher: fetcher(library, ABI_POOL)
-		}
-	);
-
-	const { data: debaseEthPoolEnabled, mutate: getDebaseEthPoolEnabled } = useSWR(
-		[ CONTRACT_ADDRESS.debaseEthPool, 'poolEnabled' ],
-		{
-			fetcher: fetcher(library, ABI_POOL)
-		}
-	);
-
-	useEffect(
-		() => {
-			library &&
-				library.on('block', () => {
-					getDebaseDaiPoolEnabled(undefined, true);
-					getDebaseEthPoolEnabled(undefined, true);
-				});
-			return () => {
-				library && library.removeAllListeners('block');
-			};
-		},
-		[ library, getDebaseDaiPoolEnabled, getDebaseEthPoolEnabled ]
-	);
 
 	// List data arrays
 	const debaseDaiLPListData = [
@@ -60,7 +25,7 @@ const Pools = () => {
 
 		{
 			label: 'APR',
-			value: '200%',
+			value: pools.debaseDaiPool ? pools.debaseDaiPool.apr + ' %' : '...',
 			tooltip: "Pool's annual percentage rate"
 		}
 	];
@@ -79,7 +44,7 @@ const Pools = () => {
 
 		{
 			label: 'APR',
-			value: '200%',
+			value: pools.debaseEthPool ? pools.debaseEthPool.apr + ' %' : '...',
 			tooltip: "Pool's annual percentage rate"
 		}
 	];
@@ -104,7 +69,6 @@ const Pools = () => {
 	];
 
 	const renderPools = () => {
-		if (!active) return <DisconnectedWalletCard />;
 		return (
 			<Grid>
 				<PoolCard
@@ -123,7 +87,7 @@ const Pools = () => {
 								'https://app.uniswap.org/#/add/0x6b175474e89094c44da98b954eedeac495271d0f/0x9248c485b0b80f76da451f167a8db30f33c70907'
 						}
 					]}
-					isActive={debaseDaiPoolEnabled ? debaseDaiPoolEnabled : false}
+					isActive={pools.debaseDaiPool ? pools.debaseDaiPool.enabled : false}
 				>
 					<List data={debaseDaiLPListData} />
 				</PoolCard>
@@ -142,7 +106,7 @@ const Pools = () => {
 							url: 'https://app.uniswap.org/#/add/0x9248c485b0b80f76da451f167a8db30f33c70907/ETH'
 						}
 					]}
-					isActive={debaseEthPoolEnabled ? debaseEthPoolEnabled : false}
+					isActive={pools.debaseEthPool ? pools.debaseEthPool.enabled : false}
 				>
 					<List data={debaseEthLPListData} />
 				</PoolCard>

@@ -14,5 +14,7 @@ export {
 	getDegovCircSupply,
 	getRebaseHistory,
 	getDegovEthPool,
+	getDebaseDaiPool,
+	getDebaseEthPool,
 	getDebaseYearHistory
 };

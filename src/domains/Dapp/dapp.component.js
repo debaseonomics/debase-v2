@@ -13,7 +13,9 @@ import {
 	getRebaseHistory,
 	getDebaseYearHistory,
 	getTreasuryBalance,
-	getDegovEthPool
+	getDegovEthPool,
+	getDebaseDaiPool,
+	getDebaseEthPool
 } from '@api';
 import { parseFloatFixed, parseNumToUsFormat } from '@utils';
 import { Background, Sidebar, Navigation, Topbar } from '@dapp/components';
@@ -301,9 +303,6 @@ class Dapp extends React.Component {
 						? parseNumToUsFormat(treasuryBalance.totalDepositByPool[0].totalActiveDeposit * 0.21)
 						: 'err';
 
-				// treasuryData.mph88Balance = 'err';
-				// treasuryData.daiBalance = 'err';
-
 				ui.isLoading.treasuryData = false;
 
 				return { ui, treasuryData };
@@ -316,6 +315,8 @@ class Dapp extends React.Component {
 
 	initPoolData = async (callback) => {
 		const degovEth = await getDegovEthPool();
+		const debaseDai = await getDebaseDaiPool();
+		const debaseEth = await getDebaseEthPool();
 
 		console.log(degovEth);
 		this.setState(
@@ -324,6 +325,8 @@ class Dapp extends React.Component {
 				const { pools } = prevState;
 
 				pools.degovEthPool = degovEth;
+				pools.debaseDaiPool = debaseDai;
+				pools.debaseEthPool = debaseEth;
 				return { pools };
 			},
 			() => {
