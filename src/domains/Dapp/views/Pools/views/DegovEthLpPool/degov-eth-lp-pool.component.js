@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core';
 
 import { CONTRACT_ADDRESS } from '@constants';
 import { Section, Grid, PoolStake, DisconnectedWalletCard } from '@dapp/components';
-import { ABI_INCENTIVIZER } from '@constants/index';
+import { ABI_POOL } from '@constants/index';
 
 const DebaseEthLpPool = () => {
 	const { active } = useWeb3React();
@@ -19,7 +19,7 @@ const DebaseEthLpPool = () => {
 							poolAddress={CONTRACT_ADDRESS.degovEthPool}
 							lpAddress={CONTRACT_ADDRESS.degovEthLp}
 							stakeText="DEGOV/ETH LP"
-							poolABI={ABI_INCENTIVIZER}
+							poolABI={ABI_POOL}
 						/>
 					</Grid>
 				)}
