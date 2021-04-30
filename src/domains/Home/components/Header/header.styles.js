@@ -11,7 +11,7 @@ export const StyledDebaseLogo = styled.img`
     @media only screen and (max-width: 1440px) {
         width: 212px;
     }
-    @media only screen and (max-width: 1336px) {
+    @media only screen and (max-width: 1366px) {
         width: 215px;
     }
     @media only screen and (max-width: 1280px) {

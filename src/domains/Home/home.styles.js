@@ -17,7 +17,7 @@ export const StyledRectangle = styled.img`
         width: 498px;
         height: 448px;
     }
-    @media only screen and (max-width: 1336px) {
+    @media only screen and (max-width: 1366px) {
         width: 448px;
         height: 398px;
     }
@@ -41,9 +41,9 @@ export const StyledContent = styled.div`
         margin-left: 135px;
         margin-right: 149px;
     }
-    @media only screen and (max-width: 1336px) {
+    @media only screen and (max-width: 1366px) {
         margin-left: 135px;
-        margin-right: 145px;
+        margin-right: 175px;
     }
     @media only screen and (max-width: 1280px) {
         margin-left: 135px;
@@ -70,7 +70,7 @@ export const StyledText = styled.p`
         margin-top: 208px;
         letter-spacing: -3px;
     }
-    @media only screen and (max-width: 1336px) {
+    @media only screen and (max-width: 1366px) {
         margin-left: 6px;
         font-size: 48px;
         margin-top: 210px;
@@ -109,7 +109,7 @@ export const StyledReadMore = styled.a`
         margin-top: 541px;
         margin-left: 23px;
     }
-    @media only screen and (max-width: 1336px) {
+    @media only screen and (max-width: 1366px) {
         font-size: 20px;
         margin-top: 491px;
         margin-left: 22px;
