@@ -23,7 +23,8 @@ import {
 	QuestionAnswerIcon,
 	InsightsIcon,
 	RemoveIcon,
-	ChevronRightIcon
+	ChevronRightIcon,
+	AccountIcon
 } from './material-outline.icons';
 import { GithubIcon, MediumIcon, TelegramIcon, TwitterIcon, DiscordIcon } from './fontawesome.icons';
 export {
@@ -53,6 +54,7 @@ export {
 	InsightsIcon,
 	RemoveIcon,
 	ChevronRightIcon,
+	AccountIcon,
 	// fontawesome
 	GithubIcon,
 	MediumIcon,

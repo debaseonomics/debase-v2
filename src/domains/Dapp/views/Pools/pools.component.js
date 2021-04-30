@@ -8,7 +8,7 @@ import ABI_POOL from '@constants/abi-pool.constant';
 import useSWR from 'swr';
 import fetcher from '@utils/fetcher';
 import { List } from '@core/components/index';
-import { CodeIcon } from '@assets/index';
+import { AccountIcon, CodeIcon } from '@assets/index';
 
 const Pools = () => {
 	const { path } = useRouteMatch();
@@ -115,7 +115,19 @@ const Pools = () => {
 				<PoolCard
 					label="DEBASE/DAI LP Pool"
 					routePath="/pools/debase-dai-lp-pool"
-					linkData={[ { icon: <CodeIcon />, info: '', url: '' } ]}
+					linkData={[
+						{
+							icon: <CodeIcon />,
+							info: 'Contract Link',
+							url: 'https://etherscan.io/address/0x29e92C31C980098d5724fe82EbC5A824e32d9C9B'
+						},
+						{
+							icon: <AccountIcon />,
+							info: 'Buy Pool LP',
+							url:
+								'https://app.uniswap.org/#/add/0x6b175474e89094c44da98b954eedeac495271d0f/0x9248c485b0b80f76da451f167a8db30f33c70907'
+						}
+					]}
 					isActive={debaseDaiPoolEnabled ? debaseDaiPoolEnabled : false}
 				>
 					<List data={debaseDaiLPListData} />
@@ -123,7 +135,18 @@ const Pools = () => {
 				<PoolCard
 					label="DEBASE/ETH LP Pool"
 					routePath="/pools/debase-eth-lp-pool"
-					linkData={[ { icon: <CodeIcon />, info: '', url: '' } ]}
+					linkData={[
+						{
+							icon: <CodeIcon />,
+							info: 'Contract Link',
+							url: 'https://etherscan.io/address/0x05E8a57ED5e5347a1eAAEFcE223660EF6eBEe336'
+						},
+						{
+							icon: <AccountIcon />,
+							info: 'Buy Pool LP',
+							url: 'https://app.uniswap.org/#/add/0x9248c485b0b80f76da451f167a8db30f33c70907/ETH'
+						}
+					]}
 					isActive={debaseEthPoolEnabled ? debaseEthPoolEnabled : false}
 				>
 					<List data={debaseEthLPListData} />
@@ -131,7 +154,18 @@ const Pools = () => {
 				<PoolCard
 					label="DEGOV/ETH LP Pool"
 					routePath="/pools/degov-eth-lp-pool"
-					linkData={[ { icon: <CodeIcon />, info: '', url: '' } ]}
+					linkData={[
+						{
+							icon: <CodeIcon />,
+							info: 'Contract Link',
+							url: 'https://etherscan.io/address/0x4789519821ae0f49d95203b1a2ed805141bf0dae'
+						},
+						{
+							icon: <AccountIcon />,
+							info: 'Buy Pool LP',
+							url: 'https://app.uniswap.org/#/add/0x469e66e06fec34839e5eb1273ba85a119b8d702f/ETH'
+						}
+					]}
 					isActive={degovEthPoolEnabled ? degovEthPoolEnabled : false}
 				>
 					<List data={degovEthLPListData} />
