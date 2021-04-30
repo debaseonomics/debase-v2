@@ -7,6 +7,8 @@ import CONTRACT_ADDRESS from '@constants/contract-address.constant';
 import ABI_POOL from '@constants/abi-pool.constant';
 import useSWR from 'swr';
 import fetcher from '@utils/fetcher';
+import { List } from '@core/components/index';
+import { CodeIcon } from '@assets/index';
 
 const Pools = () => {
 	const { path } = useRouteMatch();
@@ -48,6 +50,64 @@ const Pools = () => {
 		[ library, getDebaseDaiPoolEnabled, getDegovEthPoolEnabled, getDebaseEthPoolEnabled ]
 	);
 
+	// List data arrays
+	const debaseDaiLPListData = [
+		{
+			label: 'Staked Token',
+			value: 'Debase/Dai LP',
+			tooltip: 'Stake token pool accepts'
+		},
+		{
+			label: 'Reward Token',
+			value: 'Debase',
+			tooltip: 'Reward token pool gives'
+		},
+
+		{
+			label: 'APR',
+			value: '200%',
+			tooltip: "Pool's annual percentage rate"
+		}
+	];
+
+	const debaseEthLPListData = [
+		{
+			label: 'Staked Token',
+			value: 'Debase/Eth LP',
+			tooltip: 'Stake token pool accepts'
+		},
+		{
+			label: 'Reward Tokens',
+			value: 'Debase/88Mph/Crv',
+			tooltip: 'Reward tokens pool gives'
+		},
+
+		{
+			label: 'APR',
+			value: '200%',
+			tooltip: "Pool's annual percentage rate"
+		}
+	];
+
+	const degovEthLPListData = [
+		{
+			label: 'Staked Token',
+			value: 'Degov/Eth LP',
+			tooltip: 'Stake token pool accepts'
+		},
+		{
+			label: 'Reward Token',
+			value: 'Debase',
+			tooltip: 'Reward token pool gives'
+		},
+
+		{
+			label: 'APR',
+			value: '200%',
+			tooltip: "Pool's annual percentage rate"
+		}
+	];
+
 	const renderPools = () => {
 		if (!active) return <DisconnectedWalletCard />;
 		return (
@@ -55,49 +115,26 @@ const Pools = () => {
 				<PoolCard
 					label="DEBASE/DAI LP Pool"
 					routePath="/pools/debase-dai-lp-pool"
+					linkData={[ { icon: <CodeIcon />, info: '', url: '' } ]}
 					isActive={debaseDaiPoolEnabled ? debaseDaiPoolEnabled : false}
 				>
-					Pool accepts UWU/BUSD lP deposits and in return allows you to mine UwU.
-					<br />
-					<br />
-					This pool will give out a total of 700000 UwU over its life time. With initially giving out 350000
-					UwU over a period of 3.5 days. After which the given will half to 175000 UwU given again over a
-					period of another 3.5 days.
-					<br />
-					<br />
-					This reward halving process will until the 700000 UwU are distributed.
+					<List data={debaseDaiLPListData} />
 				</PoolCard>
 				<PoolCard
 					label="DEBASE/ETH LP Pool"
 					routePath="/pools/debase-eth-lp-pool"
+					linkData={[ { icon: <CodeIcon />, info: '', url: '' } ]}
 					isActive={debaseEthPoolEnabled ? debaseEthPoolEnabled : false}
 				>
-					Pool that bridges DEBASE deposits you have made on the DEBASE bridge on Ethereum. To allow you to
-					mine UwU in return.
-					<br />
-					<br />
-					This pool will give out a total of 10000 UwU over its life time. With initially giving out 5000 UwU
-					over a period of 3.5 days. After which the given will half to 2500 UwU given again over a period of
-					another 3.5 days.
-					<br />
-					<br />
-					This reward halving process will until the 10000 UwU are distributed.
+					<List data={debaseEthLPListData} />
 				</PoolCard>
 				<PoolCard
 					label="DEGOV/ETH LP Pool"
 					routePath="/pools/degov-eth-lp-pool"
+					linkData={[ { icon: <CodeIcon />, info: '', url: '' } ]}
 					isActive={degovEthPoolEnabled ? degovEthPoolEnabled : false}
 				>
-					Pool that bridges DEBASE/DAI LP deposits you have made on the DEBASE/DAI LP bridge on Ethereum. To
-					allow you to mine UwU in return.
-					<br />
-					<br />
-					This pool will give out a total of 15000 UwU over its life time. With initially giving out 7500 UwU
-					over a period of 3.5 days. After which the given will half to 3750 UwU given again over a period of
-					another 3.5 days.
-					<br />
-					<br />
-					This reward halving process will until the 15000 UwU are distributed.
+					<List data={degovEthLPListData} />
 				</PoolCard>
 			</Grid>
 		);

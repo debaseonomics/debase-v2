@@ -6,7 +6,7 @@ export const StyledSidebar = styled.div`
 	flex-direction: column;
 	gap: 20px;
 	width: 240px;
-	margin: 30px;
+	margin: 5px 30px;
 	overflow-y: scroll;
 	--ms-overflow-style: none;
 	scrollbar-width: none;
