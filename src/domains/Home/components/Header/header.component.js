@@ -17,11 +17,11 @@ const appStyle = {
   fontSize: '24px',
     color: '#F26373',
     marginLeft: '64px',
-    marginBottom: '8px',
+    marginBottom: '4px',
     borderStyle: 'solid',
     borderWidth: '1px',
     borderColor: '#F26373',
-    height: '48px',
+    height: '42px',
     width: '148px',
     display: 'flex',
     alignItems: 'center',
@@ -41,7 +41,7 @@ class Header extends React.Component {
                     </StyledText>
                 </StyledTextContainer>
                 <StyledDocumentationLink>
-                    Documentation<span style={{ color: '#F26373', display: 'block', textAlign: 'center' }}>Coming soon</span>
+                    Documentation
                 </StyledDocumentationLink>
                 <StyledAuditsLink
                     href="https://github.com/debaseonomics/audits"

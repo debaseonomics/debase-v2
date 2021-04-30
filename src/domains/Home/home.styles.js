@@ -3,9 +3,10 @@ import { homeBackgroundSVG, brandonGrotesqueLight } from '@assets';
 
 export const StyledContainer = styled.div`
     background-image: url(${homeBackgroundSVG});
-    min-width: 100%;
-    min-height: 100%;
-    overflow-y: auto;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-size: 100% 100%;
 `;
 export const StyledContent = styled.div`
     max-width: 1470px;
@@ -18,10 +19,10 @@ export const StyledText = styled.p`
     font-size: 72px;
     width: 939px;
     height: 266px;
-    line-height: 96px;
+    line-height: 85px;
     letter-spacing: -4.3px;
     margin-left: 18px;
-    margin-top: 306px;
+    margin-top: 298px;
 `;
 
 export const StyledReadMore = styled.a`
@@ -30,7 +31,6 @@ export const StyledReadMore = styled.a`
     width: 152px;
     height: 18px;
     margin-left: 25px;
-    margin-top: 43px;
     text-align: left;
     color: #F26373;
     display: inline-block;

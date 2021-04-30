@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 export const StyledContainer = styled.div`
-    margin-top: 13px;
+    margin-top: 3px;
     display: flex;
     align-items: center;
 `;
@@ -26,6 +26,7 @@ export const StyledDocumentationLink = styled.a`
     margin-bottom: 8px;
     width: 161px;
     text-align: left;
+    color: gray;
 `;
 export const StyledAuditsLink = styled.a`
     font-family: 'Segoe UI';
