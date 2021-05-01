@@ -6,12 +6,12 @@ import { StatusIndicator } from '@dapp/components';
 
 import { StyledPoolCard, StyledPoolCardInner, StyledHeader, StyledInfoIcon } from './poolcard.styles';
 
-const PoolCard = ({ children, label = 'pool', info, linkData, routePath = '/', isActive = false }) => {
+const PoolCard = ({ children, type, label = 'pool', info, linkData, routePath = '/', isActive = false }) => {
 	return (
 		<StyledPoolCard>
 			<StyledPoolCardInner>
 				<StyledHeader>
-					<Tooltip message={isActive ? 'Active pool' : 'Inactive pool'} followCursor={true}>
+					<Tooltip message={isActive ? 'Staking enabled' : 'Staking disabled'} followCursor={true}>
 						<StatusIndicator status={isActive ? 'active' : 'inactive'} />
 					</Tooltip>
 					<DisplaySmall color="primary">{label}</DisplaySmall>
@@ -29,7 +29,7 @@ const PoolCard = ({ children, label = 'pool', info, linkData, routePath = '/', i
 					{children}
 				</Card>
 				<Button as={Link} to={routePath}>
-					Stake/Claim
+					{type !== 'inactive' ? 'Stake/Claim' : 'Withdraw/Claim'}
 				</Button>
 			</StyledPoolCardInner>
 

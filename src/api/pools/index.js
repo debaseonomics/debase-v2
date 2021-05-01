@@ -1,4 +1,3 @@
-import getDebaseDaiPool from './getDebaseDaiPool';
-import getDebaseEthPool from './getDebaseEthPool';
-import getDegovEthPool from './getDegovEthPool';
-export { getDebaseDaiPool, getDebaseEthPool, getDegovEthPool };
+import { getDebaseEthPool, getDegovEthPool } from './active';
+import { getDebaseDaiPool, getRandomizedCounterPool } from './inactive';
+export { getDebaseEthPool, getDegovEthPool, getDebaseDaiPool, getRandomizedCounterPool };

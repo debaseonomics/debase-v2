@@ -207,7 +207,7 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 				</StyledCardInner>
 			</InfoCard>
 
-			{poolEnabled && (
+			{poolEnabled !== undefined && (
 				<InfoCard gutter={20}>
 					{isStakingActive && (
 						<Flexbox direction="horizontal" gap="10px">
@@ -217,9 +217,12 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 							</Button>
 						</Flexbox>
 					)}
-					<Button isLoading={isStakeLoading} onClick={handleStake}>
-						stake
-					</Button>
+					{poolEnabled && (
+						<Button isLoading={isStakeLoading} onClick={handleStake}>
+							stake
+						</Button>
+					)}
+
 					{isUnstakingActive && (
 						<Flexbox direction="horizontal" gap="10px">
 							<Input

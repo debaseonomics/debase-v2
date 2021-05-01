@@ -15,7 +15,8 @@ import {
 	getTreasuryBalance,
 	getDegovEthPool,
 	getDebaseDaiPool,
-	getDebaseEthPool
+	getDebaseEthPool,
+	getRandomizedCounterPool
 } from '@api';
 import { parseFloatFixed, parseNumToUsFormat } from '@utils';
 import { Background, Sidebar, Navigation, Topbar } from '@dapp/components';
@@ -74,6 +75,7 @@ class Dapp extends React.Component {
 			isUserRejectedRequestError: false
 		},
 		pools: {
+			randomizedCounterPool: null,
 			debaseDaiPool: null,
 			debaseEthPool: null,
 			degovEthPool: null
@@ -317,8 +319,8 @@ class Dapp extends React.Component {
 		const degovEth = await getDegovEthPool();
 		const debaseDai = await getDebaseDaiPool();
 		const debaseEth = await getDebaseEthPool();
+		const randomizedCounterPool = await getRandomizedCounterPool();
 
-		console.log(degovEth);
 		this.setState(
 			() => {
 				const prevState = _.cloneDeep(this.state);
@@ -327,6 +329,7 @@ class Dapp extends React.Component {
 				pools.degovEthPool = degovEth;
 				pools.debaseDaiPool = debaseDai;
 				pools.debaseEthPool = debaseEth;
+				pools.randomizedCounterPool = randomizedCounterPool;
 				return { pools };
 			},
 			() => {
