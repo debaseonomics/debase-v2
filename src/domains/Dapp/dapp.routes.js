@@ -1,5 +1,5 @@
 import { DashboardIcon, TuneIcon, AccountTreeIcon, InsightsIcon, QuestionAnswerIcon } from '@assets';
-import { Dashboard, Pools, Rebase, Roadmap, Faq, Dev } from '@dapp/views';
+import { Dashboard, Pools, Rebase, Roadmap, Faq } from '@dapp/views';
 
 const DAPP_ROUTES = [
 	{
@@ -32,12 +32,6 @@ const DAPP_ROUTES = [
 		icon: <QuestionAnswerIcon />,
 		component: <Faq />
 	}
-	// {
-	//     label: 'hidden-dev',
-	//     path: '/hidden-dev',
-	//     icon: <TuneIcon />,
-	//     component: <Dev />
-	// }
 ];
 
 export default DAPP_ROUTES;
