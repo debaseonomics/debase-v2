@@ -1,14 +1,13 @@
 import { useEffect, useState, useContext } from 'react';
 import useSWR from 'swr';
 import { useWeb3React } from '@web3-react/core';
-import { formatEther, parseUnits } from 'ethers/lib/utils';
+import { formatEther } from 'ethers/lib/utils';
 import { Contract } from 'ethers/lib/ethers';
 import { ABI_POOL, ABI_LP } from '@constants';
 import { fetcher } from '@utils';
-import { Card, List, Button, Input, Flexbox, Spinner } from '@core/components';
+import { List, Button, Input, Flexbox, Spinner } from '@core/components';
 import { StyledPoolStake, StyledCardInner } from './poolstake.styles';
 import { parseEther } from 'ethers/lib/utils';
-import { CONTRACT_ADDRESS } from '@constants';
 import { SnackbarManagerContext } from '@dapp/managers';
 import InfoCard from '../InfoCard/infocard.component';
 
@@ -51,9 +50,6 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 	const { data: totalStakedBalance, mutate: getTotalStakedBalance } = useSWR([ poolAddress, 'totalSupply' ], {
 		fetcher: fetcher(library, poolABI)
 	});
-	const { data: balance } = useSWR([ CONTRACT_ADDRESS.debase, 'balanceOf', poolAddress ], {
-		fetcher: fetcher(library, poolABI)
-	});
 
 	useEffect(
 		() => {
@@ -75,24 +71,29 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 	const poolListData = [
 		{
 			label: 'User Lp Limit',
-			value: userLpLimit ? formatEther(userLpLimit) + ' LP' : <Spinner size="xsmall" />,
+			value:
+				userLpLimit && walletBalance ? (
+					parseFloat(formatEther(walletBalance)).toFixed(2) +
+					' / ' +
+					parseFloat(formatEther(userLpLimit)).toFixed(2) +
+					' LP'
+				) : (
+					<Spinner size="xsmall" />
+				),
 			tooltip: 'LP limit per wallet'
 		},
 		{
 			label: 'Total Pool Limit',
 			value:
 				poolLpLimit && totalStakedBalance ? (
-					parseFloat(formatEther(totalStakedBalance)).toFixed(2) + ' / ' + formatEther(poolLpLimit) + ' LP'
+					parseFloat(formatEther(totalStakedBalance)).toFixed(2) +
+					' / ' +
+					parseFloat(formatEther(poolLpLimit)).toFixed(2) +
+					' LP'
 				) : (
 					<Spinner size="xsmall" />
 				),
 			tooltip: 'Total LP limit per pool'
-		},
-
-		{
-			label: 'DEBASE Reward',
-			value: balance ? parseFloat(formatEther(balance)) : <Spinner size="xsmall" />,
-			tooltip: 'Current pool rewards available'
 		}
 	];
 
@@ -115,6 +116,14 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 			label: 'Earned (Debase)',
 			value: earned ? parseFloat(formatEther(earned)).toFixed(4) * 1 : <Spinner size="xsmall" />,
 			tooltip: 'Amount of Debase reward you have earned.'
+		}
+	];
+
+	const aprListData = [
+		{
+			label: 'APR',
+			value: '100%',
+			tooltip: "Pool's annual percentage rate"
 		}
 	];
 
@@ -204,6 +213,7 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 				<StyledCardInner>
 					<List data={poolListData} />
 					<List color="primary" data={userListData} />
+					<List color="secundary" data={aprListData} />
 				</StyledCardInner>
 			</InfoCard>
 

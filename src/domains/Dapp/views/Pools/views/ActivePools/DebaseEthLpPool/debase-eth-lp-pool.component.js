@@ -11,14 +11,14 @@ const DebaseEthLpPool = () => {
 
 	return (
 		<Fragment>
-			<Section label="Degov Eth Lp Pool" info="**update**">
+			<Section label="Debase Eth Lp Pool" info="**update**">
 				{!active ? (
 					<DisconnectedWalletCard />
 				) : (
 					<Grid>
 						<PoolStakeTriple
 							poolAddress={CONTRACT_ADDRESS.debaseEthPool}
-							lpAddress={CONTRACT_ADDRESS.debaseEthLp}
+							lpAddress={CONTRACT_ADDRESS.pairTest}
 							stakeText="DEBASE/ETH LP"
 							poolABI={ABI_POOL_TRIPLE}
 						/>

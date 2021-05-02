@@ -1,11 +1,11 @@
 import { useEffect, useState, useContext } from 'react';
 import useSWR from 'swr';
 import { useWeb3React } from '@web3-react/core';
-import { formatEther, parseUnits } from 'ethers/lib/utils';
+import { formatEther } from 'ethers/lib/utils';
 import { Contract } from 'ethers/lib/ethers';
 import { ABI_POOL, ABI_LP } from '@constants';
 import { fetcher } from '@utils';
-import { Card, List, Button, Input, Flexbox, Spinner } from '@core/components';
+import { List, Button, Input, Flexbox, Spinner } from '@core/components';
 import { StyledPoolStake, StyledCardInner } from './poolstake.styles';
 import { parseEther } from 'ethers/lib/utils';
 import { CONTRACT_ADDRESS } from '@constants';
@@ -38,15 +38,7 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 		fetcher: fetcher(library, poolABI)
 	});
 
-	const { data: balance } = useSWR([ CONTRACT_ADDRESS.debase, 'balanceOf', poolAddress ], {
-		fetcher: fetcher(library, poolABI)
-	});
-
-	const { data: mphReward, mutate: getMphReward } = useSWR([ poolAddress, 'mph88Reward' ], {
-		fetcher: fetcher(library, poolABI)
-	});
-
-	const { data: crvReward, mutate: getCrvReward } = useSWR([ poolAddress, 'crvReward' ], {
+	const { data: debaseSupply, mutate: getDebaseSupply } = useSWR([ CONTRACT_ADDRESS.debaseTest, 'totalSupply' ], {
 		fetcher: fetcher(library, poolABI)
 	});
 
@@ -61,35 +53,14 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 				getUserStakedBalance(undefined, true);
 				getWalletBalance(undefined, true);
 				getPoolEnabled(undefined, true);
-				getMphReward(undefined, true);
-				getCrvReward(undefined, true);
+				getDebaseSupply(undefined, true);
 			});
 			return () => {
 				library && library.removeAllListeners('block');
 			};
 		},
-		[ library, getEarned, getPoolEnabled, getUserStakedBalance, getWalletBalance, getMphReward, getCrvReward ]
+		[ library, getEarned, getPoolEnabled, getDebaseSupply, getUserStakedBalance, getWalletBalance ]
 	);
-
-	// List data arrays
-	const poolListData = [
-		{
-			label: 'DEBASE Reward',
-			value: balance ? parseFloat(formatEther(balance)) : <Spinner size="xsmall" />,
-			tooltip: 'Current pool rewards available'
-		},
-		{
-			label: 'MPH88 Reward',
-			value: mphReward ? parseFloat(formatEther(mphReward)) : <Spinner size="xsmall" />,
-			tooltip: 'Current pool rewards available'
-		},
-
-		{
-			label: 'CRV Reward',
-			value: crvReward ? parseFloat(formatEther(crvReward)) : <Spinner size="xsmall" />,
-			tooltip: 'Current pool rewards available'
-		}
-	];
 
 	const userListData = [
 		{
@@ -105,21 +76,37 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 				<Spinner size="xsmall" />
 			),
 			tooltip: 'Your current staked balance in the pool.'
-		},
+		}
+	];
+
+	const earnedListData = [
 		{
-			label: 'Earned (Debase)',
-			value: earned !== undefined ? parseFloat(formatEther(earned[0])) : <Spinner size="xsmall" />,
+			label: 'Claimable (Debase)',
+			value:
+				earned && debaseSupply ? (
+					parseFloat(formatEther(earned[0].mul(debaseSupply).div(parseEther('1'))))
+				) : (
+					<Spinner size="xsmall" />
+				),
 			tooltip: 'Amount of Debase reward you have earned.'
 		},
 		{
-			label: 'Earned (MPH88)',
-			value: earned !== undefined ? parseFloat(formatEther(earned[1])) : <Spinner size="xsmall" />,
+			label: 'Claimable (MPH88)',
+			value: earned ? parseFloat(formatEther(earned[1])) : <Spinner size="xsmall" />,
 			tooltip: 'Amount of Debase reward you have earned.'
 		},
 		{
-			label: 'Earned (CRV)',
-			value: earned !== undefined ? parseFloat(formatEther(earned[2])) : <Spinner size="xsmall" />,
+			label: 'Claimable (CRV)',
+			value: earned ? parseFloat(formatEther(earned[2])) : <Spinner size="xsmall" />,
 			tooltip: 'Amount of Debase reward you have earned.'
+		}
+	];
+
+	const aprListData = [
+		{
+			label: 'APR',
+			value: '100%',
+			tooltip: "Pool's annual percentage rate"
 		}
 	];
 
@@ -207,12 +194,13 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 		<StyledPoolStake>
 			<InfoCard>
 				<StyledCardInner>
-					<List data={poolListData} />
-					<List color="primary" data={userListData} />
+					<List data={userListData} />
+					<List color="primary" data={earnedListData} />
+					<List color="secundary" data={aprListData} />
 				</StyledCardInner>
 			</InfoCard>
 
-			{poolEnabled && (
+			{poolEnabled !== undefined && (
 				<InfoCard gutter={20}>
 					{isStakingActive && (
 						<Flexbox direction="horizontal" gap="10px">
@@ -222,9 +210,12 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 							</Button>
 						</Flexbox>
 					)}
-					<Button isLoading={isStakeLoading} onClick={handleStake}>
-						stake
-					</Button>
+					{poolEnabled && (
+						<Button isLoading={isStakeLoading} onClick={handleStake}>
+							stake
+						</Button>
+					)}
+
 					{isUnstakingActive && (
 						<Flexbox direction="horizontal" gap="10px">
 							<Input

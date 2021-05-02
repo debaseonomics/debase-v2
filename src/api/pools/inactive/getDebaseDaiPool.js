@@ -11,8 +11,6 @@ export default async () => {
 		const poolContract = await new ethers.Contract(CONTRACT_ADDRESS.debaseDaiV3Pool, ABI_POOL, provider);
 		const enabled = await poolContract.poolEnabled();
 
-		console.log(enabled);
-
 		return {
 			enabled: enabled
 		};

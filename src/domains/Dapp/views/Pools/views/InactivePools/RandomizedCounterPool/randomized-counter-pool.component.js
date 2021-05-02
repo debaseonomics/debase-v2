@@ -16,8 +16,8 @@ const DebaseEthLpPool = () => {
 				) : (
 					<Grid>
 						<PoolStake
-							poolAddress={CONTRACT_ADDRESS.degovEthPool}
-							lpAddress={CONTRACT_ADDRESS.degovEthLp}
+							poolAddress={CONTRACT_ADDRESS.randomizedCounter}
+							lpAddress={CONTRACT_ADDRESS.debaseDaiLp}
 							stakeText="DEGOV/ETH LP"
 							poolABI={ABI_POOL}
 						/>
