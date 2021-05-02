@@ -17,7 +17,7 @@ const DebaseDaiLpPool = () => {
 						<PoolStake
 							poolAddress={CONTRACT_ADDRESS.debaseDaiV3Pool}
 							lpAddress={CONTRACT_ADDRESS.debaseDaiLp}
-							stakeText="DEBASE/DAI LP"
+							stakeText="DEBASE-DAI LP"
 							poolABI={ABI_POOL}
 							apr="0 %"
 						/>

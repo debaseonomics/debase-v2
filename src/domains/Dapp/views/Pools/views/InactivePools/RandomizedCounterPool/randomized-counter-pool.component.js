@@ -18,7 +18,7 @@ const DebaseEthLpPool = () => {
 						<PoolStake
 							poolAddress={CONTRACT_ADDRESS.randomizedCounter}
 							lpAddress={CONTRACT_ADDRESS.debaseDaiLp}
-							stakeText="DEGOV/ETH LP"
+							stakeText="DEGOV-ETH LP"
 							poolABI={ABI_POOL}
 							apr="0 %"
 						/>

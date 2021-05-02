@@ -19,7 +19,7 @@ const DebaseEthLpPool = () => {
 						<PoolStake
 							poolAddress={CONTRACT_ADDRESS.degovEthPool}
 							lpAddress={CONTRACT_ADDRESS.degovEthLp}
-							stakeText="DEGOV/ETH LP"
+							stakeText="DEGOV-ETH LP"
 							poolABI={ABI_POOL}
 							apr={pools.degovEthPool ? pools.degovEthPool.apr + ' %' : '0 %'}
 						/>

@@ -2,17 +2,17 @@ import { DegovEthLpPool, DebaseDaiLpPool, DebaseEthLpPool, RandomizedCounterPool
 
 const POOLS_ROUTES = [
 	{
-		label: 'Degov/Eth LP Pool',
+		label: 'Degov-Eth LP Pool',
 		path: '/pools/active/degov-eth-lp-pool',
 		component: <DegovEthLpPool />
 	},
 	{
-		label: 'Debase/Eth LP Pool',
+		label: 'Debase-Eth LP Pool',
 		path: '/pools/active/debase-eth-lp-pool',
 		component: <DebaseEthLpPool />
 	},
 	{
-		label: 'Debase/Dai LP Pool',
+		label: 'Debase-Dai LP Pool',
 		path: '/pools/inactive/debase-dai-lp-pool',
 		component: <DebaseDaiLpPool />
 	},

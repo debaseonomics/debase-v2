@@ -13,7 +13,7 @@ const Pools = () => {
 	const degovEthLPListData = [
 		{
 			label: 'Staked Token',
-			value: 'Degov/Eth LP',
+			value: 'Degov-Eth LP',
 			tooltip: 'Stake token pool accepts'
 		},
 		{
@@ -32,12 +32,12 @@ const Pools = () => {
 	const debaseEthLPListData = [
 		{
 			label: 'Staked Token',
-			value: 'Debase/Eth LP',
+			value: 'Debase-Eth LP',
 			tooltip: 'Stake token pool accepts'
 		},
 		{
 			label: 'Reward Tokens',
-			value: 'Debase/88Mph/Crv',
+			value: 'Debase-88Mph/Crv',
 			tooltip: 'Reward tokens pool gives'
 		},
 
@@ -51,7 +51,7 @@ const Pools = () => {
 	const debaseDaiLPListData = [
 		{
 			label: 'Staked Token',
-			value: 'Debase/Dai LP',
+			value: 'Debase-Dai LP',
 			tooltip: 'Stake token pool accepts'
 		},
 
@@ -65,7 +65,7 @@ const Pools = () => {
 	const randomizedCounterListData = [
 		{
 			label: 'Staked Token',
-			value: 'Debase/Dai LP',
+			value: 'Debase-Dai LP',
 			tooltip: 'Stake token pool accepts'
 		},
 
@@ -80,7 +80,7 @@ const Pools = () => {
 		return (
 			<Grid>
 				<PoolCard
-					label="DEBASE/ETH LP Pool"
+					label="DEBASE-ETH LP Pool"
 					routePath="/pools/active/debase-eth-lp-pool"
 					type="active"
 					linkData={[
@@ -100,7 +100,7 @@ const Pools = () => {
 					<List data={debaseEthLPListData} />
 				</PoolCard>
 				<PoolCard
-					label="DEGOV/ETH LP Pool"
+					label="DEGOV-ETH LP Pool"
 					routePath="/pools/active/degov-eth-lp-pool"
 					type="active"
 					linkData={[
@@ -127,7 +127,7 @@ const Pools = () => {
 		return (
 			<Grid>
 				<PoolCard
-					label="DEBASE/DAI LP Pool"
+					label="DEBASE-DAI LP Pool"
 					routePath="/pools/inactive/debase-dai-lp-pool"
 					type="inactive"
 					linkData={[

@@ -20,7 +20,7 @@ const DebaseEthLpPool = () => {
 						<PoolStakeTriple
 							poolAddress={CONTRACT_ADDRESS.debaseEthPool}
 							lpAddress={CONTRACT_ADDRESS.pairTest}
-							stakeText="DEBASE/ETH LP"
+							stakeText="DEBASE-ETH LP"
 							poolABI={ABI_POOL_TRIPLE}
 							apr={pools.debaseEthPool ? pools.debaseEthPool.apr + ' %' : '0 %'}
 							debaseAPR={pools.debaseEthPool ? pools.debaseEthPool.debaseAPR + ' %' : '0 %'}
