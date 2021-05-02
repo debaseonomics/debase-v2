@@ -11,7 +11,7 @@ import { parseEther } from 'ethers/lib/utils';
 import { SnackbarManagerContext } from '@dapp/managers';
 import InfoCard from '../InfoCard/infocard.component';
 
-const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
+const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr }) => {
 	const { library, account } = useWeb3React();
 
 	const [ isStakeLoading, setIsStakeLoading ] = useState(false);
@@ -122,7 +122,7 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 	const aprListData = [
 		{
 			label: 'APR',
-			value: '100%',
+			value: apr,
 			tooltip: "Pool's annual percentage rate"
 		}
 	];

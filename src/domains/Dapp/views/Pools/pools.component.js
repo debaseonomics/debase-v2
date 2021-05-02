@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import { Section, Grid, PoolCard } from '@dapp/components';
 import POOLS_ROUTES from './pools.routes';
-import { List } from '@core/components/index';
+import { List, Spinner } from '@core/components/index';
 import { AccountIcon, CodeIcon } from '@assets/index';
 import { PoolAprContext } from '@dapp/contexts';
 
@@ -24,7 +24,7 @@ const Pools = () => {
 
 		{
 			label: 'APR',
-			value: pools.degovEthPool ? pools.degovEthPool.apr + ' %' : '...',
+			value: pools.degovEthPool ? pools.degovEthPool.apr + ' %' : <Spinner size="xsmall" />,
 			tooltip: "Pool's annual percentage rate"
 		}
 	];
@@ -43,7 +43,7 @@ const Pools = () => {
 
 		{
 			label: 'APR',
-			value: pools.debaseEthPool ? pools.debaseEthPool.apr + ' %' : '...',
+			value: pools.debaseEthPool ? pools.debaseEthPool.apr + ' %' : <Spinner size="xsmall" />,
 			tooltip: "Pool's annual percentage rate"
 		}
 	];

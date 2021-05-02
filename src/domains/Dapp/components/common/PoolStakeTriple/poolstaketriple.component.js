@@ -12,7 +12,7 @@ import { CONTRACT_ADDRESS } from '@constants';
 import { SnackbarManagerContext } from '@dapp/managers';
 import InfoCard from '../InfoCard/infocard.component';
 
-const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
+const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr, debaseAPR, mphAPR, crvAPR }) => {
 	const { library, account } = useWeb3React();
 
 	const [ isStakeLoading, setIsStakeLoading ] = useState(false);
@@ -104,8 +104,24 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText }) => {
 
 	const aprListData = [
 		{
-			label: 'APR',
-			value: '100%',
+			label: 'Debase APR',
+			value: debaseAPR,
+			tooltip: "Pool's annual percentage rate"
+		},
+		{
+			label: 'CRV APR',
+			value: crvAPR,
+			tooltip: "Pool's annual percentage rate"
+		},
+		{
+			label: '88MPH APR',
+			value: mphAPR,
+			tooltip: "Pool's annual percentage rate"
+		},
+
+		{
+			label: 'Total APR',
+			value: apr,
 			tooltip: "Pool's annual percentage rate"
 		}
 	];

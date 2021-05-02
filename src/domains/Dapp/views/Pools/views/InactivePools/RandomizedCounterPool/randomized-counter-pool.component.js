@@ -20,6 +20,7 @@ const DebaseEthLpPool = () => {
 							lpAddress={CONTRACT_ADDRESS.debaseDaiLp}
 							stakeText="DEGOV/ETH LP"
 							poolABI={ABI_POOL}
+							apr="0 %"
 						/>
 					</Grid>
 				)}

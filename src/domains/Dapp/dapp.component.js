@@ -329,6 +329,7 @@ class Dapp extends React.Component {
 				pools.degovEthPool = degovEth;
 				pools.debaseDaiPool = debaseDai;
 				pools.debaseEthPool = debaseEth;
+
 				pools.randomizedCounterPool = randomizedCounterPool;
 				return { pools };
 			},
