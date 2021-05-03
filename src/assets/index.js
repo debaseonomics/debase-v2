@@ -8,7 +8,10 @@ import {
     cursorPNG,
     crossPNG,
     debaseLogoSVG,
-    homeBackgroundSVG
+    homeBackgroundSVG,
+    roadmapRectPNG,
+    roadmapActivePNG,
+    roadmapInactivePNG
 } from './img';
 import {
     AddIcon,
@@ -57,6 +60,9 @@ export {
     crossPNG,
     debaseLogoSVG,
     homeBackgroundSVG,
+    roadmapRectPNG,
+    roadmapActivePNG,
+    roadmapInactivePNG,
 
     // ICONS - material
     AddIcon,

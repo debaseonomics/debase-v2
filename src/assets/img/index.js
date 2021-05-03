@@ -7,6 +7,9 @@ import cursorPNG from './cursor.png';
 import crossPNG from './cross.png';
 import debaseLogoSVG from './logo.svg';
 import homeBackgroundSVG from './landing_bg.png';
+import roadmapRectPNG from './roadmap-rect.png';
+import roadmapActivePNG from './roadmap-active.png';
+import roadmapInactivePNG from './roadmap-inactive.png';
 export {
     debaseLogoPNG,
     degovLogoPNG,
@@ -17,4 +20,7 @@ export {
     crossPNG,
     debaseLogoSVG,
     homeBackgroundSVG,
+    roadmapRectPNG,
+    roadmapActivePNG,
+    roadmapInactivePNG
 };
