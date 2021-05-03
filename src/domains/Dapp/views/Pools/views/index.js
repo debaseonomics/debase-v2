@@ -1,5 +1,4 @@
-import DegovEthLpPool from './DegovEthLpPool';
-import DebaseDaiLpPool from './DebaseDaiLpPool';
-import DebaseEthLpPool from './DebaseEthLpPool';
+import { DebaseDaiLpPool, RandomizedCounterPool } from './InactivePools';
+import { DebaseEthLpPool, DegovEthLpPool } from './ActivePools';
 
-export { DegovEthLpPool, DebaseDaiLpPool, DebaseEthLpPool };
+export { DebaseDaiLpPool, RandomizedCounterPool, DebaseEthLpPool, DegovEthLpPool };

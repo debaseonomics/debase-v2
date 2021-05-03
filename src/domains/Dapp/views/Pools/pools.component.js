@@ -1,103 +1,160 @@
-import React, { useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Switch, Route, useRouteMatch } from 'react-router-dom';
-import { useWeb3React } from '@web3-react/core';
-import { Section, DisconnectedWalletCard, Grid, PoolCard } from '@dapp/components';
+import { Section, Grid, PoolCard } from '@dapp/components';
 import POOLS_ROUTES from './pools.routes';
-import CONTRACT_ADDRESS from '@constants/contract-address.constant';
-import ABI_POOL from '@constants/abi-pool.constant';
-import useSWR from 'swr';
-import fetcher from '@utils/fetcher';
+import { List, Spinner } from '@core/components/index';
+import { AccountIcon, CodeIcon } from '@assets/index';
+import { PoolAprContext } from '@dapp/contexts';
 
 const Pools = () => {
 	const { path } = useRouteMatch();
-	const { active, library } = useWeb3React();
+	const { pools } = useContext(PoolAprContext);
 
-	const { data: debaseDaiPoolEnabled, mutate: getDebaseDaiPoolEnabled } = useSWR(
-		[ CONTRACT_ADDRESS.debaseDaiV3Pool, 'poolEnabled' ],
+	const degovEthLPListData = [
 		{
-			fetcher: fetcher(library, ABI_POOL)
-		}
-	);
-
-	const { data: debaseEthPoolEnabled, mutate: getDebaseEthPoolEnabled } = useSWR(
-		[ CONTRACT_ADDRESS.debaseEthPool, 'poolEnabled' ],
-		{
-			fetcher: fetcher(library, ABI_POOL)
-		}
-	);
-
-	const { data: degovEthPoolEnabled, mutate: getDegovEthPoolEnabled } = useSWR(
-		[ CONTRACT_ADDRESS.degovEthPool, 'poolEnabled' ],
-		{
-			fetcher: fetcher(library, ABI_POOL)
-		}
-	);
-
-	useEffect(
-		() => {
-			library &&
-				library.on('block', () => {
-					getDebaseDaiPoolEnabled(undefined, true);
-					getDegovEthPoolEnabled(undefined, true);
-					getDebaseEthPoolEnabled(undefined, true);
-				});
-			return () => {
-				library && library.removeAllListeners('block');
-			};
+			label: 'Staked Token',
+			value: 'Degov-ETH LP',
+			tooltip: 'Stake token pool accepts'
 		},
-		[ library, getDebaseDaiPoolEnabled, getDegovEthPoolEnabled, getDebaseEthPoolEnabled ]
-	);
+		{
+			label: 'Reward Token',
+			value: 'DEBASE',
+			tooltip: 'Reward token pool gives'
+		},
 
-	const renderPools = () => {
-		if (!active) return <DisconnectedWalletCard />;
+		{
+			label: 'APR',
+			value: pools.degovEthPool ? pools.degovEthPool.apr + ' %' : <Spinner size="xsmall" />,
+			tooltip: "Pool's annual percentage rate"
+		}
+	];
+
+	const debaseEthLPListData = [
+		{
+			label: 'Staked Token',
+			value: 'DEBASE-ETH LP',
+			tooltip: 'Stake token pool accepts'
+		},
+		{
+			label: 'Reward Tokens',
+			value: 'DEBASE/MPH/CRV',
+			tooltip: 'Reward tokens pool gives'
+		},
+
+		{
+			label: 'APR',
+			value: pools.debaseEthPool ? pools.debaseEthPool.apr + ' %' : <Spinner size="xsmall" />,
+			tooltip: "Pool's annual percentage rate"
+		}
+	];
+
+	const debaseDaiLPListData = [
+		{
+			label: 'Staked Token',
+			value: 'DEBASE-DAI LP',
+			tooltip: 'Stake token pool accepts'
+		},
+
+		{
+			label: 'APR',
+			value: '0 %',
+			tooltip: "Pool's annual percentage rate"
+		}
+	];
+
+	const randomizedCounterListData = [
+		{
+			label: 'Staked Token',
+			value: 'DEBASE-DAI LP',
+			tooltip: 'Stake token pool accepts'
+		},
+
+		{
+			label: 'APR',
+			value: '0 %',
+			tooltip: "Pool's annual percentage rate"
+		}
+	];
+
+	const renderActivePools = () => {
 		return (
 			<Grid>
 				<PoolCard
-					label="DEBASE/DAI LP Pool"
-					routePath="/pools/debase-dai-lp-pool"
-					isActive={debaseDaiPoolEnabled ? debaseDaiPoolEnabled : false}
+					label="DEBASE-ETH LP Pool"
+					routePath="/pools/active/debase-eth-lp-pool"
+					type="active"
+					linkData={[
+						{
+							icon: <CodeIcon />,
+							info: 'Contract Link',
+							url: 'https://etherscan.io/address/0x1304a1D8BE22b9078ec3A5eF2ACb0FEf3C9C89E5'
+						},
+						{
+							icon: <AccountIcon />,
+							info: 'Buy Pool LP',
+							url: 'https://app.uniswap.org/#/add/0xa8e5533d1e22be2df5e9ad9f67dd22a4e7d5b371/ETH'
+						}
+					]}
+					isActive={pools.debaseEthPool ? pools.debaseEthPool.enabled : false}
 				>
-					Pool accepts UWU/BUSD lP deposits and in return allows you to mine UwU.
-					<br />
-					<br />
-					This pool will give out a total of 700000 UwU over its life time. With initially giving out 350000
-					UwU over a period of 3.5 days. After which the given will half to 175000 UwU given again over a
-					period of another 3.5 days.
-					<br />
-					<br />
-					This reward halving process will until the 700000 UwU are distributed.
+					<List data={debaseEthLPListData} />
 				</PoolCard>
 				<PoolCard
-					label="DEBASE/ETH LP Pool"
-					routePath="/pools/debase-eth-lp-pool"
-					isActive={debaseEthPoolEnabled ? debaseEthPoolEnabled : false}
+					label="DEGOV-ETH LP Pool"
+					routePath="/pools/active/degov-eth-lp-pool"
+					type="active"
+					linkData={[
+						{
+							icon: <CodeIcon />,
+							info: 'Contract Link',
+							url: 'https://etherscan.io/address/0x4789519821ae0f49d95203b1a2ed805141bf0dae'
+						},
+						{
+							icon: <AccountIcon />,
+							info: 'Buy Pool LP',
+							url: 'https://app.uniswap.org/#/add/0x469e66e06fec34839e5eb1273ba85a119b8d702f/ETH'
+						}
+					]}
+					isActive={pools.degovEthPool ? pools.degovEthPool.enabled : false}
 				>
-					Pool that bridges DEBASE deposits you have made on the DEBASE bridge on Ethereum. To allow you to
-					mine UwU in return.
-					<br />
-					<br />
-					This pool will give out a total of 10000 UwU over its life time. With initially giving out 5000 UwU
-					over a period of 3.5 days. After which the given will half to 2500 UwU given again over a period of
-					another 3.5 days.
-					<br />
-					<br />
-					This reward halving process will until the 10000 UwU are distributed.
+					<List data={degovEthLPListData} />
+				</PoolCard>
+			</Grid>
+		);
+	};
+
+	const renderInactivePools = () => {
+		return (
+			<Grid>
+				<PoolCard
+					label="DEBASE-DAI LP Pool"
+					routePath="/pools/inactive/debase-dai-lp-pool"
+					type="inactive"
+					linkData={[
+						{
+							icon: <CodeIcon />,
+							info: 'Contract Link',
+							url: 'https://etherscan.io/address/0x29e92C31C980098d5724fe82EbC5A824e32d9C9B'
+						}
+					]}
+					isActive={pools.debaseDaiPool ? pools.debaseDaiPool.enabled : false}
+				>
+					<List data={debaseDaiLPListData} />
 				</PoolCard>
 				<PoolCard
-					label="DEGOV/ETH LP Pool"
-					routePath="/pools/degov-eth-lp-pool"
-					isActive={degovEthPoolEnabled ? degovEthPoolEnabled : false}
+					label="Randomized Counter Pool"
+					routePath="/pools/inactive/randomized-counter-pool"
+					type="inactive"
+					linkData={[
+						{
+							icon: <CodeIcon />,
+							info: 'Contract Link',
+							url: 'https://etherscan.io/address/0x800479a76dc74c3a9FAAE25320A0EE4E8740996b'
+						}
+					]}
+					isActive={pools.randomizedCounterPool ? pools.randomizedCounterPool.enabled : false}
 				>
-					Pool that bridges DEBASE/DAI LP deposits you have made on the DEBASE/DAI LP bridge on Ethereum. To
-					allow you to mine UwU in return.
-					<br />
-					<br />
-					This pool will give out a total of 15000 UwU over its life time. With initially giving out 7500 UwU
-					over a period of 3.5 days. After which the given will half to 3750 UwU given again over a period of
-					another 3.5 days.
-					<br />
-					<br />
-					This reward halving process will until the 15000 UwU are distributed.
+					<List data={randomizedCounterListData} />
 				</PoolCard>
 			</Grid>
 		);
@@ -106,7 +163,14 @@ const Pools = () => {
 	return (
 		<Switch>
 			<Route exact path={path}>
-				<Section>{renderPools()}</Section>
+				<Route exact path={path}>
+					<Section label="Active Pools" info="Pools actively rewarded by rewards fund">
+						{renderActivePools()}
+					</Section>
+					<Section label="Inactive Pools" info="Pools no long rewarded by rewards fund">
+						{renderInactivePools()}
+					</Section>
+				</Route>
 			</Route>
 
 			{POOLS_ROUTES.map((route, i) => {

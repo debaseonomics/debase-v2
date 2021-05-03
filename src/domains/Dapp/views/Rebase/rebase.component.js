@@ -167,21 +167,6 @@ const Rebase = () => {
 		}
 	];
 
-	/* list data */
-	const lastRebaseData = [
-		{
-			label: 'Last rebase',
-			value: lastRebaseTimestampSec ? (
-				calcDateDifference(new Date(lastRebaseTimestampSec.toNumber() * 1000), new Date()).toFixed(2) +
-				' day(s) ago'
-			) : (
-				<Spinner size="xsmall" />
-			),
-			valueType: '',
-			tooltip: 'Time since the last rebase happened'
-		}
-	];
-
 	const onClickFireRebase = async (e) => {
 		setRebaseLoading(true);
 		const orchestratorContract = new Contract(CONTRACT_ADDRESS.orchestrator, ABI_ORCHESTRATOR, library.getSigner());
@@ -206,7 +191,6 @@ const Rebase = () => {
 			<InfoCard>
 				<StyledRebaseInner>
 					<List data={rebaseParamsListData} />
-					<List data={lastRebaseData} color="primary" />
 				</StyledRebaseInner>
 			</InfoCard>
 			<InfoCard gutter={20}>
