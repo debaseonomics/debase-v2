@@ -37,7 +37,7 @@ const Pools = () => {
 		},
 		{
 			label: 'Reward Tokens',
-			value: 'Debase-88Mph/Crv',
+			value: 'Debase/88Mph/Crv',
 			tooltip: 'Reward tokens pool gives'
 		},
 

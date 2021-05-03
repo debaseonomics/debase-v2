@@ -38,30 +38,39 @@ export default async () => {
 		const ethDaiReserves = await ethDaiPoolContract.getReserves();
 		const wethBalance = await wethContract.balanceOf(CONTRACT_ADDRESS.debaseEthLp);
 
-		const debaseAPR = (rewardPercentage *
-			debaseTotalSupply /
-			(blockDuration * 14 / 86400) *
-			(debaseDaiReserves[0] / debaseDaiReserves[1]) *
-			365 /
-			(totalSupply * (2 * wethBalance * (ethDaiReserves[0] / ethDaiReserves[1]) / totalSupplyLp)) /
-			Math.pow(10, 18) *
-			100).toFixed(2);
+		const debaseAPR =
+			totalSupply == 0
+				? 0
+				: (rewardPercentage *
+						debaseTotalSupply /
+						(blockDuration * 14 / 86400) *
+						(debaseDaiReserves[0] / debaseDaiReserves[1]) *
+						365 /
+						(totalSupply * (2 * wethBalance * (ethDaiReserves[0] / ethDaiReserves[1]) / totalSupplyLp)) /
+						Math.pow(10, 18) *
+						100).toFixed(2);
 
-		const mphAPR = (20.97 /
-			(blockDuration * 14 / 86400) *
-			mphPrice *
-			365 /
-			(totalSupply * (2 * wethBalance * (ethDaiReserves[0] / ethDaiReserves[1]) / totalSupplyLp)) /
-			Math.pow(10, 18) *
-			100).toFixed(2);
+		const mphAPR =
+			totalSupply == 0
+				? 0
+				: (20.97 /
+						(blockDuration * 14 / 86400) *
+						mphPrice *
+						365 /
+						(totalSupply * (2 * wethBalance * (ethDaiReserves[0] / ethDaiReserves[1]) / totalSupplyLp)) /
+						Math.pow(10, 18) *
+						100).toFixed(2);
 
-		const crvAPR = (1012 /
-			(blockDuration * 14 / 86400) *
-			crvPrice *
-			365 /
-			(totalSupply * (2 * wethBalance * (ethDaiReserves[0] / ethDaiReserves[1]) / totalSupplyLp)) /
-			Math.pow(10, 18) *
-			100).toFixed(2);
+		const crvAPR =
+			totalSupply == 0
+				? 0
+				: (1012 /
+						(blockDuration * 14 / 86400) *
+						crvPrice *
+						365 /
+						(totalSupply * (2 * wethBalance * (ethDaiReserves[0] / ethDaiReserves[1]) / totalSupplyLp)) /
+						Math.pow(10, 18) *
+						100).toFixed(2);
 
 		return {
 			debaseAPR,

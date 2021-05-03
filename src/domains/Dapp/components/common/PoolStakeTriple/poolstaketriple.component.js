@@ -91,7 +91,7 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr, deba
 			tooltip: 'Amount of Debase reward you have earned.'
 		},
 		{
-			label: 'Claimable (MPH88)',
+			label: 'Claimable (88MPH)',
 			value: earned ? parseFloat(formatEther(earned[1])) : <Spinner size="xsmall" />,
 			tooltip: 'Amount of Debase reward you have earned.'
 		},

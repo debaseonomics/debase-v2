@@ -33,7 +33,7 @@ import { calcRebasePercentage, calcTotalSupply } from '@dapp/utils';
 import DAPP_ROUTES from './dapp.routes';
 import { StyledDapp, StyledPage, StyledPageInner, StyledContent } from './dapp.styles';
 
-const injectedConnector = new InjectedConnector({ supportedChainIds: [ 1, 4 ] });
+const injectedConnector = new InjectedConnector({ supportedChainIds: [ 1 ] });
 
 class Dapp extends React.Component {
 	static contextType = getWeb3ReactContext();
