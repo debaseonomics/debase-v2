@@ -13,12 +13,12 @@ const Pools = () => {
 	const degovEthLPListData = [
 		{
 			label: 'Staked Token',
-			value: 'Degov-Eth LP',
+			value: 'Degov-ETH LP',
 			tooltip: 'Stake token pool accepts'
 		},
 		{
 			label: 'Reward Token',
-			value: 'Debase',
+			value: 'DEBASE',
 			tooltip: 'Reward token pool gives'
 		},
 
@@ -32,12 +32,12 @@ const Pools = () => {
 	const debaseEthLPListData = [
 		{
 			label: 'Staked Token',
-			value: 'Debase-Eth LP',
+			value: 'DEBASE-ETH LP',
 			tooltip: 'Stake token pool accepts'
 		},
 		{
 			label: 'Reward Tokens',
-			value: 'Debase/88Mph/Crv',
+			value: 'DEBASE/MPH/CRV',
 			tooltip: 'Reward tokens pool gives'
 		},
 
@@ -51,7 +51,7 @@ const Pools = () => {
 	const debaseDaiLPListData = [
 		{
 			label: 'Staked Token',
-			value: 'Debase-Dai LP',
+			value: 'DEBASE-DAI LP',
 			tooltip: 'Stake token pool accepts'
 		},
 
@@ -65,7 +65,7 @@ const Pools = () => {
 	const randomizedCounterListData = [
 		{
 			label: 'Staked Token',
-			value: 'Debase-Dai LP',
+			value: 'DEBASE-DAI LP',
 			tooltip: 'Stake token pool accepts'
 		},
 
@@ -87,12 +87,12 @@ const Pools = () => {
 						{
 							icon: <CodeIcon />,
 							info: 'Contract Link',
-							url: 'https://etherscan.io/address/0x05E8a57ED5e5347a1eAAEFcE223660EF6eBEe336'
+							url: 'https://etherscan.io/address/0x1304a1D8BE22b9078ec3A5eF2ACb0FEf3C9C89E5'
 						},
 						{
 							icon: <AccountIcon />,
 							info: 'Buy Pool LP',
-							url: 'https://app.uniswap.org/#/add/0x9248c485b0b80f76da451f167a8db30f33c70907/ETH'
+							url: 'https://app.uniswap.org/#/add/0xa8e5533d1e22be2df5e9ad9f67dd22a4e7d5b371/ETH'
 						}
 					]}
 					isActive={pools.debaseEthPool ? pools.debaseEthPool.enabled : false}

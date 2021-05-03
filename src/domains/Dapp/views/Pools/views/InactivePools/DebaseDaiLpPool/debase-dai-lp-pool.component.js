@@ -9,7 +9,7 @@ const DebaseDaiLpPool = () => {
 
 	return (
 		<Fragment>
-			<Section label="Debase Dai Lp Pool" info="**update**">
+			<Section label="DEBASE DAI LP Pool" info="**update**">
 				{!active ? (
 					<DisconnectedWalletCard />
 				) : (

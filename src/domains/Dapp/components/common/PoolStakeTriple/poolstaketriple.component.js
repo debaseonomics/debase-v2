@@ -81,30 +81,30 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr, deba
 
 	const earnedListData = [
 		{
-			label: 'Claimable (Debase)',
+			label: 'Claimable (DEBASE)',
 			value:
 				earned && debaseSupply ? (
 					parseFloat(formatEther(earned[0].mul(debaseSupply).div(parseEther('1'))))
 				) : (
 					<Spinner size="xsmall" />
 				),
-			tooltip: 'Amount of Debase reward you have earned.'
+			tooltip: 'Amount of DEBASE reward you have earned.'
 		},
 		{
-			label: 'Claimable (88MPH)',
+			label: 'Claimable (MPH)',
 			value: earned ? parseFloat(formatEther(earned[1])) : <Spinner size="xsmall" />,
-			tooltip: 'Amount of Debase reward you have earned.'
+			tooltip: 'Amount of DEBASE reward you have earned.'
 		},
 		{
 			label: 'Claimable (CRV)',
 			value: earned ? parseFloat(formatEther(earned[2])) : <Spinner size="xsmall" />,
-			tooltip: 'Amount of Debase reward you have earned.'
+			tooltip: 'Amount of DEBASE reward you have earned.'
 		}
 	];
 
 	const aprListData = [
 		{
-			label: 'Debase APR',
+			label: 'DEBASE APR',
 			value: debaseAPR,
 			tooltip: "Pool's annual percentage rate"
 		},
@@ -114,7 +114,7 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr, deba
 			tooltip: "Pool's annual percentage rate"
 		},
 		{
-			label: '88MPH APR',
+			label: 'MPH APR',
 			value: mphAPR,
 			tooltip: "Pool's annual percentage rate"
 		},

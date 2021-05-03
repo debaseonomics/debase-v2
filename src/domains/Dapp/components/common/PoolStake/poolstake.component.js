@@ -70,7 +70,7 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr }) =>
 	// List data arrays
 	const poolListData = [
 		{
-			label: 'User Lp Limit',
+			label: 'User LP Limit',
 			value:
 				userLpLimit && walletBalance ? (
 					parseFloat(formatEther(walletBalance)).toFixed(2) +
@@ -113,9 +113,9 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr }) =>
 			tooltip: 'Your current staked balance in the pool.'
 		},
 		{
-			label: 'Earned (Debase)',
+			label: 'Earned (DEBASE)',
 			value: earned ? parseFloat(formatEther(earned)).toFixed(4) * 1 : <Spinner size="xsmall" />,
-			tooltip: 'Amount of Debase reward you have earned.'
+			tooltip: 'Amount of DEBASE reward you have earned.'
 		}
 	];
 
