@@ -96,7 +96,7 @@ export const StyledDocumentationLink = styled.a`
 export const StyledAuditsLink = styled.a`
     font-family: 'brandonlight';
     font-size: 24px;
-    margin-left: 90px;
+    margin-left: 81px;
     margin-bottom: 8px;
     width: 68px;
     text-align: left;
