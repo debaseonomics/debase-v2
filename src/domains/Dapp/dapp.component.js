@@ -12,12 +12,23 @@ import {
 	getDegovCircSupply,
 	getRebaseHistory,
 	getDebaseYearHistory,
-	getTreasuryBalance
+	getTreasuryBalance,
+	getDegovEthPool,
+	getDebaseDaiPool,
+	getDebaseEthPool,
+	getRandomizedCounterPool
 } from '@api';
 import { parseFloatFixed, parseNumToUsFormat } from '@utils';
 import { Background, Sidebar, Navigation, Topbar } from '@dapp/components';
 import { ModalManagerProvider, SnackbarManagerProvider } from '@dapp/managers';
-import { UIContext, WalletContext, TokenDataContext, TokenHistoryContext, TreasuryDataContext } from '@dapp/contexts';
+import {
+	UIContext,
+	WalletContext,
+	TokenDataContext,
+	TokenHistoryContext,
+	TreasuryDataContext,
+	PoolAprContext
+} from '@dapp/contexts';
 import { calcRebasePercentage, calcTotalSupply } from '@dapp/utils';
 import DAPP_ROUTES from './dapp.routes';
 import { StyledDapp, StyledPage, StyledPageInner, StyledContent } from './dapp.styles';
@@ -62,6 +73,12 @@ class Dapp extends React.Component {
 			isUnsupportedChainIdError: false,
 			isNoEthereumProviderError: false,
 			isUserRejectedRequestError: false
+		},
+		pools: {
+			randomizedCounterPool: null,
+			debaseDaiPool: null,
+			debaseEthPool: null,
+			degovEthPool: null
 		}
 	};
 
@@ -288,12 +305,33 @@ class Dapp extends React.Component {
 						? parseNumToUsFormat(treasuryBalance.totalDepositByPool[0].totalActiveDeposit * 0.21)
 						: 'err';
 
-				// treasuryData.mph88Balance = 'err';
-				// treasuryData.daiBalance = 'err';
-
 				ui.isLoading.treasuryData = false;
 
 				return { ui, treasuryData };
+			},
+			() => {
+				if (callback) callback();
+			}
+		);
+	};
+
+	initPoolData = async (callback) => {
+		const degovEth = await getDegovEthPool();
+		const debaseDai = await getDebaseDaiPool();
+		const debaseEth = await getDebaseEthPool();
+		const randomizedCounterPool = await getRandomizedCounterPool();
+
+		this.setState(
+			() => {
+				const prevState = _.cloneDeep(this.state);
+				const { pools } = prevState;
+
+				pools.degovEthPool = degovEth;
+				pools.debaseDaiPool = debaseDai;
+				pools.debaseEthPool = debaseEth;
+
+				pools.randomizedCounterPool = randomizedCounterPool;
+				return { pools };
 			},
 			() => {
 				if (callback) callback();
@@ -314,6 +352,7 @@ class Dapp extends React.Component {
 		this.initTokenData();
 		this.initTokenHistory();
 		this.initTreasuryData();
+		this.initPoolData();
 	}
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.detectMobileViewport);
@@ -321,7 +360,7 @@ class Dapp extends React.Component {
 
 	/* COMPONENT RETURN RENDER */
 	render() {
-		const { wallet, ui, tokenData, tokenHistory, treasuryData } = this.state;
+		const { wallet, ui, tokenData, tokenHistory, treasuryData, pools } = this.state;
 
 		const uiMethods = {
 			detectActiveRoute: this.detectActiveRoute
@@ -340,35 +379,41 @@ class Dapp extends React.Component {
 					<TokenDataContext.Provider value={{ tokenData }}>
 						<TokenHistoryContext.Provider value={{ tokenHistory }}>
 							<TreasuryDataContext.Provider value={{ treasuryData }}>
-								<SnackbarManagerProvider>
-									<ModalManagerProvider>
-										<Background />
-										<StyledDapp>
-											<Router>
-												<Sidebar>
-													<Navigation routes={DAPP_ROUTES} />
-												</Sidebar>
-												<StyledPage>
-													<StyledPageInner>
-														<Topbar routes={DAPP_ROUTES} />
-														<StyledContent>
-															<Switch>
-																{DAPP_ROUTES.map((route, i) => {
-																	const { label, path, component } = route;
-																	return (
-																		<Route exact={i === 0} key={label} path={path}>
-																			{component}
-																		</Route>
-																	);
-																})}
-															</Switch>
-														</StyledContent>
-													</StyledPageInner>
-												</StyledPage>
-											</Router>
-										</StyledDapp>
-									</ModalManagerProvider>
-								</SnackbarManagerProvider>
+								<PoolAprContext.Provider value={{ pools }}>
+									<SnackbarManagerProvider>
+										<ModalManagerProvider>
+											<Background />
+											<StyledDapp>
+												<Router>
+													<Sidebar>
+														<Navigation routes={DAPP_ROUTES} />
+													</Sidebar>
+													<StyledPage>
+														<StyledPageInner>
+															<Topbar routes={DAPP_ROUTES} />
+															<StyledContent>
+																<Switch>
+																	{DAPP_ROUTES.map((route, i) => {
+																		const { label, path, component } = route;
+																		return (
+																			<Route
+																				exact={i === 0}
+																				key={label}
+																				path={path}
+																			>
+																				{component}
+																			</Route>
+																		);
+																	})}
+																</Switch>
+															</StyledContent>
+														</StyledPageInner>
+													</StyledPage>
+												</Router>
+											</StyledDapp>
+										</ModalManagerProvider>
+									</SnackbarManagerProvider>
+								</PoolAprContext.Provider>
 							</TreasuryDataContext.Provider>
 						</TokenHistoryContext.Provider>
 					</TokenDataContext.Provider>
