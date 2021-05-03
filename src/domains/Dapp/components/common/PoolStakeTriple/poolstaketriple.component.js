@@ -38,7 +38,7 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr, deba
 		fetcher: fetcher(library, poolABI)
 	});
 
-	const { data: debaseSupply, mutate: getDebaseSupply } = useSWR([ CONTRACT_ADDRESS.debaseTest, 'totalSupply' ], {
+	const { data: debaseSupply, mutate: getDebaseSupply } = useSWR([ CONTRACT_ADDRESS.debase, 'totalSupply' ], {
 		fetcher: fetcher(library, poolABI)
 	});
 

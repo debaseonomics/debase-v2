@@ -21,7 +21,7 @@ export default async () => {
 		crvPrice = crvPrice.data['0xd533a949740bb3306d119cc777fa900ba034cd52'].usd;
 
 		const poolContract = await new ethers.Contract(CONTRACT_ADDRESS.debaseEthPool, ABI_POOL_TRIPLE, provider);
-		const debaseContract = await new ethers.Contract(CONTRACT_ADDRESS.debaseTest, ABI_POOL_TRIPLE, provider);
+		const debaseContract = await new ethers.Contract(CONTRACT_ADDRESS.debase, ABI_POOL_TRIPLE, provider);
 		const degovEthLpContract = await new ethers.Contract(CONTRACT_ADDRESS.degovEthLp, ABI_POOL_TRIPLE, provider);
 		const debaseDaiLpContract = await new ethers.Contract(CONTRACT_ADDRESS.debaseDaiLp, ABI_UNI, provider);
 		const ethDaiPoolContract = await new ethers.Contract(CONTRACT_ADDRESS.ethDaiPool, ABI_UNI, provider);

@@ -19,7 +19,7 @@ const DebaseEthLpPool = () => {
 					<Grid>
 						<PoolStakeTriple
 							poolAddress={CONTRACT_ADDRESS.debaseEthPool}
-							lpAddress={CONTRACT_ADDRESS.pairTest}
+							lpAddress={CONTRACT_ADDRESS.debaseEthLp}
 							stakeText="DEBASE-ETH LP"
 							poolABI={ABI_POOL_TRIPLE}
 							apr={pools.debaseEthPool ? pools.debaseEthPool.apr + ' %' : '0 %'}
