@@ -26,23 +26,23 @@ export const StyledContainer = styled.div`
 export const StyledContent = styled.div`
     position: relative;
     margin-left: 219px;
-    margin-right: 223px;
+    margin-right: 228px;
 
     @media only screen and (max-width: 1440px) {
         margin-left: 161px;
-        margin-right: 157px;
+        margin-right: 162px;
     }
     @media only screen and (max-width: 1366px) {
         margin-left: 150px;
-        margin-right: 150px;
+        margin-right: 155px;
     }
     @media only screen and (max-width: 1280px) {
         margin-left: 139px;
-        margin-right: 139px;
+        margin-right: 144px;
     }
     @media only screen and (max-width: 1024px) {
         margin-left: 107px;
-        margin-right: 105px;
+        margin-right: 110px;
     }
 `;
 export const StyledText = styled.p`

@@ -21,7 +21,7 @@ const GlobalStyle = createGlobalStyle`
       scrollbar-color: #06131B transparent ;
     }
     *::-webkit-scrollbar {
-      width: 10px;
+      width: 5px;
     }
     *::-webkit-scrollbar-track {
       background-color: transparent;

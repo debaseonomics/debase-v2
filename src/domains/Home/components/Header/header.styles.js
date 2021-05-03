@@ -20,6 +20,7 @@ export const StyledDebaseLogo = styled.img`
     position: relative;
     width: 285px;
     height: 95px;
+    filter: drop-shadow(0px 0px 3px white);
     @media only screen and (max-width: 1440px) {
         width: 212px;
     }
@@ -49,7 +50,7 @@ export const StyledTextContainer = styled.div`
     }
     @media only screen and (max-width: 1024px) {
         margin-left: 13px;
-        margin-bottom: 7px;
+        margin-bottom: 2px;
     }
 `;
 export const StyledText = styled.span`
@@ -103,16 +104,18 @@ export const StyledAuditsLink = styled.a`
     
     @media only screen and (max-width: 1440px) {
         font-size: 18px;
-        margin-left: 19px;
+        margin-left: 23px;
         margin-top: 5px;
     }
     @media only screen and (max-width: 1366px) {
         font-size: 16px;
         margin-left: 15px;
+        margin-top: 4px;
     }
     @media only screen and (max-width: 1280px) {
         font-size: 14px;
         margin-left: 3px;
+        margin-top: 1px;
     }
     @media only screen and (max-width: 1024px) {
         font-size: 10px;
@@ -137,8 +140,8 @@ export const StyledAppLink = styled.a`
     
     @media only screen and (max-width: 1440px) {
         font-size: 18px;
-        width: 149px;
-        margin-left: 34px;
+        width: 112px;
+        margin-left: 32px;
         height: 36px;
     }
     @media only screen and (max-width: 1366px) {
