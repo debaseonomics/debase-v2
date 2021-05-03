@@ -1,5 +1,9 @@
 import { bladerunnerWOFF, brandonGrotesqueLight } from './fonts';
 import {
+  homeBackgroundSVG,
+  roadmapRectPNG,
+  roadmapActivePNG,
+  roadmapInactivePNG,
 	debaseLogoPNG,
 	degovLogoPNG,
 	daiLogoPNG,
@@ -92,6 +96,10 @@ export {
 	InsightsIcon,
 	RemoveIcon,
 	AccountIcon,
+  homeBackgroundSVG,
+  roadmapRectPNG,
+  roadmapActivePNG,
+  roadmapInactivePNG,
 	// ICONS - fontawesome
 	GithubIcon,
 	MediumIcon,
