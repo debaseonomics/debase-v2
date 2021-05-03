@@ -20,12 +20,12 @@ const DAPP_ROUTES = [
 		icon: <TuneIcon />,
 		component: <Rebase />
 	},
-	// {
-	//     label: 'roadmap',
-	//     path: '/roadmap',
-	//     icon: <InsightsIcon />,
-	//     component: <Roadmap />
-	// },
+	{
+		label: 'roadmap',
+		path: '/roadmap',
+		icon: <InsightsIcon />,
+		component: <Roadmap />
+	},
 	{
 		label: 'faq',
 		path: '/faq',
