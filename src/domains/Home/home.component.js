@@ -2,15 +2,13 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import _ from 'lodash';
 import Header from "./components/Header";
-import {StyledContainer, StyledContent, StyledReadMore, StyledRectangle, StyledText} from "./home.styles";
-import { rectangleSVG } from '@assets';
+import {StyledContainer, StyledContent, StyledReadMore, StyledText} from "./home.styles";
 
 class Home extends React.Component {
     render() {
         return (
             <StyledContainer>
                 <StyledContent>
-                    <StyledRectangle src={rectangleSVG}></StyledRectangle>
                     <Header />
                     <StyledText>
                         <span style={{ color: '#F26373', letterSpacing: '-0.5px' }}>DEBASE</span> allows for building capital

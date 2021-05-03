@@ -6,7 +6,11 @@ import placeholderTokenPNG from './empty.png';
 import cursorPNG from './cursor.png';
 import crossPNG from './cross.png';
 import debaseLogoSVG from './logo.svg';
-import homeBackgroundSVG from './landing_bg_1.png';
+import background1024 from './bg_1024.png';
+import background1280 from './bg_1280.png';
+import background1366 from './bg_1366.png';
+import background1440 from './bg_1440.png';
+import background1920 from './bg_1920.png';
 import rectangleSVG from './Group 5.png';
 export {
     debaseLogoPNG,
@@ -17,6 +21,10 @@ export {
     cursorPNG,
     crossPNG,
     debaseLogoSVG,
-    homeBackgroundSVG,
+    background1024,
+    background1280,
+    background1366,
+    background1440,
+    background1920,
     rectangleSVG,
 };

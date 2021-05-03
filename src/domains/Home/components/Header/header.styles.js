@@ -3,6 +3,18 @@ export const StyledContainer = styled.div`
     margin-top: 11px;
     display: flex;
     align-items: center;
+    @media only screen and (max-width: 1440px) {
+        margin-top: -8px;
+    }
+    @media only screen and (max-width: 1366px) {
+        margin-top: -11px;
+    }
+    @media only screen and (max-width: 1280px) {
+        margin-top: -13px;
+    }
+    @media only screen and (max-width: 1024px) {
+        margin-top: -20px;
+    }
 `;
 export const StyledDebaseLogo = styled.img`
     position: relative;
@@ -12,13 +24,13 @@ export const StyledDebaseLogo = styled.img`
         width: 212px;
     }
     @media only screen and (max-width: 1366px) {
-        width: 215px;
+        width: 204px;
     }
     @media only screen and (max-width: 1280px) {
-        width: 165px;
+        width: 192px;
     }
     @media only screen and (max-width: 1024px) {
-        width: 171px;
+        width: 156px;
     }
 `;
 export const StyledTextContainer = styled.div`
@@ -26,31 +38,39 @@ export const StyledTextContainer = styled.div`
     display: flex;
     
     @media only screen and (max-width: 1440px) {
-        margin-left: 1px;
+        margin-left: 14px;
+    }
+    @media only screen and (max-width: 1366px) {
+        margin-left: 15px;
     }
     @media only screen and (max-width: 1280px) {
-        margin-left: 0px;
+        margin-left: 12px;
+        margin-bottom: 6px;
     }
     @media only screen and (max-width: 1024px) {
-        margin-left: 0px;
+        margin-left: 13px;
+        margin-bottom: 7px;
     }
 `;
 export const StyledText = styled.span`
-    font-family: 'Segoe UI';
+    font-family: 'brandonlight';
     font-size: 18px;
     
     @media only screen and (max-width: 1440px) {
-        font-size: 14px;
-    }
-    @media only screen and (max-width: 1280px) {
         font-size: 13px;
     }
+    @media only screen and (max-width: 1366px) {
+        font-size: 12px;
+    }
+    @media only screen and (max-width: 1280px) {
+        font-size: 11px;
+    }
     @media only screen and (max-width: 1024px) {
-        font-size: 10px;
+        font-size: 8px;
     }
 `;
 export const StyledDocumentationLink = styled.a`
-    font-family: 'Segoe UI';
+    font-family: 'brandonlight';
     font-size: 24px;
     margin-left: auto;
     margin-bottom: 8px;
@@ -61,15 +81,19 @@ export const StyledDocumentationLink = styled.a`
     @media only screen and (max-width: 1440px) {
         font-size: 18px;
     }
+    @media only screen and (max-width: 1366px) {
+        font-size: 17px;
+    }
     @media only screen and (max-width: 1280px) {
-        font-size: 16px;
+        font-size: 15px;
     }
     @media only screen and (max-width: 1024px) {
-        font-size: 14px;
+        font-size: 11px;
+        margin-bottom: 4px;
     }
 `;
 export const StyledAuditsLink = styled.a`
-    font-family: 'Segoe UI';
+    font-family: 'brandonlight';
     font-size: 24px;
     margin-left: 90px;
     margin-bottom: 8px;
@@ -79,19 +103,25 @@ export const StyledAuditsLink = styled.a`
     
     @media only screen and (max-width: 1440px) {
         font-size: 18px;
-        margin-left: 26px;
+        margin-left: 19px;
+        margin-top: 5px;
+    }
+    @media only screen and (max-width: 1366px) {
+        font-size: 16px;
+        margin-left: 15px;
     }
     @media only screen and (max-width: 1280px) {
-        font-size: 16px;
-        margin-left: 23px;
+        font-size: 14px;
+        margin-left: 3px;
     }
     @media only screen and (max-width: 1024px) {
-        font-size: 14px;
-        margin-left: -11px;
+        font-size: 10px;
+        margin-left: -30px;
+        margin-bottom: 4px;
     }
 `;
 export const StyledAppLink = styled.a`
-    font-family: 'Segoe UI';
+    font-family: 'brandonlight';
     font-size: 24px;
     color: #F26373;
     margin-left: 64px;
@@ -107,17 +137,26 @@ export const StyledAppLink = styled.a`
     
     @media only screen and (max-width: 1440px) {
         font-size: 18px;
-        width: 147px;
+        width: 149px;
         margin-left: 34px;
+        height: 36px;
+    }
+    @media only screen and (max-width: 1366px) {
+        font-size: 17px;
+        width: 108px;
+        margin-left: 24px;
+        height: 36px;
     }
     @media only screen and (max-width: 1280px) {
-        font-size: 16px;
-        width: 98px;
-        margin-left: 24px;
+        font-size: 15px;
+        width: 101px;
+        margin-left: 17px;
+        height: 33px;
     }
     @media only screen and (max-width: 1024px) {
-        font-size: 14px;
-        width: 97px;
-        margin-left: 6px;
+        font-size: 11px;
+        width: 81px;
+        margin-left: -1px;
+        height: 26px;
     }
 `;

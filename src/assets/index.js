@@ -8,7 +8,11 @@ import {
     cursorPNG,
     crossPNG,
     debaseLogoSVG,
-    homeBackgroundSVG,
+    background1024,
+    background1280,
+    background1366,
+    background1440,
+    background1920,
     rectangleSVG,
 } from './img';
 import {
@@ -57,7 +61,11 @@ export {
     cursorPNG,
     crossPNG,
     debaseLogoSVG,
-    homeBackgroundSVG,
+    background1024,
+    background1280,
+    background1366,
+    background1440,
+    background1920,
     rectangleSVG,
 
     // ICONS - material
