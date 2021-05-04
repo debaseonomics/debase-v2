@@ -21,9 +21,9 @@ const Faq = () => {
 						price x supply.
 					</Accordion>
 					<Accordion question="Is there a treasury and how does it benefit Debase?">
-						he treasury consists of ~350k worth of assets (USDT, ETH) (need to check on this part). It also
-						has a stake in Dopex, an on-chain institutional facing options protocol. The treasury assets are
-						in an multi-sig where signatories are <span style={{ color: '#F96CC3' }}>@anon18382</span>,{' '}
+						The treasury consists of ETH, Stables and other productive DeFi assets. It also has a stake in
+						Dopex, an on-chain institutional facing options protocol. The treasury assets are in an
+						multi-sig where signatories are <span style={{ color: '#F96CC3' }}>@anon18382</span>,{' '}
 						<span style={{ color: '#F96CC3' }}>@jusTaPunkk</span>, and the auditor{' '}
 						<span style={{ color: '#F96CC3' }}>@VidarTheAuditor</span>. The treasury investment strategy is
 						advised on by Lisa Tan (<span style={{ color: '#F96CC3' }}>@lisajyt</span>), founding economist
