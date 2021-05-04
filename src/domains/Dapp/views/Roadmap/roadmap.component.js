@@ -26,10 +26,6 @@ const Roadmap = () => {
 				<StyledLogo src={debaseLogoPNG} />
 				<StyledHeaderTitle1 src={roadmapTitle1PNG} />
 				<StyledHeaderTitle2 src={roadmapTitle2PNG} />
-				{/* <StyledHeaderText1>
-					debaseonomics
-				</StyledHeaderText1>
-				<StyledHeaderText2>roadmap q2/2021</StyledHeaderText2> */}
 			</StyledHeader>
 
 			<StyledHeaderSplitter />
