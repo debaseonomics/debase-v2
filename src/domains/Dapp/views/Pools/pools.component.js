@@ -79,7 +79,7 @@ const Pools = () => {
 	const renderActivePools = () => {
 		return (
 			<Grid>
-				<PoolCard
+				{/* <PoolCard
 					label="DEBASE-ETH LP Pool"
 					routePath="/pools/active/debase-eth-lp-pool"
 					type="active"
@@ -98,7 +98,7 @@ const Pools = () => {
 					isActive={pools.debaseEthPool ? pools.debaseEthPool.enabled : false}
 				>
 					<List data={debaseEthLPListData} />
-				</PoolCard>
+				</PoolCard> */}
 				<PoolCard
 					label="DEGOV-ETH LP Pool"
 					routePath="/pools/active/degov-eth-lp-pool"
