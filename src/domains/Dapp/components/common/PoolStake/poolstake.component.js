@@ -10,6 +10,7 @@ import { StyledPoolStake, StyledCardInner } from './poolstake.styles';
 import { parseEther } from 'ethers/lib/utils';
 import { SnackbarManagerContext } from '@dapp/managers';
 import InfoCard from '../InfoCard/infocard.component';
+import CONTRACT_ADDRESS from '@constants/contract-address.constant';
 
 const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr }) => {
 	const { library, account } = useWeb3React();
@@ -51,6 +52,10 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr }) =>
 		fetcher: fetcher(library, poolABI)
 	});
 
+	const { data: debaseSupply, mutate: getDebaseSupply } = useSWR([ CONTRACT_ADDRESS.debase, 'totalSupply' ], {
+		fetcher: fetcher(library, poolABI)
+	});
+
 	useEffect(
 		() => {
 			library.on('block', () => {
@@ -59,12 +64,21 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr }) =>
 				getWalletBalance(undefined, true);
 				getTotalStakedBalance(undefined, true);
 				getPoolEnabled(undefined, true);
+				getDebaseSupply(undefined, true);
 			});
 			return () => {
 				library && library.removeAllListeners('block');
 			};
 		},
-		[ library, getEarned, getPoolEnabled, getUserStakedBalance, getWalletBalance, getTotalStakedBalance ]
+		[
+			library,
+			getEarned,
+			getPoolEnabled,
+			getDebaseSupply,
+			getUserStakedBalance,
+			getWalletBalance,
+			getTotalStakedBalance
+		]
 	);
 
 	// List data arrays
@@ -114,7 +128,12 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr }) =>
 		},
 		{
 			label: 'Earned (DEBASE)',
-			value: earned ? parseFloat(formatEther(earned)).toFixed(4) * 1 : <Spinner size="xsmall" />,
+			value:
+				earned && debaseSupply ? (
+					parseFloat(formatEther(earned.mul(debaseSupply).div(parseEther('1')))).toFixed(4) * 1
+				) : (
+					<Spinner size="xsmall" />
+				),
 			tooltip: 'Amount of DEBASE reward you have earned.'
 		}
 	];

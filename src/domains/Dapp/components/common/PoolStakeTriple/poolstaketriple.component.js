@@ -84,7 +84,7 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr, deba
 			label: 'Claimable (DEBASE)',
 			value:
 				earned && debaseSupply ? (
-					parseFloat(formatEther(earned[0].mul(debaseSupply).div(parseEther('1'))))
+					parseFloat(formatEther(earned[0].mul(debaseSupply).div(parseEther('1')))).toFixed(4) * 1
 				) : (
 					<Spinner size="xsmall" />
 				),
@@ -92,12 +92,12 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr, deba
 		},
 		{
 			label: 'Claimable (MPH)',
-			value: earned ? parseFloat(formatEther(earned[1])) : <Spinner size="xsmall" />,
+			value: earned ? parseFloat(formatEther(earned[1])).toFixed(4) * 1 : <Spinner size="xsmall" />,
 			tooltip: 'Amount of DEBASE reward you have earned.'
 		},
 		{
 			label: 'Claimable (CRV)',
-			value: earned ? parseFloat(formatEther(earned[2])) : <Spinner size="xsmall" />,
+			value: earned ? parseFloat(formatEther(earned[2])).toFixed(4) * 1 : <Spinner size="xsmall" />,
 			tooltip: 'Amount of DEBASE reward you have earned.'
 		}
 	];
