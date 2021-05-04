@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { debaseLogoPNG, roadmapRectPNG, roadmapActivePNG, roadmapInactivePNG } from '@assets';
+import { debaseLogoPNG, roadmapRectPNG, roadmapActivePNG, roadmapInactivePNG, roadmapTitle1PNG, roadmapTitle2PNG} from '@assets';
 import {
 	StyledRoadmap,
 	StyledHeader,
 	StyledLogo,
-	StyledHeaderText1,
-	StyledHeaderText2,
+	StyledHeaderTitle1,
+	StyledHeaderTitle2,
 	StyledHeaderSplitter,
 	StyledContent,
 	StyledRectIcon,
@@ -24,8 +24,12 @@ const Roadmap = () => {
 		<StyledRoadmap>
 			<StyledHeader>
 				<StyledLogo src={debaseLogoPNG} />
-				<StyledHeaderText1>debaseonomics</StyledHeaderText1>
-				<StyledHeaderText2>roadmap q2/2021</StyledHeaderText2>
+				<StyledHeaderTitle1 src={roadmapTitle1PNG} />
+				<StyledHeaderTitle2 src={roadmapTitle2PNG} />
+				{/* <StyledHeaderText1>
+					debaseonomics
+				</StyledHeaderText1>
+				<StyledHeaderText2>roadmap q2/2021</StyledHeaderText2> */}
 			</StyledHeader>
 
 			<StyledHeaderSplitter />
