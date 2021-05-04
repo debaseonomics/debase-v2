@@ -86,7 +86,7 @@ const Roadmap = () => {
 
 				<StyledItem>
 					<StyledRectNone />
-					<StyledCircleIcon src={roadmapInactivePNG} />
+					<StyledCircleIcon src={roadmapActivePNG} />
 					<StyledTextContainer>
 						<StyledSpanPink>Debase Website V2</StyledSpanPink> goes live! Incorporates feedback from
 						community
