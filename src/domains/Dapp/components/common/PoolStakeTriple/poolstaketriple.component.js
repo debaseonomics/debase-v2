@@ -65,13 +65,13 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr, deba
 	const userListData = [
 		{
 			label: 'Unstaked (' + stakeText + ')',
-			value: walletBalance ? parseFloat(formatEther(walletBalance)).toFixed(4) * 1 : <Spinner size="xsmall" />,
+			value: walletBalance ? parseFloat(formatEther(walletBalance)).toFixed(14) * 1 : <Spinner size="xsmall" />,
 			tooltip: 'Your current balance that can be staked into the pool.'
 		},
 		{
 			label: 'Staked (' + stakeText + ')',
 			value: userStakedBalance ? (
-				parseFloat(formatEther(userStakedBalance)).toFixed(4) * 1
+				parseFloat(formatEther(userStakedBalance)).toFixed(14) * 1
 			) : (
 				<Spinner size="xsmall" />
 			),

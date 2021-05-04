@@ -1,6 +1,7 @@
 import { ethers } from 'ethers';
 import { CONTRACT_ADDRESS, ABI_POOL_TRIPLE, ABI_UNI } from '@constants';
 import axios from 'axios';
+import { formatEther, parseEther } from '../../../../node_modules/ethers/lib/utils';
 
 export default async () => {
 	try {
@@ -16,9 +17,9 @@ export default async () => {
 			'https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=0xd533a949740bb3306d119cc777fa900ba034cd52&vs_currencies=usd'
 		);
 
-		mphPrice = mphPrice.data['0x8888801af4d980682e47f1a9036e589479e835c5'].usd;
+		mphPrice = parseFloat(mphPrice.data['0x8888801af4d980682e47f1a9036e589479e835c5'].usd);
 
-		crvPrice = crvPrice.data['0xd533a949740bb3306d119cc777fa900ba034cd52'].usd;
+		crvPrice = parseFloat(crvPrice.data['0xd533a949740bb3306d119cc777fa900ba034cd52'].usd);
 
 		const poolContract = await new ethers.Contract(CONTRACT_ADDRESS.debaseEthPool, ABI_POOL_TRIPLE, provider);
 		const debaseContract = await new ethers.Contract(CONTRACT_ADDRESS.debase, ABI_POOL_TRIPLE, provider);
@@ -41,36 +42,36 @@ export default async () => {
 		const debaseAPR =
 			totalSupply == 0
 				? 0
-				: (rewardPercentage *
-						debaseTotalSupply /
-						(blockDuration * 14 / 86400) *
-						(debaseDaiReserves[0] / debaseDaiReserves[1]) *
-						365 /
-						(totalSupply * (2 * wethBalance * (ethDaiReserves[0] / ethDaiReserves[1]) / totalSupplyLp)) /
-						Math.pow(10, 18) *
-						100).toFixed(2);
+				: parseFloat(
+						(rewardPercentage *
+							debaseTotalSupply /
+							(blockDuration * 14 / 86400) *
+							(debaseDaiReserves[0] / debaseDaiReserves[1]) *
+							365 /
+							(totalSupply * (2 * wethBalance * (ethDaiReserves[0] / ethDaiReserves[1]) / totalSupplyLp)) /
+							Math.pow(10, 18) *
+							100).toFixed(2)
+					);
 
-		const mphAPR =
-			totalSupply == 0
-				? 0
-				: (20.97 /
-						(blockDuration * 14 / 86400) *
-						mphPrice *
-						365 /
-						(totalSupply * (2 * wethBalance * (ethDaiReserves[0] / ethDaiReserves[1]) / totalSupplyLp)) /
-						Math.pow(10, 18) *
-						100).toFixed(2);
+		const mphNum = 21 / (blockDuration.toNumber() * 14 / 86400) * mphPrice * 365;
+		const mphDom =
+			parseFloat(formatEther(totalSupply)) *
+			(2 *
+				parseFloat(formatEther(wethBalance)) *
+				(parseFloat(formatEther(ethDaiReserves[0])) / parseFloat(formatEther(ethDaiReserves[1]))) /
+				parseFloat(formatEther(totalSupplyLp)));
 
-		const crvAPR =
-			totalSupply == 0
-				? 0
-				: (1012 /
-						(blockDuration * 14 / 86400) *
-						crvPrice *
-						365 /
-						(totalSupply * (2 * wethBalance * (ethDaiReserves[0] / ethDaiReserves[1]) / totalSupplyLp)) /
-						Math.pow(10, 18) *
-						100).toFixed(2);
+		const mphAPR = totalSupply == 0 ? 0 : mphNum / mphDom;
+
+		const crvNum = 21 / (blockDuration.toNumber() * 14 / 86400) * crvPrice * 365;
+		const crvDom =
+			parseFloat(formatEther(totalSupply)) *
+			(2 *
+				parseFloat(formatEther(wethBalance)) *
+				(parseFloat(formatEther(ethDaiReserves[0])) / parseFloat(formatEther(ethDaiReserves[1]))) /
+				parseFloat(formatEther(totalSupplyLp)));
+
+		const crvAPR = totalSupply == 0 ? 0 : crvNum / crvDom;
 
 		return {
 			debaseAPR,
