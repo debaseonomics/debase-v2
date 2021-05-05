@@ -9,11 +9,25 @@ export const StyledHeader = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: -42px;
 `;
 
 export const StyledLogo = styled.img`
     width: 45px;
     height: 45px;
+`;
+
+export const StyledHeaderTitle1 = styled.img`
+    width: 352px;
+    height: 131px;
+    margin-left: -25px;
+`;
+
+export const StyledHeaderTitle2 = styled.img`
+    width: 363px;
+    height: 131px;
+    margin-left: -10px;
+    margin-right: -80px;
 `;
 
 export const StyledHeaderText1 = styled.span`
