@@ -11,9 +11,21 @@ import { parseEther } from 'ethers/lib/utils';
 import { CONTRACT_ADDRESS } from '@constants';
 import { SnackbarManagerContext } from '@dapp/managers';
 import InfoCard from '../InfoCard/infocard.component';
+import { request, gql } from 'graphql-request';
+import { ethers } from '../../../../../../node_modules/ethers/lib/index';
+
+const gqlQuery = gql`
+	query getUser($user: String!) {
+		user(id: $user) {
+			id
+			rewarded
+		}
+	}
+`;
 
 const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr, debaseAPR, mphAPR, crvAPR }) => {
 	const { library, account } = useWeb3React();
+	const [ rewarded, setRewarded ] = useState(0);
 
 	const [ isStakeLoading, setIsStakeLoading ] = useState(false);
 	const [ isUnstakeLoading, setIsUnstakeLoading ] = useState(false);
@@ -46,6 +58,17 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr, deba
 		fetcher: fetcher(library, poolABI)
 	});
 
+	async function getRewarded() {
+		const debaseData = await request(
+			'https://api.thegraph.com/subgraphs/name/debaseonomics/debaseethpool',
+			gqlQuery,
+			{
+				user: account.toLowerCase()
+			}
+		);
+		setRewarded(parseFloat(debaseData.user.rewarded));
+	}
+
 	useEffect(
 		() => {
 			library.on('block', () => {
@@ -54,6 +77,7 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr, deba
 				getWalletBalance(undefined, true);
 				getPoolEnabled(undefined, true);
 				getDebaseSupply(undefined, true);
+				getRewarded();
 			});
 			return () => {
 				library && library.removeAllListeners('block');
@@ -80,6 +104,17 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr, deba
 	];
 
 	const earnedListData = [
+		{
+			label: 'Lock Reward (DEBASE)',
+			value:
+				earned && debaseSupply ? (
+					(parseFloat(formatEther(earned[0].mul(debaseSupply).div(parseEther('1')))) + rewarded).toFixed(6) *
+					2
+				) : (
+					<Spinner size="xsmall" />
+				),
+			tooltip: 'Amount of DEBASE rewarded after 1 month'
+		},
 		{
 			label: 'Claimable (DEBASE)',
 			value:
@@ -118,11 +153,15 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr, deba
 			value: mphAPR,
 			tooltip: "Pool's annual percentage rate"
 		},
-
 		{
 			label: 'Total APR',
 			value: apr,
 			tooltip: "Pool's annual percentage rate"
+		},
+		{
+			label: 'Total APR + Lock Reward APR',
+			value: 3 * parseFloat(debaseAPR) + parseFloat(crvAPR) + parseFloat(mphAPR) + ' %',
+			tooltip: "Pool's annual percentage rate plus locked reward annual percentage rate"
 		}
 	];
 

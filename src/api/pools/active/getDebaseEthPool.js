@@ -63,7 +63,7 @@ export default async () => {
 
 		const mphAPR = totalSupply == 0 ? 0 : mphNum / mphDom;
 
-		const crvNum = 21 / (blockDuration.toNumber() * 14 / 86400) * crvPrice * 365;
+		const crvNum = 1020 / (blockDuration.toNumber() * 14 / 86400) * crvPrice * 365;
 		const crvDom =
 			parseFloat(formatEther(totalSupply)) *
 			(2 *
