@@ -3,22 +3,22 @@ import { DegovEthLpPool, DebaseDaiLpPool, DebaseEthLpPool, RandomizedCounterPool
 const POOLS_ROUTES = [
 	{
 		label: 'Degov-ETH LP Pool',
-		path: '/pools/active/degov-eth-lp-pool',
+		path: '/dashboard/pools/active/degov-eth-lp-pool',
 		component: <DegovEthLpPool />
 	},
 	{
 		label: 'DEBASE-ETH LP Pool',
-		path: '/pools/active/debase-eth-lp-pool',
+		path: '/dashboard/pools/active/debase-eth-lp-pool',
 		component: <DebaseEthLpPool />
 	},
 	{
 		label: 'DEBASE-DAI LP Pool',
-		path: '/pools/inactive/debase-dai-lp-pool',
+		path: '/dashboard/pools/inactive/debase-dai-lp-pool',
 		component: <DebaseDaiLpPool />
 	},
 	{
 		label: 'Randomized Counter Pool',
-		path: '/pools/inactive/randomized-counter-pool',
+		path: '/dashboard/pools/inactive/randomized-counter-pool',
 		component: <RandomizedCounterPool />
 	}
 ];

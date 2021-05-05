@@ -81,7 +81,7 @@ const Pools = () => {
 			<Grid>
 				{/* <PoolCard
 					label="DEBASE-ETH LP Pool"
-					routePath="/pools/active/debase-eth-lp-pool"
+					routePath="/dashboard/pools/active/debase-eth-lp-pool"
 					type="active"
 					linkData={[
 						{
@@ -101,7 +101,7 @@ const Pools = () => {
 				</PoolCard> */}
 				<PoolCard
 					label="DEGOV-ETH LP Pool"
-					routePath="/pools/active/degov-eth-lp-pool"
+					routePath="/dashboard/pools/active/degov-eth-lp-pool"
 					type="active"
 					linkData={[
 						{
@@ -128,7 +128,7 @@ const Pools = () => {
 			<Grid>
 				<PoolCard
 					label="DEBASE-DAI LP Pool"
-					routePath="/pools/inactive/debase-dai-lp-pool"
+					routePath="/dashboard/pools/inactive/debase-dai-lp-pool"
 					type="inactive"
 					linkData={[
 						{
@@ -143,7 +143,7 @@ const Pools = () => {
 				</PoolCard>
 				<PoolCard
 					label="Randomized Counter Pool"
-					routePath="/pools/inactive/randomized-counter-pool"
+					routePath="/dashboard/pools/inactive/randomized-counter-pool"
 					type="inactive"
 					linkData={[
 						{
