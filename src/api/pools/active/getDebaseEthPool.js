@@ -62,7 +62,7 @@ export default async () => {
 				(parseFloat(formatEther(ethDaiReserves[0])) / parseFloat(formatEther(ethDaiReserves[1]))) /
 				parseFloat(formatEther(totalSupplyLp)));
 
-		const mphAPR = totalSupply == 0 ? 0 : mphNum / mphDom;
+		const mphAPR = totalSupply == 0 ? 0 : mphNum / mphDom * 100;
 
 		const crvNum = 2040 * 12 * crvPrice;
 
@@ -73,7 +73,7 @@ export default async () => {
 				(parseFloat(formatEther(ethDaiReserves[0])) / parseFloat(formatEther(ethDaiReserves[1]))) /
 				parseFloat(formatEther(totalSupplyLp)));
 
-		const crvAPR = totalSupply == 0 ? 0 : crvNum / crvDom;
+		const crvAPR = totalSupply == 0 ? 0 : crvNum / crvDom * 100;
 
 		return {
 			debaseAPR,
