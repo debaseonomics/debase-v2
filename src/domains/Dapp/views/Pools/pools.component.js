@@ -87,7 +87,7 @@ const Pools = () => {
 						{
 							icon: <CodeIcon />,
 							info: 'Contract Link',
-							url: 'https://etherscan.io/address/0x1304a1D8BE22b9078ec3A5eF2ACb0FEf3C9C89E5'
+							url: 'https://etherscan.io/address/0x819e5792d36902Ab6a9BCd201D3c3BEA32281679'
 						},
 						{
 							icon: <AccountIcon />,
