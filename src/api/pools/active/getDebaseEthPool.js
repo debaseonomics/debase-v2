@@ -23,7 +23,7 @@ export default async () => {
 
 		const poolContract = await new ethers.Contract(CONTRACT_ADDRESS.debaseEthPool, ABI_POOL_TRIPLE, provider);
 		const debaseContract = await new ethers.Contract(CONTRACT_ADDRESS.debase, ABI_POOL_TRIPLE, provider);
-		const degovEthLpContract = await new ethers.Contract(CONTRACT_ADDRESS.degovEthLp, ABI_POOL_TRIPLE, provider);
+		const debaseEthLpContract = await new ethers.Contract(CONTRACT_ADDRESS.debaseEthLp, ABI_POOL_TRIPLE, provider);
 		const debaseDaiLpContract = await new ethers.Contract(CONTRACT_ADDRESS.debaseDaiLp, ABI_UNI, provider);
 		const ethDaiPoolContract = await new ethers.Contract(CONTRACT_ADDRESS.ethDaiPool, ABI_UNI, provider);
 
@@ -34,7 +34,7 @@ export default async () => {
 		const blockDuration = await poolContract.blockDuration();
 		const totalSupply = await poolContract.totalSupply();
 		const debaseTotalSupply = await debaseContract.totalSupply();
-		const totalSupplyLp = await degovEthLpContract.totalSupply();
+		const totalSupplyLp = await debaseEthLpContract.totalSupply();
 		const debaseDaiReserves = await debaseDaiLpContract.getReserves();
 		const ethDaiReserves = await ethDaiPoolContract.getReserves();
 		const wethBalance = await wethContract.balanceOf(CONTRACT_ADDRESS.debaseEthLp);
@@ -54,6 +54,7 @@ export default async () => {
 					);
 
 		const mphNum = 21 / (blockDuration.toNumber() * 14 / 86400) * mphPrice * 365;
+
 		const mphDom =
 			parseFloat(formatEther(totalSupply)) *
 			(2 *
