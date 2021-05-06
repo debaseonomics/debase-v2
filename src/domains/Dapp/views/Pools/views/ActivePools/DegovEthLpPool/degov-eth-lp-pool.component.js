@@ -11,7 +11,7 @@ const DebaseEthLpPool = () => {
 
 	return (
 		<Fragment>
-			<Section label="Degov ETH LP Pool" info="**update**">
+			<Section label="DEGOV ETH LP Pool" info="**update**">
 				{!active ? (
 					<DisconnectedWalletCard />
 				) : (

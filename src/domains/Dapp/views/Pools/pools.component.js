@@ -13,7 +13,7 @@ const Pools = () => {
 	const degovEthLPListData = [
 		{
 			label: 'Staked Token',
-			value: 'Degov-ETH LP',
+			value: 'DEGOV-ETH LP',
 			tooltip: 'Stake token pool accepts'
 		},
 		{

@@ -10,7 +10,7 @@ const DebaseEthLpPool = () => {
 
 	return (
 		<Fragment>
-			<Section label="Degov ETH LP Pool" info="**update**">
+			<Section label="Randomized Counter Pool" info="**update**">
 				{!active ? (
 					<DisconnectedWalletCard />
 				) : (
@@ -18,7 +18,7 @@ const DebaseEthLpPool = () => {
 						<PoolStake
 							poolAddress={CONTRACT_ADDRESS.randomizedCounter}
 							lpAddress={CONTRACT_ADDRESS.debaseDaiLp}
-							stakeText="DEGOV-ETH LP"
+							stakeText="DEBASE-DAI LP"
 							poolABI={ABI_POOL}
 							apr="0 %"
 						/>
