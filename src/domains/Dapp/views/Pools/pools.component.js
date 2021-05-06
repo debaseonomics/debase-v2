@@ -92,7 +92,7 @@ const Pools = () => {
 						{
 							icon: <AccountIcon />,
 							info: 'Buy Pool LP',
-							url: 'https://app.uniswap.org/#/add/0xa8e5533d1e22be2df5e9ad9f67dd22a4e7d5b371/ETH'
+							url: 'https://app.uniswap.org/#/add/v2/0x9248c485b0B80f76DA451f167A8db30F33C70907/ETH'
 						}
 					]}
 					isActive={pools.debaseEthPool ? pools.debaseEthPool.enabled : false}
@@ -112,7 +112,7 @@ const Pools = () => {
 						{
 							icon: <AccountIcon />,
 							info: 'Buy Pool LP',
-							url: 'https://app.uniswap.org/#/add/0x469e66e06fec34839e5eb1273ba85a119b8d702f/ETH'
+							url: 'https://app.uniswap.org/#/add/v2/0x469e66e06fec34839e5eb1273ba85a119b8d702f/ETH'
 						}
 					]}
 					isActive={pools.degovEthPool ? pools.degovEthPool.enabled : false}
