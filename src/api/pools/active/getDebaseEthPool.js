@@ -53,7 +53,7 @@ export default async () => {
 							100).toFixed(2)
 					);
 
-		const mphNum = 21 / (blockDuration.toNumber() * 14 / 86400) * mphPrice * 365;
+		const mphNum = 44 * mphPrice * 12;
 
 		const mphDom =
 			parseFloat(formatEther(totalSupply)) *
@@ -64,7 +64,8 @@ export default async () => {
 
 		const mphAPR = totalSupply == 0 ? 0 : mphNum / mphDom;
 
-		const crvNum = 1020 / (blockDuration.toNumber() * 14 / 86400) * crvPrice * 365;
+		const crvNum = 2040 * 12 * crvPrice;
+
 		const crvDom =
 			parseFloat(formatEther(totalSupply)) *
 			(2 *
