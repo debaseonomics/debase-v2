@@ -23,7 +23,7 @@ const Pools = () => {
 		},
 
 		{
-			label: 'APR',
+			label: 'Temp APR',
 			value: pools.degovEthPool ? pools.degovEthPool.apr + ' %' : <Spinner size="xsmall" />,
 			tooltip: "Pool's annual percentage rate"
 		}
