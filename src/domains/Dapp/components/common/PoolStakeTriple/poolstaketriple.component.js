@@ -77,7 +77,7 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr, deba
 				getWalletBalance(undefined, true);
 				getPoolEnabled(undefined, true);
 				getDebaseSupply(undefined, true);
-				getRewarded();
+				// getRewarded();
 			});
 			return () => {
 				library && library.removeAllListeners('block');
@@ -251,7 +251,7 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr, deba
 				<StyledCardInner>
 					<List data={userListData} />
 					<List color="primary" data={earnedListData} />
-					<List color="secundary" data={aprListData} />
+					{/* <List color="secundary" data={aprListData} /> */}
 				</StyledCardInner>
 			</InfoCard>
 

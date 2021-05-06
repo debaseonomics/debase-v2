@@ -41,11 +41,11 @@ const Pools = () => {
 			tooltip: 'Reward tokens pool gives'
 		},
 
-		{
-			label: 'APR',
-			value: pools.debaseEthPool ? pools.debaseEthPool.apr + ' %' : <Spinner size="xsmall" />,
-			tooltip: "Pool's annual percentage rate"
-		}
+		// {
+		// 	label: 'APR',
+		// 	value: pools.debaseEthPool ? pools.debaseEthPool.apr + ' %' : <Spinner size="xsmall" />,
+		// 	tooltip: "Pool's annual percentage rate"
+		// }
 	];
 
 	const debaseDaiLPListData = [
