@@ -68,8 +68,16 @@ const THEME_DARK = {
             inset 0 0 10px #75FF3499,
             inset 0 0 50px #42C80244
         `,
-    }
+    },
 
+    mediaQueries: {
+        xs: `@media screen and (min-width: 370px)`,
+        sm: `@media screen and (min-width: 576px)`,
+        md: `@media screen and (min-width: 852px)`,
+        lg: `@media screen and (min-width: 968px)`,
+        xl: `@media screen and (min-width: 1080px)`,
+        nav: `@media screen and (min-width: 968px)`,
+    }
 };
 
 export default THEME_DARK;
