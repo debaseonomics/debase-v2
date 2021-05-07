@@ -13,21 +13,39 @@ export const StyledHeader = styled.div`
 `;
 
 export const StyledLogo = styled.img`
-    width: 45px;
-    height: 45px;
+    width: 27px;
+    height: 27px;
+
+    ${({ theme }) => theme.mediaQueries.sm} {
+        width: 45px;
+        height: 45px;
+    }
 `;
 
 export const StyledHeaderTitle1 = styled.img`
-    width: 352px;
-    height: 131px;
+    width: 211px;
+    height: 79px;
     margin-left: -25px;
+
+    ${({ theme }) => theme.mediaQueries.sm} {
+        width: 352px;
+        height: 131px;
+        margin-left: -25px;
+    }
 `;
 
 export const StyledHeaderTitle2 = styled.img`
-    width: 363px;
-    height: 131px;
-    margin-left: -10px;
-    margin-right: -80px;
+    width: 217;
+    height: 79px;
+    margin-left: -50px;
+    margin-right: -55px;
+
+    ${({ theme }) => theme.mediaQueries.sm} {
+        width: 363px;
+        height: 131px;
+        margin-left: -10px;
+        margin-right: -80px;
+    }
 `;
 
 export const StyledHeaderText1 = styled.span`
@@ -56,30 +74,53 @@ export const StyledContent = styled.div`
 `
 
 export const StyledRectIcon = styled.img`
-    width: 31px;
-    height: 36px;
-    margin-right: 41px;
+    width: 18px;
+    height: 21px;
+    margin-right: 10px;
+
+    ${({ theme }) => theme.mediaQueries.sm} {
+        width: 31px;
+        height: 36px;
+        margin-right: 41px;
+    }
 `;
 
 export const StyledRectNone = styled.div`
-    width: 31px;
-    height: 36px;
-    margin-right: 41px;
+    width: 0px;
+    height: 21px;
+    margin-right: 10px;
+    padding-left: 18px;
+
+    ${({ theme }) => theme.mediaQueries.sm} {
+        padding-left: 31px;
+        height: 36px;
+        margin-right: 41px;
+    }
 `;
 
 export const StyledCircleIcon = styled.img`
-    width: 40px;
-    height: 39px;
-    margin-right: 30px;
+    width: 24px;
+    height: 23px;
+    margin-right: 18px;
+
+    ${({ theme }) => theme.mediaQueries.sm} {
+        width: 40px;
+        height: 39px;
+        margin-right: 30px;
+    }
 `;
 
 export const StyledSplitter = styled.div`
     position: absolute;
-    left: 100px;
     top: 0px;
+    left: 48px;
     border: 1px solid #707070;
     height: 100%;
     z-index: -1;
+
+    ${({ theme }) => theme.mediaQueries.sm} {
+        left: 100px;
+    }
 `;
 
 export const StyledItem = styled.div`
@@ -90,9 +131,13 @@ export const StyledItem = styled.div`
 
 export const StyledTextContainer = styled.div`
     font-family: BrandonGrotesqueWeb-Medium;
-    font-size: 21.5px;
+    font-size: 15px;
     color: white;
     padding-top: 7px;
+
+    ${({ theme }) => theme.mediaQueries.sm} {
+        font-size: 21.5px;
+    }
 `;
 
 export const StyledSpanPink = styled.a`
