@@ -12,7 +12,6 @@ import { CONTRACT_ADDRESS } from '@constants';
 import { SnackbarManagerContext } from '@dapp/managers';
 import InfoCard from '../InfoCard/infocard.component';
 import { request, gql } from 'graphql-request';
-import { ethers } from '../../../../../../node_modules/ethers/lib/index';
 
 const gqlQuery = gql`
 	query getUser($user: String!) {
