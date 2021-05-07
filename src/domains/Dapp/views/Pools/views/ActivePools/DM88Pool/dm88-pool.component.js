@@ -2,7 +2,7 @@ import { Fragment, useContext, useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { PoolAprContext } from '@dapp/contexts';
 import { CONTRACT_ADDRESS } from '@constants';
-import { Section, Grid, DisconnectedWalletCard, InfoCard, List } from '@dapp/components';
+import { Section, Grid, InfoCard, DisconnectedWalletCard } from '@dapp/components';
 import { ABI_MPH88, ABI_LP } from '@constants/index';
 import { SnackbarManagerContext } from '@dapp/managers';
 import { fetcher } from '@utils';
@@ -11,6 +11,7 @@ import { Contract } from 'ethers';
 import { request, gql } from 'graphql-request';
 import { parseEther, formatEther } from '@ethersproject/units';
 import { StyledPoolStake, StyledCardInner } from './dm88-pool.styles';
+import { List, Spinner, Flexbox, Input, Button } from '@core/components';
 
 const DM88Pool = () => {
 	const { active, library, account } = useWeb3React();
@@ -20,12 +21,14 @@ const DM88Pool = () => {
 	const [ stakeInputValue, setStakeInputValue ] = useState('');
 
 	const [ isStakeLoading, setIsStakeLoading ] = useState(false);
+	const [ isStakingActive, setIsStakingActive ] = useState(false);
+
 	const [ isWithdrawLoading, setIsWithdrawLoading ] = useState(false);
 	const [ isClaimLoading, setIsClaimLoading ] = useState(false);
 	const [ selectedDepositIndex, setSelectedDepositIndex ] = useState(0);
 	const [ depositIds, setDepositIds ] = useState([]);
 
-	const { data: lockPeriod } = useSWR([ CONTRACT_ADDRESS.mph88Pool, 'lockPeriod' ], {
+	const { data: lockPeriod, mutate: getLockPeriod } = useSWR([ CONTRACT_ADDRESS.mph88Pool, 'lockPeriod' ], {
 		fetcher: fetcher(library, ABI_MPH88)
 	});
 
@@ -51,12 +54,14 @@ const DM88Pool = () => {
 					getDebaseBalance(undefined, true);
 					getDaiBalance(undefined, true);
 					getPoolEnabled(undefined, true);
+					getLockPeriod(undefined, true);
+					findDepositID();
 				});
 			return () => {
 				library && library.removeAllListeners('block');
 			};
 		},
-		[ library, getDebaseBalance, getDaiBalance, getPoolEnabled ]
+		[ library, getDebaseBalance, getDaiBalance, getPoolEnabled, getLockPeriod ]
 	);
 
 	const depositsQuery = gql`
@@ -76,6 +81,7 @@ const DM88Pool = () => {
 	`;
 
 	async function handleStake() {
+		if (!isStakingActive) return setIsStakingActive(true);
 		setIsStakeLoading(true);
 		const tokenContract = new Contract(CONTRACT_ADDRESS.debaseDaiLp, ABI_LP, library.getSigner());
 		const poolContract = new Contract(CONTRACT_ADDRESS.mph88Pool, ABI_MPH88, library.getSigner());
@@ -89,7 +95,6 @@ const DM88Pool = () => {
 			}
 			transaction = await poolContract.deposit(toStake);
 			await transaction.wait(1);
-			await getStakedBalance();
 
 			openSnackbar({
 				message: 'Staking success',
@@ -144,7 +149,8 @@ const DM88Pool = () => {
 
 		while (true) {
 			try {
-				let depositId = await poolContract.depositIds(account, x);
+				let depositId = await poolContract.depositIds('0x3c4dd566C5F9B441e59cBE4dA0822B81B9500afD', x);
+
 				let depositInfo = await poolContract.deposits(depositId);
 				let fundingInfo = await request(
 					'https://api.thegraph.com/subgraphs/name/bacon-labs/eighty-eight-mph',
@@ -177,7 +183,7 @@ const DM88Pool = () => {
 	}
 
 	async function handleWithdrawAll() {
-		setIsClaimLoading(true);
+		setIsWithdrawLoading(true);
 		const poolContract = new Contract(CONTRACT_ADDRESS.mph88Pool, ABI_MPH88, library.getSigner());
 
 		if (depositIds.length) {
@@ -216,14 +222,14 @@ const DM88Pool = () => {
 			});
 		}
 
-		setIsClaimLoading(false);
+		setIsWithdrawLoading(false);
 	}
 
 	// List data arrays
 	const poolListData = [
 		{
 			label: 'Lock Period',
-			value: lockPeriod ? parseFloat(lockPeriod.toNumber()).toFixed(2) : <Spinner size="xsmall" />,
+			value: lockPeriod ? lockPeriod.toNumber() : <Spinner size="xsmall" />,
 			tooltip: 'LP limit per wallet'
 		}
 	];
@@ -242,16 +248,11 @@ const DM88Pool = () => {
 	];
 
 	const handleMaxStake = () => {
-		setStakeInputValue(formatEther(walletBalance));
+		setStakeInputValue(formatEther(debaseBalance));
 	};
-	const handleMaxUnstake = () => {
-		setUnstakeInputValue(formatEther(userStakedBalance));
-	};
+
 	const onChangeStakeInput = (value) => {
 		setStakeInputValue(value);
-	};
-	const onChangeUnstakeInput = (value) => {
-		setUnstakeInputValue(value);
 	};
 
 	return (
@@ -285,28 +286,19 @@ const DM88Pool = () => {
 									)}
 									{poolEnabled && (
 										<Button isLoading={isStakeLoading} onClick={handleStake}>
-											stake
+											deposit
 										</Button>
 									)}
-
-									{isUnstakingActive && (
-										<Flexbox direction="horizontal" gap="10px">
-											<Input
-												value={unstakeInputValue}
-												placeholder="Unstake amount"
-												onChange={onChangeUnstakeInput}
-											/>
-											<Button color="primary" onClick={handleMaxUnstake}>
-												max
+									{depositIds.length && (
+										<Fragment>
+											<Button isLoading={isWithdrawLoading} onClick={handleWithdraw}>
+												withdraw selected deposit
 											</Button>
-										</Flexbox>
+											<Button isLoading={isWithdrawLoading} onClick={handleWithdrawAll}>
+												withdraw all deposits
+											</Button>
+										</Fragment>
 									)}
-									<Button isLoading={isUnstakeLoading} onClick={handleUnstake}>
-										unstake
-									</Button>
-									<Button isLoading={isClaimLoading} onClick={handleClaim}>
-										claim reward
-									</Button>
 								</InfoCard>
 							)}
 						</StyledPoolStake>

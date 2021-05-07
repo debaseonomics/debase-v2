@@ -6,7 +6,8 @@ import {
 	TabbedChartCard,
 	Token,
 	PoolStake,
-	PoolStakeTriple
+	PoolStakeTriple,
+	InfoCard
 } from './common';
 import { Background, Navigation, Section, Sidebar, Topbar, Grid } from './layout';
 
@@ -24,5 +25,6 @@ export {
 	Topbar,
 	Grid,
 	PoolStake,
+	InfoCard,
 	PoolStakeTriple
 };
