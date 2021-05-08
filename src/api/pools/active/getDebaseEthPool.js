@@ -75,14 +75,19 @@ export default async () => {
 
 		const crvAPR = totalSupply == 0 ? 0 : crvNum / crvDom * 100;
 
+		const debaseAPY = Math.pow(1 + debaseAPR / (100 * 365), 365) * 100;
+		const mphAPY = Math.pow(1 + mphAPR / (100 * 365), 365) * 100;
+		const crvAPY = Math.pow(1 + crvAPR / (100 * 365), 365) * 100;
+
 		return {
-			debaseAPR,
-			mphAPR,
-			crvAPR,
-			apr: debaseAPR + mphAPR + crvAPR,
+			debaseAPY: parseFloat(debaseAPY).toFixed(2) + ' %',
+			mphAPY: parseFloat(mphAPY).toFixed(2) + ' %',
+			crvAPY: parseFloat(crvAPY).toFixed(2) + ' %',
+			apy: parseFloat(debaseAPY + mphAPY + crvAPY).toFixed(2) + ' %',
+			apyVested: parseFloat(3 * debaseAPY + mphAPY + crvAPY).toFixed(2) + ' %',
 			enabled: enabled
 		};
 	} catch (err) {
-		return { apr: 0, mphAPR: 0, crvAPR: 0, debaseAPR: 0, enabled: false };
+		return { apr: 0, mphAPY: 0, crvAPY: 0, debaseAPY: 0, enabled: false };
 	}
 };

@@ -5,6 +5,7 @@ import { CONTRACT_ADDRESS } from '@constants';
 import { Section, Grid, DisconnectedWalletCard } from '@dapp/components';
 import { PoolStakeTriple } from '@dapp/components/index';
 import { ABI_POOL_TRIPLE } from '@constants/index';
+import { Spinner } from '@core/components/index';
 
 const DebaseEthLpPool = () => {
 	const { active } = useWeb3React();
@@ -22,10 +23,11 @@ const DebaseEthLpPool = () => {
 							lpAddress={CONTRACT_ADDRESS.debaseEthLp}
 							stakeText="DEBASE-ETH LP"
 							poolABI={ABI_POOL_TRIPLE}
-							apr={pools.debaseEthPool ? pools.debaseEthPool.apr + ' %' : '0 %'}
-							debaseAPR={pools.debaseEthPool ? pools.debaseEthPool.debaseAPR + ' %' : '0 %'}
-							mphAPR={pools.debaseEthPool ? pools.debaseEthPool.mphAPR + ' %' : '0 %'}
-							crvAPR={pools.debaseEthPool ? pools.debaseEthPool.crvAPR + ' %' : '0 %'}
+							apy={pools.debaseEthPool ? pools.debaseEthPool.apy : <Spinner size="xsmall" />}
+							apyVested={pools.debaseEthPool ? pools.debaseEthPool.apyVested : <Spinner size="xsmall" />}
+							debaseAPY={pools.debaseEthPool ? pools.debaseEthPool.debaseAPY : <Spinner size="xsmall" />}
+							mphAPY={pools.debaseEthPool ? pools.debaseEthPool.mphAPY : <Spinner size="xsmall" />}
+							crvAPY={pools.debaseEthPool ? pools.debaseEthPool.crvAPY : <Spinner size="xsmall" />}
 						/>
 					</Grid>
 				)}

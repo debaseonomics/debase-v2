@@ -12,7 +12,6 @@ import { CONTRACT_ADDRESS } from '@constants';
 import { SnackbarManagerContext } from '@dapp/managers';
 import InfoCard from '../InfoCard/infocard.component';
 import { request, gql } from 'graphql-request';
-import { ethers } from '../../../../../../node_modules/ethers/lib/index';
 
 const gqlQuery = gql`
 	query getUser($user: String!) {
@@ -23,7 +22,7 @@ const gqlQuery = gql`
 	}
 `;
 
-const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr, debaseAPR, mphAPR, crvAPR }) => {
+const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apy, apyVested, debaseAPY, mphAPY, crvAPY }) => {
 	const { library, account } = useWeb3React();
 	const [ rewarded, setRewarded ] = useState(0);
 
@@ -145,27 +144,27 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr, deba
 	const aprListData = [
 		{
 			label: 'DEBASE APR',
-			value: debaseAPR,
+			value: debaseAPY,
 			tooltip: "Pool's annual percentage rate"
 		},
 		{
-			label: 'CRV APR',
-			value: crvAPR,
+			label: 'CRV APY',
+			value: crvAPY,
 			tooltip: "Pool's annual percentage rate"
 		},
 		{
-			label: 'MPH APR',
-			value: mphAPR,
+			label: 'MPH APY',
+			value: mphAPY,
 			tooltip: "Pool's annual percentage rate"
 		},
 		{
-			label: 'Total APR',
-			value: apr,
+			label: 'Total APY',
+			value: apy,
 			tooltip: "Pool's annual percentage rate"
 		},
 		{
-			label: 'Total APR + Lock Reward APR',
-			value: 3 * parseFloat(debaseAPR) + parseFloat(crvAPR) + parseFloat(mphAPR) + ' %',
+			label: 'Total APY (Vested)',
+			value: apyVested,
 			tooltip: "Pool's annual percentage rate plus locked reward annual percentage rate"
 		}
 	];
