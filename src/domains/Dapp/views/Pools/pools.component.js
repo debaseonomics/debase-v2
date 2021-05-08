@@ -25,7 +25,7 @@ const Pools = () => {
 		{
 			label: 'Temp APY',
 			value: pools.degovEthPool ? pools.degovEthPool.apy : <Spinner size="xsmall" />,
-			tooltip: "Pool's annual percentage rate"
+			tooltip: 'Compounded Daily'
 		}
 	];
 
@@ -48,7 +48,7 @@ const Pools = () => {
 			) : (
 				<Spinner size="xsmall" />
 			),
-			tooltip: "Pool's annual percentage rate"
+			tooltip: 'Compounded Daily'
 		}
 	];
 

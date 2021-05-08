@@ -158,14 +158,9 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apy, apyV
 			tooltip: "Pool's annual percentage rate"
 		},
 		{
-			label: 'Total APY',
-			value: apy,
-			tooltip: "Pool's annual percentage rate"
-		},
-		{
-			label: 'Total APY (Vested)',
-			value: apyVested,
-			tooltip: "Pool's annual percentage rate plus locked reward annual percentage rate"
+			label: 'APY/APY (Vested)',
+			value: apy + '/' + apyVested,
+			tooltip: 'Compounded Daily'
 		}
 	];
 
