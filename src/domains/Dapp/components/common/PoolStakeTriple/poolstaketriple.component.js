@@ -143,7 +143,7 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apy, apyV
 
 	const aprListData = [
 		{
-			label: 'DEBASE APR',
+			label: 'DEBASE APY',
 			value: debaseAPY,
 			tooltip: "Pool's annual percentage rate"
 		},
