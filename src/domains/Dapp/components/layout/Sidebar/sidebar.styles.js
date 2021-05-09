@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const StyledSidebar = styled.div`
 	position: relative;
-	display: flex;
+	display: none;
 	flex-direction: column;
 	gap: 20px;
 	width: 240px;
@@ -12,6 +12,10 @@ export const StyledSidebar = styled.div`
 	scrollbar-width: none;
 	::-webkit-scrollbar {
 		display: none;
+	}
+
+	${({ theme }) => theme.mediaQueries.xl} {
+		display: flex;
 	}
 `;
 

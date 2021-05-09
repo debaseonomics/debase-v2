@@ -23,9 +23,9 @@ const Pools = () => {
 		},
 
 		{
-			label: 'Temp APR',
-			value: pools.degovEthPool ? pools.degovEthPool.apr + ' %' : <Spinner size="xsmall" />,
-			tooltip: "Pool's annual percentage rate"
+			label: 'Temp APY',
+			value: pools.degovEthPool ? pools.degovEthPool.apy : <Spinner size="xsmall" />,
+			tooltip: 'Compounded Daily'
 		}
 	];
 
@@ -42,9 +42,13 @@ const Pools = () => {
 		},
 
 		{
-			label: 'APR',
-			value: pools.debaseEthPool ? pools.debaseEthPool.apr + ' %' : <Spinner size="xsmall" />,
-			tooltip: "Pool's annual percentage rate"
+			label: 'APY/APY (Vested)',
+			value: pools.debaseEthPool ? (
+				pools.debaseEthPool.apy + '/' + pools.debaseEthPool.apyVested
+			) : (
+				<Spinner size="xsmall" />
+			),
+			tooltip: 'Compounded Daily'
 		}
 	];
 
@@ -56,7 +60,7 @@ const Pools = () => {
 		},
 
 		{
-			label: 'APR',
+			label: 'APY',
 			value: '0 %',
 			tooltip: "Pool's annual percentage rate"
 		}
@@ -70,7 +74,7 @@ const Pools = () => {
 		},
 
 		{
-			label: 'APR',
+			label: 'APY',
 			value: '0 %',
 			tooltip: "Pool's annual percentage rate"
 		}

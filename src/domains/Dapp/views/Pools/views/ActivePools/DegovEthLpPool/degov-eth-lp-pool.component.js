@@ -4,6 +4,7 @@ import { PoolAprContext } from '@dapp/contexts';
 import { CONTRACT_ADDRESS } from '@constants';
 import { Section, Grid, PoolStake, DisconnectedWalletCard } from '@dapp/components';
 import { ABI_POOL } from '@constants/index';
+import { Spinner } from '@core/components/index';
 
 const DebaseEthLpPool = () => {
 	const { active } = useWeb3React();
@@ -21,7 +22,7 @@ const DebaseEthLpPool = () => {
 							lpAddress={CONTRACT_ADDRESS.degovEthLp}
 							stakeText="DEGOV-ETH LP"
 							poolABI={ABI_POOL}
-							apr={pools.degovEthPool ? pools.degovEthPool.apr + ' %' : '0 %'}
+							apy={pools.degovEthPool ? pools.degovEthPool.apy : <Spinner size="xsmall" />}
 						/>
 					</Grid>
 				)}

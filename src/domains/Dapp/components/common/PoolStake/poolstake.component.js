@@ -12,12 +12,13 @@ import { SnackbarManagerContext } from '@dapp/managers';
 import InfoCard from '../InfoCard/infocard.component';
 import CONTRACT_ADDRESS from '@constants/contract-address.constant';
 
-const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr }) => {
+const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apy }) => {
 	const { library, account } = useWeb3React();
 
 	const [ isStakeLoading, setIsStakeLoading ] = useState(false);
 	const [ isUnstakeLoading, setIsUnstakeLoading ] = useState(false);
 	const [ isClaimLoading, setIsClaimLoading ] = useState(false);
+	const [ isClaimAndUnstakeLoading, setIsClaimAndUnstakeLoading ] = useState(false);
 
 	const [ isStakingActive, setIsStakingActive ] = useState(false);
 	const [ isUnstakingActive, setIsUnstakingActive ] = useState(false);
@@ -140,9 +141,9 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr }) =>
 
 	const aprListData = [
 		{
-			label: 'Temp APR',
-			value: apr,
-			tooltip: "Pool's annual percentage rate"
+			label: 'Temp APY',
+			value: apy,
+			tooltip: 'Compounded Daily'
 		}
 	];
 
@@ -213,6 +214,28 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr }) =>
 		}
 		setIsClaimLoading(false);
 	}
+
+	async function handleClaimRewardThenUnstake() {
+		setIsClaimAndUnstakeLoading(true);
+		const poolContract = new Contract(poolAddress, ABI_POOL, library.getSigner());
+
+		try {
+			const transaction = await poolContract.exit();
+			await transaction.wait(1);
+
+			openSnackbar({
+				message: 'Claim and unstake successfully executed',
+				status: 'success'
+			});
+		} catch (error) {
+			openSnackbar({
+				message: 'Claim and unstake failed, please try again',
+				status: 'error'
+			});
+		}
+		setIsClaimAndUnstakeLoading(false);
+	}
+
 	const handleMaxStake = () => {
 		setStakeInputValue(formatEther(walletBalance));
 	};
@@ -269,6 +292,9 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr }) =>
 					</Button>
 					<Button isLoading={isClaimLoading} onClick={handleClaim}>
 						claim reward
+					</Button>
+					<Button isLoading={isClaimAndUnstakeLoading} onClick={handleClaimRewardThenUnstake}>
+						claim reward and unstake
 					</Button>
 				</InfoCard>
 			)}

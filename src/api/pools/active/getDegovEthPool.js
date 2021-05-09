@@ -25,18 +25,22 @@ export default async () => {
 		const ethDaiReserves = await ethDaiPoolContract.getReserves();
 		const wethBalance = await wethContract.balanceOf(CONTRACT_ADDRESS.degovEthLp);
 
+		const apr =
+			totalSupply == 0
+				? 0
+				: rewardPercentage *
+					debaseTotalSupply /
+					(blockDuration * 14 / 86400) *
+					(debaseDaiReserves[0] / debaseDaiReserves[1]) *
+					365 /
+					(totalSupply * (2 * wethBalance * (ethDaiReserves[0] / ethDaiReserves[1]) / totalSupplyLp)) /
+					Math.pow(10, 18) *
+					100;
+
+		const apy = Math.pow(1 + apr / (100 * 365), 365) * 100;
+
 		return {
-			apr:
-				totalSupply == 0
-					? 0
-					: (rewardPercentage *
-							debaseTotalSupply /
-							(blockDuration * 14 / 86400) *
-							(debaseDaiReserves[0] / debaseDaiReserves[1]) *
-							365 /
-							(totalSupply * (2 * wethBalance * (ethDaiReserves[0] / ethDaiReserves[1]) / totalSupplyLp)) /
-							Math.pow(10, 18) *
-							100).toFixed(2),
+			apy: parseFloat(apy).toFixed(2) + ' %',
 			enabled: enabled
 		};
 	} catch (err) {

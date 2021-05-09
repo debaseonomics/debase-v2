@@ -22,13 +22,14 @@ const gqlQuery = gql`
 	}
 `;
 
-const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr, debaseAPR, mphAPR, crvAPR }) => {
+const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apy, apyVested, debaseAPY, mphAPY, crvAPY }) => {
 	const { library, account } = useWeb3React();
 	const [ rewarded, setRewarded ] = useState(0);
 
 	const [ isStakeLoading, setIsStakeLoading ] = useState(false);
 	const [ isUnstakeLoading, setIsUnstakeLoading ] = useState(false);
 	const [ isClaimLoading, setIsClaimLoading ] = useState(false);
+	const [ isClaimAndUnstakeLoading, setIsClaimAndUnstakeLoading ] = useState(false);
 
 	const [ isStakingActive, setIsStakingActive ] = useState(false);
 	const [ isUnstakingActive, setIsUnstakingActive ] = useState(false);
@@ -65,7 +66,11 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr, deba
 				user: account.toLowerCase()
 			}
 		);
-		setRewarded(parseFloat(debaseData.user.rewarded));
+		try {
+			setRewarded(parseFloat(debaseData.user.rewarded));
+		} catch (error) {
+			setRewarded(0);
+		}
 	}
 
 	useEffect(
@@ -138,29 +143,24 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr, deba
 
 	const aprListData = [
 		{
-			label: 'DEBASE APR',
-			value: debaseAPR,
+			label: 'DEBASE APY',
+			value: debaseAPY,
 			tooltip: "Pool's annual percentage rate"
 		},
 		{
-			label: 'CRV APR',
-			value: crvAPR,
+			label: 'CRV APY',
+			value: crvAPY,
 			tooltip: "Pool's annual percentage rate"
 		},
 		{
-			label: 'MPH APR',
-			value: mphAPR,
+			label: 'MPH APY',
+			value: mphAPY,
 			tooltip: "Pool's annual percentage rate"
 		},
 		{
-			label: 'Total APR',
-			value: apr,
-			tooltip: "Pool's annual percentage rate"
-		},
-		{
-			label: 'Total APR + Lock Reward APR',
-			value: 3 * parseFloat(debaseAPR) + parseFloat(crvAPR) + parseFloat(mphAPR) + ' %',
-			tooltip: "Pool's annual percentage rate plus locked reward annual percentage rate"
+			label: 'APY/APY (Vested)',
+			value: apy + '/' + apyVested,
+			tooltip: 'Compounded Daily'
 		}
 	];
 
@@ -231,6 +231,28 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr, deba
 		}
 		setIsClaimLoading(false);
 	}
+
+	async function handleClaimRewardThenUnstake() {
+		setIsClaimAndUnstakeLoading(true);
+		const poolContract = new Contract(poolAddress, ABI_POOL, library.getSigner());
+
+		try {
+			const transaction = await poolContract.exit();
+			await transaction.wait(1);
+
+			openSnackbar({
+				message: 'Claim and unstake successfully executed',
+				status: 'success'
+			});
+		} catch (error) {
+			openSnackbar({
+				message: 'Claim and unstake failed, please try again',
+				status: 'error'
+			});
+		}
+		setIsClaimAndUnstakeLoading(false);
+	}
+
 	const handleMaxStake = () => {
 		setStakeInputValue(formatEther(walletBalance));
 	};
@@ -287,6 +309,9 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apr, deba
 					</Button>
 					<Button isLoading={isClaimLoading} onClick={handleClaim}>
 						claim reward
+					</Button>
+					<Button isLoading={isClaimAndUnstakeLoading} onClick={handleClaimRewardThenUnstake}>
+						claim reward and unstake
 					</Button>
 				</InfoCard>
 			)}
