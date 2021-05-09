@@ -7,11 +7,12 @@ import { ABI_MPH88, ABI_LP } from '@constants/index';
 import { SnackbarManagerContext } from '@dapp/managers';
 import { fetcher } from '@utils';
 import useSWR from 'swr';
-import { Contract } from 'ethers';
+import { Contract, BigNumber } from 'ethers';
 import { request, gql } from 'graphql-request';
 import { parseEther, formatEther } from '@ethersproject/units';
-import { StyledPoolStake, StyledCardInner } from './dm88-pool.styles';
+import { StyledPoolStake, StyledCardInner, StyledDropdown, StyledLabel, StyledSelect } from './dm88-pool.styles';
 import { List, Spinner, Flexbox, Input, Button } from '@core/components';
+import {DateTime} from "luxon";
 
 const DM88Pool = () => {
 	const { active, library, account } = useWeb3React();
@@ -27,6 +28,8 @@ const DM88Pool = () => {
 	const [ isClaimLoading, setIsClaimLoading ] = useState(false);
 	const [ selectedDepositIndex, setSelectedDepositIndex ] = useState(0);
 	const [ depositIds, setDepositIds ] = useState([]);
+
+	const TOTAL_GONS = BigNumber.from('115792089237316195423570985008687907853269984665640564000000000000000000000000');
 
 	const { data: lockPeriod, mutate: getLockPeriod } = useSWR([ CONTRACT_ADDRESS.mph88Pool, 'lockPeriod' ], {
 		fetcher: fetcher(library, ABI_MPH88)
@@ -45,6 +48,14 @@ const DM88Pool = () => {
 
 	const { data: daiBalance, mutate: getDaiBalance } = useSWR([ CONTRACT_ADDRESS.dai, 'balanceOf', account ], {
 		fetcher: fetcher(library, ABI_LP)
+	});
+
+	const { data: debaseSupply, mutate: getDebaseSupply } = useSWR([ CONTRACT_ADDRESS.debase, 'totalSupply' ], {
+		fetcher: fetcher(library, ABI_LP)
+	});
+
+	const { data: debaseAccrued, mutate: getDebaseAccrued } = useSWR([ CONTRACT_ADDRESS.mph88Pool, 'earned', selectedDepositIndex ], {
+		fetcher: fetcher(library, ABI_MPH88)
 	});
 
 	useEffect(
@@ -149,7 +160,7 @@ const DM88Pool = () => {
 
 		while (true) {
 			try {
-				let depositId = await poolContract.depositIds('0x3c4dd566C5F9B441e59cBE4dA0822B81B9500afD', x);
+				let depositId = await poolContract.depositIds('0xA6D6A1320fE6e26474b74623d4cDC02BA56073b1', x);
 
 				let depositInfo = await poolContract.deposits(depositId);
 				let fundingInfo = await request(
@@ -247,6 +258,37 @@ const DM88Pool = () => {
 		}
 	];
 
+	const depositListData = [
+		{
+			label: 'Deposit unlocks in',
+			value: depositIds.length ? DateTime.fromSeconds(depositIds[selectedDepositIndex].maturationTimestamp.toNumber()).toRelative({ round: false}) : <Spinner size="xsmall" /> ,
+		},
+		{
+			label: 'Deposit Lp Staked',
+			value: depositIds.length ? parseFloat(formatEther(depositIds[selectedDepositIndex].amount)).toFixed(8) * 1 : <Spinner size="xsmall" />
+		},
+		{
+			label: 'Dai Unlocked From Lp',
+			value: depositIds.length ? parseFloat(formatEther(depositIds[selectedDepositIndex].daiAmount)).toFixed(8) * 1 : <Spinner size="xsmall" />
+		},
+		{
+			label: 'Dai earned from deposit',
+			value: depositIds.length ? parseFloat(depositIds[selectedDepositIndex].interestEarnedOnDai).toFixed(8) * 1 : <Spinner size="xsmall" />
+		},
+		{
+			label: 'Debase Unlocked From Lp',
+			value: depositIds.length && debaseSupply ? parseFloat(formatEther(depositIds[selectedDepositIndex].debaseReward.div(TOTAL_GONS.div(debaseSupply)))).toFixed(8) : <Spinner size="xsmall" />
+		},
+		{
+			label: '88Mph Reward',
+			value: depositIds.length ? (parseFloat(depositIds[selectedDepositIndex].mphReward) * 0.51).toFixed(8) : <Spinner size="xsmall" />
+		},
+		{
+			label: 'Debase Accrued',
+			value: depositIds.length && debaseAccrued && debaseSupply ? (parseFloat(formatEther(debaseAccrued.mul(debaseSupply).div(parseEther('1')))).toFixed(8) * 1) : <Spinner size="xsmall" />
+		},
+	];
+
 	const handleMaxStake = () => {
 		setStakeInputValue(formatEther(debaseBalance));
 	};
@@ -263,6 +305,17 @@ const DM88Pool = () => {
 				) : (
 					<Grid>
 						<StyledPoolStake>
+							<InfoCard>
+								<StyledDropdown>
+									<StyledLabel>Deposit Ids</StyledLabel>
+									<div>
+										<StyledSelect onChange={(event) => setSelectedDepositIndex(event.target.value)}>
+											{depositIds.map((ele, index) => <option key={ele + index}>{index}</option>)}
+										</StyledSelect>
+									</div>
+								</StyledDropdown>
+								<List data={depositListData} />
+							</InfoCard>
 							<InfoCard>
 								<StyledCardInner>
 									<List data={poolListData} />
