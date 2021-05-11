@@ -66,13 +66,15 @@ const DM88Pool = () => {
 					getDaiBalance(undefined, true);
 					getPoolEnabled(undefined, true);
 					getLockPeriod(undefined, true);
+					getDebaseSupply(undefined, true);
+					getDebaseAccrued(undefined, true);
 					findDepositID();
 				});
 			return () => {
 				library && library.removeAllListeners('block');
 			};
 		},
-		[ library, getDebaseBalance, getDaiBalance, getPoolEnabled, getLockPeriod ]
+		[ library, getDebaseBalance, getDaiBalance, getPoolEnabled, getLockPeriod, getDebaseSupply, getDebaseAccrued ]
 	);
 
 	const depositsQuery = gql`
@@ -290,10 +292,14 @@ const DM88Pool = () => {
 	];
 
 	const handleMaxStake = () => {
-		setStakeInputValue(formatEther(debaseBalance));
+		setStakeInputValue(formatEther(Math.min(debaseBalance, daiBalance)));
 	};
 
-	const onChangeStakeInput = (value) => {
+	const onChangeDebaseStakeInput = (value) => {
+		setStakeInputValue(value);
+	};
+
+	const onChangeDaiStakeInput = (value) => {
 		setStakeInputValue(value);
 	};
 
@@ -326,15 +332,24 @@ const DM88Pool = () => {
 							{poolEnabled !== undefined && (
 								<InfoCard gutter={20}>
 									{isStakingActive && (
-										<Flexbox direction="horizontal" gap="10px">
-											<Input
-												value={stakeInputValue}
-												placeholder="Stake amount"
-												onChange={onChangeStakeInput}
-											/>
-											<Button color="primary" onClick={handleMaxStake}>
-												max
-											</Button>
+										<Flexbox direction="column" gap="10px">
+											<Flexbox direction="horizontal" gap="10px">
+												<Input
+													value={stakeInputValue}
+													placeholder="Debase amount"
+													onChange={onChangeDebaseStakeInput}
+												/>
+											</Flexbox>
+											<Flexbox direction="horizontal" gap="10px">
+												<Input
+													value={stakeInputValue}
+													placeholder="Dai amount"
+													onChange={onChangeDaiStakeInput}
+												/>
+												<Button color="primary" onClick={handleMaxStake}>
+													max
+												</Button>
+											</Flexbox>
 										</Flexbox>
 									)}
 									{poolEnabled && (
