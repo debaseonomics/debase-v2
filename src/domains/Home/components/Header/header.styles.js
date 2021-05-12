@@ -77,7 +77,7 @@ export const StyledDocumentationLink = styled.a`
     margin-bottom: 8px;
     width: 161px;
     text-align: left;
-    color: white;
+    color: grey;
     
     @media only screen and (max-width: 1440px) {
         font-size: 18px;
