@@ -23,16 +23,16 @@ class Home extends React.Component {
                     </StyledReadMore>
                 </StyledContent>
                 <StyledIconsContainer>
-                    <StyledIconLink>
+                    <StyledIconLink href="https://github.com/debaseonomics" target="_blank" >
                         <StyledIconImage src={IconGithubPNG} />
                     </StyledIconLink>
-                    <StyledIconLink>
+                    <StyledIconLink href="https://debaseonomics.medium.com" target="_blank">
                         <StyledIconImage src={IconMediumPNG} />
                     </StyledIconLink>
-                    <StyledIconLink>
+                    <StyledIconLink href="https://t.me/debaseonomics" target="_blank">
                         <StyledIconImage src={IconTelegramPNG} />
                     </StyledIconLink>
-                    <StyledIconLink>
+                    <StyledIconLink href="https://twitter.com/debaseonomics" target="_blank">
                         <StyledIconImage src={IconTwitterPNG} />
                     </StyledIconLink>
                 </StyledIconsContainer>
