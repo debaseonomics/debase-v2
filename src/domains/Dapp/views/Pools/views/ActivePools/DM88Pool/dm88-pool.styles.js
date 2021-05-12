@@ -54,4 +54,5 @@ export const StyledLabel = styled.div`
     font-size: 16px;
 	font-weight: 500;
 	letter-spacing: 1px;
+	margin-top: 6px;
 `;
