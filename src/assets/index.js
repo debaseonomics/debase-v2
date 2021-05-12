@@ -14,12 +14,17 @@ import {
   cursorPNG,
   crossPNG,
   debaseLogoSVG,
+  background360,
   background1024,
   background1280,
   background1366,
   background1440,
   background1920,
-  rectangleSVG
+  rectangleSVG,
+  IconGithubPNG,
+  IconMediumPNG,
+  IconTelegramPNG,
+  IconTwitterPNG
 } from './img';
 import {
   AddIcon,
@@ -66,12 +71,17 @@ export {
 	cursorPNG,
 	crossPNG,
 	debaseLogoSVG,
+  background360,
 	background1024,
 	background1280,
 	background1366,
 	background1440,
 	background1920,
 	rectangleSVG,
+  IconGithubPNG,
+  IconMediumPNG,
+  IconTelegramPNG,
+  IconTwitterPNG,
 	// ICONS - material
 	AddIcon,
 	AccountBalanceWalletIcon,

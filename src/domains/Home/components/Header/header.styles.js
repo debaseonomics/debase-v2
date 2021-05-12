@@ -77,7 +77,7 @@ export const StyledDocumentationLink = styled.a`
     margin-bottom: 8px;
     width: 161px;
     text-align: left;
-    color: gray;
+    color: white;
     
     @media only screen and (max-width: 1440px) {
         font-size: 18px;
@@ -91,6 +91,9 @@ export const StyledDocumentationLink = styled.a`
     @media only screen and (max-width: 1024px) {
         font-size: 11px;
         margin-bottom: 4px;
+    }
+    @media only screen and (max-width: 360px) {
+        display: none;
     }
 `;
 export const StyledAuditsLink = styled.a`
@@ -121,6 +124,9 @@ export const StyledAuditsLink = styled.a`
         font-size: 10px;
         margin-left: -30px;
         margin-bottom: 4px;
+    }
+    @media only screen and (max-width: 360px) {
+        display: none;
     }
 `;
 export const StyledAppLink = styled.a`
