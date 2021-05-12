@@ -25,7 +25,7 @@ const sizes = {
     `,
     medium: css`
         font-size: 16px;
-        height: 50px;
+        height: ${props => props.height}px;
         padding: 0 10px;
     `,
 };
@@ -114,7 +114,7 @@ export const StyledSelectItem = styled.button`
     text-decoration: none;
     font-family: 'bladerunner', sans-serif;
     font-size: 16px;
-    height: 40px;
+    height: 30px;
     padding: 0 30px;
     background-color: transparent;
     border: 0;

@@ -7,6 +7,7 @@ const Select = ({
     list,
     onChangedIndex,
     width=100,
+    height=30,
     variant='default',
     color='secundary',
     size='medium',
@@ -32,6 +33,7 @@ const Select = ({
                 variant={variant}
                 size={size}
                 color={color}
+                height={height}
                 type="button"
                 alignment={alignment}
                 onClick={toggleList}
@@ -43,8 +45,6 @@ const Select = ({
                         <FontAwesomeIcon icon={faAngleDown} size="lg" />
                     }
                 </StyledSelectedItem>
-
-
             </StyledButton>
             {isListOpen && (
                 <StyledListContainer
