@@ -10,8 +10,8 @@ import useSWR from 'swr';
 import { Contract, BigNumber } from 'ethers';
 import { request, gql } from 'graphql-request';
 import { parseEther, formatEther } from '@ethersproject/units';
-import { StyledPoolStake, StyledCardInner, StyledDropdown, StyledLabel, StyledSelect } from './dm88-pool.styles';
-import { List, Spinner, Flexbox, Input, Button } from '@core/components';
+import { StyledPoolStake, StyledCardInner, StyledDepositIds, StyledLabel, StyledInputs } from './dm88-pool.styles';
+import { List, Spinner, Flexbox, Input, Button, Select } from '@core/components';
 import {DateTime} from "luxon";
 
 const DM88Pool = () => {
@@ -312,14 +312,10 @@ const DM88Pool = () => {
 					<Grid>
 						<StyledPoolStake>
 							<InfoCard>
-								<StyledDropdown>
+								<StyledDepositIds>
 									<StyledLabel>Deposit Ids</StyledLabel>
-									<div>
-										<StyledSelect onChange={(event) => setSelectedDepositIndex(event.target.value)}>
-											{depositIds.map((ele, index) => <option key={ele + index}>{index}</option>)}
-										</StyledSelect>
-									</div>
-								</StyledDropdown>
+									<Select list={depositIds} onChangedIndex={setSelectedDepositIndex} width={100}></Select>
+								</StyledDepositIds>
 								<List data={depositListData} />
 							</InfoCard>
 							<InfoCard>
@@ -332,24 +328,22 @@ const DM88Pool = () => {
 							{poolEnabled !== undefined && (
 								<InfoCard gutter={20}>
 									{isStakingActive && (
-										<Flexbox direction="column" gap="10px">
-											<Flexbox direction="horizontal" gap="10px">
+										<Flexbox direction="horizontal" gap="10px">
+											<StyledInputs>
 												<Input
 													value={stakeInputValue}
 													placeholder="Debase amount"
 													onChange={onChangeDebaseStakeInput}
 												/>
-											</Flexbox>
-											<Flexbox direction="horizontal" gap="10px">
 												<Input
 													value={stakeInputValue}
 													placeholder="Dai amount"
 													onChange={onChangeDaiStakeInput}
 												/>
-												<Button color="primary" onClick={handleMaxStake}>
-													max
-												</Button>
-											</Flexbox>
+											</StyledInputs>
+											<Button color="primary" style={{margin: `auto` }} onClick={handleMaxStake}>
+												max
+											</Button>
 										</Flexbox>
 									)}
 									{poolEnabled && (

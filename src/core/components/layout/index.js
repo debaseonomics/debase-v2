@@ -3,5 +3,6 @@ import Flexbox from './Flexbox/flexbox.component';
 import ScrollArea from './ScrollArea/scrollarea.component';
 import Accordion from './Accordion/accordion.component';
 import Modal from './Modal/modal.component';
+import Select from './Select/select.component';
 //import SidePanel from './SidePanel/sidepanel.component';
-export { Card, Flexbox, ScrollArea, Accordion, Modal };
+export { Card, Flexbox, ScrollArea, Accordion, Modal, Select };

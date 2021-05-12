@@ -7,7 +7,7 @@ import { Banner, Spinner, Tooltip, Snackbar, Backdrop } from './feedback';
 // INPUT
 import { FormField, Input, Slider, Switch } from './input';
 // LAYOUT
-import { Card, Flexbox, ScrollArea, Accordion, Modal } from './layout';
+import { Card, Flexbox, ScrollArea, Accordion, Modal, Select } from './layout';
 // NAVIGATION
 import { Tabs, Tab } from './navigation';
 // TYPOGRAPHY
@@ -42,6 +42,7 @@ export {
 	ScrollArea,
 	Accordion,
 	Modal,
+	Select,
 	// NAVIGATION
 	Tabs,
 	Tab,
