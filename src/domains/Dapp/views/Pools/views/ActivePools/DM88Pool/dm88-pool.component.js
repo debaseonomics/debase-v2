@@ -11,7 +11,7 @@ import { Contract, BigNumber } from 'ethers';
 import { request, gql } from 'graphql-request';
 import { parseEther, formatEther } from '@ethersproject/units';
 import { StyledPoolStake, StyledCardInner, StyledDepositIds, StyledLabel, StyledInputs, StyledDepositContainer } from './dm88-pool.styles';
-import { List, Spinner, Flexbox, Input, Button, Select } from '@core/components';
+import {List, Spinner, Flexbox, Input, Button, Select, DisplaySmall} from '@core/components';
 import {DateTime} from "luxon";
 
 const DM88Pool = () => {
@@ -311,6 +311,9 @@ const DM88Pool = () => {
 				) : (
 					<Grid>
 						<StyledPoolStake>
+							<DisplaySmall color="primary">
+								Your Deposits
+							</DisplaySmall>
 							<InfoCard style={{ gap: `0px` }}>
 								<StyledDepositIds>
 									<StyledLabel>Deposit Ids</StyledLabel>
