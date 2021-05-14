@@ -80,6 +80,11 @@ export default async () => {
 		const crvAPY = Math.pow(1 + crvAPR / (100 * 365), 365) * 100;
 
 		return {
+			debaseAPR: parseFloat(debaseAPR).toFixed(2) + ' %',
+			mphAPR: parseFloat(mphAPR).toFixed(2) + ' %',
+			crvAPR: parseFloat(crvAPR).toFixed(2) + ' %',
+			apr: parseFloat(debaseAPR + mphAPR + crvAPR).toFixed(2) + ' %',
+			aprVested: parseFloat(3 * debaseAPR + mphAPR + crvAPR).toFixed(2) + ' %',
 			debaseAPY: parseFloat(debaseAPY).toFixed(2) + ' %',
 			mphAPY: parseFloat(mphAPY).toFixed(2) + ' %',
 			crvAPY: parseFloat(crvAPY).toFixed(2) + ' %',

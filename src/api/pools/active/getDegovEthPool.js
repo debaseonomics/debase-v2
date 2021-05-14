@@ -40,6 +40,7 @@ export default async () => {
 		const apy = Math.pow(1 + apr / (100 * 365), 365) * 100;
 
 		return {
+			apr: parseFloat(apr).toFixed(2) + ' %',
 			apy: parseFloat(apy).toFixed(2) + ' %',
 			enabled: enabled
 		};

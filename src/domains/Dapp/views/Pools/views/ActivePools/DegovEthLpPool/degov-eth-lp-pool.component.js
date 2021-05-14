@@ -23,6 +23,7 @@ const DebaseEthLpPool = () => {
 							stakeText="DEGOV-ETH LP"
 							poolABI={ABI_POOL}
 							apy={pools.degovEthPool ? pools.degovEthPool.apy : <Spinner size="xsmall" />}
+							apr={pools.degovEthPool ? pools.degovEthPool.apr : <Spinner size="xsmall" />}
 						/>
 					</Grid>
 				)}

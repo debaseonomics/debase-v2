@@ -28,6 +28,12 @@ const DebaseEthLpPool = () => {
 							debaseAPY={pools.debaseEthPool ? pools.debaseEthPool.debaseAPY : <Spinner size="xsmall" />}
 							mphAPY={pools.debaseEthPool ? pools.debaseEthPool.mphAPY : <Spinner size="xsmall" />}
 							crvAPY={pools.debaseEthPool ? pools.debaseEthPool.crvAPY : <Spinner size="xsmall" />}
+
+							apr={pools.debaseEthPool ? pools.debaseEthPool.apr : <Spinner size="xsmall" />}
+							aprVested={pools.debaseEthPool ? pools.debaseEthPool.aprVested : <Spinner size="xsmall" />}
+							debaseAPR={pools.debaseEthPool ? pools.debaseEthPool.debaseAPR : <Spinner size="xsmall" />}
+							mphAPR={pools.debaseEthPool ? pools.debaseEthPool.mphAPR : <Spinner size="xsmall" />}
+							crvAPR={pools.debaseEthPool ? pools.debaseEthPool.crvAPR : <Spinner size="xsmall" />}
 						/>
 					</Grid>
 				)}

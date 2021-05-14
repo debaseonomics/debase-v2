@@ -22,7 +22,22 @@ const gqlQuery = gql`
 	}
 `;
 
-const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apy, apyVested, debaseAPY, mphAPY, crvAPY }) => {
+const PoolStakeTriple = ({
+	poolABI,
+	poolAddress,
+	lpAddress,
+	stakeText,
+	apy,
+	apyVested,
+	debaseAPY,
+	mphAPY,
+	crvAPY,
+	apr,
+	aprVested,
+	debaseAPR,
+	mphAPR,
+	crvAPR
+}) => {
 	const { library, account } = useWeb3React();
 	const [ rewarded, setRewarded ] = useState(0);
 
@@ -143,19 +158,24 @@ const PoolStakeTriple = ({ poolABI, poolAddress, lpAddress, stakeText, apy, apyV
 
 	const aprListData = [
 		{
-			label: 'DEBASE APY',
-			value: debaseAPY,
+			label: 'DEBASE APR/APY',
+			value: debaseAPR,
 			tooltip: "Pool's annual percentage rate"
 		},
 		{
-			label: 'CRV APY',
-			value: crvAPY,
+			label: 'CRV APR/APY',
+			value: crvAPR,
 			tooltip: "Pool's annual percentage rate"
 		},
 		{
-			label: 'MPH APY',
-			value: mphAPY,
+			label: 'MPH APR/APY',
+			value: mphAPR,
 			tooltip: "Pool's annual percentage rate"
+		},
+		{
+			label: 'APR/APR (Vested)',
+			value: apr + '/' + aprVested,
+			tooltip: 'Compounded Daily'
 		},
 		{
 			label: 'APY/APY (Vested)',

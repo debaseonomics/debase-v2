@@ -23,8 +23,12 @@ const Pools = () => {
 		},
 
 		{
-			label: 'Temp APY',
-			value: pools.degovEthPool ? pools.degovEthPool.apy : <Spinner size="xsmall" />,
+			label: 'Temp APR/APY',
+			value: pools.degovEthPool ? (
+				pools.degovEthPool.apr + '/' + pools.degovEthPool.apy
+			) : (
+				<Spinner size="xsmall" />
+			),
 			tooltip: 'Compounded Daily'
 		}
 	];
@@ -40,7 +44,15 @@ const Pools = () => {
 			value: 'DEBASE/MPH/CRV',
 			tooltip: 'Reward tokens pool gives'
 		},
-
+		{
+			label: 'APR/APR (Vested)',
+			value: pools.debaseEthPool ? (
+				pools.debaseEthPool.apr + '/' + pools.debaseEthPool.aprVested
+			) : (
+				<Spinner size="xsmall" />
+			),
+			tooltip: 'Compounded Daily'
+		},
 		{
 			label: 'APY/APY (Vested)',
 			value: pools.debaseEthPool ? (
