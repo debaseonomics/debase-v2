@@ -99,6 +99,7 @@ export const StyledText = styled.div`
 		margin-top: 111px;
 		letter-spacing: 0px;
 		line-height: 31.7px;
+		margin-left: 21px;
 	}
 `;
 
