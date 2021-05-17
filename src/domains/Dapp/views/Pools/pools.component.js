@@ -135,6 +135,26 @@ const Pools = () => {
 				>
 					<List data={degovEthLPListData} />
 				</PoolCard>
+				{/*<PoolCard*/}
+				{/*	label="DM88 Pool"*/}
+				{/*	routePath="/dashboard/pools/active/dm88-pool"*/}
+				{/*	type="active"*/}
+				{/*	linkData={[*/}
+				{/*		{*/}
+				{/*			icon: <CodeIcon />,*/}
+				{/*			info: 'Contract Link',*/}
+				{/*			url: 'https://etherscan.io/address/0x4789519821ae0f49d95203b1a2ed805141bf0dae'*/}
+				{/*		},*/}
+				{/*		{*/}
+				{/*			icon: <AccountIcon />,*/}
+				{/*			info: 'Buy Pool LP',*/}
+				{/*			url: 'https://app.uniswap.org/#/add/v2/0x469e66e06fec34839e5eb1273ba85a119b8d702f/ETH'*/}
+				{/*		}*/}
+				{/*	]}*/}
+				{/*	isActive={pools.degovEthPool ? pools.degovEthPool.enabled : false}*/}
+				{/*>*/}
+				{/*	<List data={degovEthLPListData} />*/}
+				{/*</PoolCard>*/}
 			</Grid>
 		);
 	};
