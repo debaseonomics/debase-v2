@@ -15,6 +15,9 @@ export const StyledContainer = styled.div`
     @media only screen and (max-width: 1024px) {
         margin-top: -20px;
     }
+    @media only screen and (max-width: 360px) {
+        display: none;
+    }
 `;
 export const StyledDebaseLogo = styled.img`
     position: relative;
@@ -32,6 +35,10 @@ export const StyledDebaseLogo = styled.img`
     }
     @media only screen and (max-width: 1024px) {
         width: 156px;
+    }
+    @media only screen and (max-width: 1024px) {
+        width: 108px;
+        height: 36px;
     }
 `;
 export const StyledTextContainer = styled.div`
@@ -68,6 +75,12 @@ export const StyledText = styled.span`
     }
     @media only screen and (max-width: 1024px) {
         font-size: 8px;
+    }
+    @media only screen and (max-width: 360px) {
+        color: #F26373;
+        text-align: center;
+        font-size: 9px;
+        margin-top: -5px;
     }
 `;
 export const StyledDocumentationLink = styled.a`
@@ -168,4 +181,41 @@ export const StyledAppLink = styled.a`
         margin-left: -1px;
         height: 26px;
     }
+    @media only screen and (max-width: 360px) {
+        width: 50px;
+        margin-left: 0px;
+        margin-top: 7px;
+    }
+`;
+
+
+export const StyledMobileContainer = styled.div`
+    display: none;
+    @media only screen and (max-width: 360px) {
+        display: flex;
+    }
+`;
+
+export const StyledMobileLeftContainer = styled.div`
+    width: 50px;
+    padding-top: 7px;
+`;
+
+export const StyledMobileMiddleContainer = styled.div`
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
+
+export const StyledMobileRightContainer = styled.div`
+    width: 50px;
+    justify-content: flex-end;
+`;
+
+export const StyledMobileSideItem = styled.div`
+    width: 16px;
+    border: 2px solid #F26373;
+    margin-bottom: 5px;
 `;
