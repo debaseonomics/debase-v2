@@ -74,4 +74,10 @@ export const StyledButton = styled.button`
     ${props => variants[props.variant] }
     ${props => sizes[props.size] }
     ${props => alignments[props.alignment] }
+
+    @media only screen and (max-width: 420px) {
+        border: none;
+        box-shadow: none;
+        background: none;
+    }
 `;
