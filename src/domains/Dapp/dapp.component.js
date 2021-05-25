@@ -19,7 +19,7 @@ import {
 	getRandomizedCounterPool
 } from '@api';
 import { parseFloatFixed, parseNumToUsFormat } from '@utils';
-import { Background, Sidebar, Navigation, Topbar } from '@dapp/components';
+import { Background, Sidebar, SidebarMobile, Navigation, Topbar } from '@dapp/components';
 import { ModalManagerProvider, SnackbarManagerProvider } from '@dapp/managers';
 import {
 	UIContext,
@@ -48,7 +48,8 @@ class Dapp extends React.Component {
 				tokenData: true,
 				tokenHistory: true,
 				treasuryData: true
-			}
+			},
+			isSidebarMobileOpen: false
 		},
 
 		tokenData: {
@@ -81,6 +82,13 @@ class Dapp extends React.Component {
 			degovEthPool: null
 		}
 	};
+
+	constructor(props) {
+		super(props);
+
+		this.sidebarMobileRef = React.createRef();
+		this.handleClickOutside = this.handleClickOutside.bind(this);
+	}
 
 	/* UI LOGIC */
 	detectMobileViewport = (e) => {
@@ -339,6 +347,22 @@ class Dapp extends React.Component {
 		);
 	};
 
+	handleSidebarMobileOpen = (open) => {
+		this.setState({
+			...this.state,
+			ui: {
+				...this.state.ui,
+				isSidebarMobileOpen: open
+			}
+		})
+	}
+
+	handleClickOutside(event) {
+        if (this.sidebarMobileRef && !this.sidebarMobileRef.current.contains(event.target)) {
+          this.handleSidebarMobileOpen(false);
+        }
+    }
+
 	/* LIFECYCLE */
 	componentDidMount() {
 		this.detectMobileViewport();
@@ -347,6 +371,7 @@ class Dapp extends React.Component {
 
 		/* detect if mobile device viewport */
 		window.addEventListener('resize', this.detectMobileViewport);
+		document.addEventListener('mousedown', this.handleClickOutside);
 
 		/* init data */
 		this.initTokenData();
@@ -356,6 +381,7 @@ class Dapp extends React.Component {
 	}
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.detectMobileViewport);
+		document.removeEventListener('mousedown', this.handleClickOutside);
 	}
 
 	/* COMPONENT RETURN RENDER */
@@ -388,9 +414,16 @@ class Dapp extends React.Component {
 													<Sidebar>
 														<Navigation routes={DAPP_ROUTES} />
 													</Sidebar>
+													
+													<div ref={this.sidebarMobileRef}>
+														<SidebarMobile open={ui.isSidebarMobileOpen}>
+															<Navigation routes={DAPP_ROUTES} />
+														</SidebarMobile>
+													</div>
+													
 													<StyledPage>
 														<StyledPageInner>
-															<Topbar routes={DAPP_ROUTES} />
+															<Topbar routes={DAPP_ROUTES} handleSidebarMobileClick={() => this.handleSidebarMobileOpen(true)} />
 															<StyledContent>
 																<Switch>
 																	{DAPP_ROUTES.map((route, i) => {

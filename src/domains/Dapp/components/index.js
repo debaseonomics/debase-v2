@@ -10,6 +10,7 @@ import {
 	InfoCard
 } from './common';
 import { Background, Navigation, Section, Sidebar, Topbar, Grid } from './layout';
+import { SidebarMobile } from './layout/Sidebar';
 
 export {
 	DisconnectedWalletCard,
@@ -22,6 +23,7 @@ export {
 	Navigation,
 	Section,
 	Sidebar,
+	SidebarMobile,
 	Topbar,
 	Grid,
 	PoolStake,

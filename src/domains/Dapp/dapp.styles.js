@@ -31,4 +31,8 @@ export const StyledContent = styled.div`
     flex-direction: column;
     gap: 90px;
     padding: 90px 0 30px 0;
+
+    @media only screen and (max-width: 420px) {
+        padding: 30px 0 30px 0;
+    }
 `;

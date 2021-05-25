@@ -5,6 +5,10 @@ export const StyledNavigation = styled.div`
     display: flex;
     flex-direction: column;
     gap: 15px;
+
+    @media only screen and (max-width: 420px) {
+        gap: 0px;
+    }
 `;
 
 export const StyledButton = styled.div`

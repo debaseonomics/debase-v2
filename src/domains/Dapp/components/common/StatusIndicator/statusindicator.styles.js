@@ -50,4 +50,19 @@ export const StyledStatusIndicator = styled.div`
     }
 
     ${props => sizes[props.size] }
+
+    @media only screen and (max-width: 420px) {
+        width: 10px;
+        height: 10px;
+        
+        &:before {
+            content: '';
+            border-radius: 50%;
+            height: 50%;
+            width: 50%;
+            padding-bottom: 1px;
+            padding-right: 1px;
+            ${props => statuses[props.status] }
+        }
+    }
 `;

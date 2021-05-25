@@ -1,17 +1,26 @@
-import { useContext } from 'react';
+import { useState, useContext, useEffect, useRef } from 'react';
+import ReactDOM from 'react-dom';
 import { useWeb3React } from '@web3-react/core';
 
-import { DisplayLarge, Button, Tooltip } from '@core/components';
+import { DisplayLarge, Button, Tooltip, DisplaySmall } from '@core/components';
 import { StatusIndicator } from '@dapp/components';
 import { UIContext, WalletContext } from '@dapp/contexts';
 import {
     StyledTopbar,
     StyledAccountContainer,
-    StyledAccountAddress
+    StyledAccountAddress,
+    StyledMobileTopbar,
+    StyledMobileTopbarContainer,
+    StyledMobileLeftContainer,
+    StyledMobileMiddleContainer,
+    StyledMobileRightContainer,
+    StyledMobileSideItem,
+    StyledDebaseLogo,
+    StyledMobileTitleContainer
 } from './topbar.styles';
+import { debaseLogoSVG } from '@assets';
 
-const Topbar = () => {
-
+const Topbar = ({ handleSidebarMobileClick }) => {
     const { account, active } = useWeb3React();
 
     const { ui } = useContext(UIContext);
@@ -46,12 +55,36 @@ const Topbar = () => {
     };
 
     return (
-        <StyledTopbar>
-            <DisplayLarge>
-                {ui.activeRoute.label}
-            </DisplayLarge>
-            {renderConnectButton()}
-        </StyledTopbar>
+        <>
+            <StyledTopbar>
+                <DisplayLarge>
+                    {ui.activeRoute.label}
+                </DisplayLarge>
+                {renderConnectButton()}
+            </StyledTopbar>
+            <StyledMobileTopbar>
+                <StyledMobileTopbarContainer>
+                    <StyledMobileLeftContainer onClick={handleSidebarMobileClick}>
+                        <StyledMobileSideItem />
+                        <StyledMobileSideItem />
+                        <StyledMobileSideItem />
+                    </StyledMobileLeftContainer>
+                    <StyledMobileMiddleContainer>
+                        <StyledDebaseLogo
+                            src={debaseLogoSVG}
+                        />
+                    </StyledMobileMiddleContainer>
+                    <StyledMobileRightContainer>
+                        {renderConnectButton()}
+                    </StyledMobileRightContainer>
+                </StyledMobileTopbarContainer>
+                <StyledMobileTitleContainer>
+                    <DisplaySmall>
+                        {ui.activeRoute.label}
+                    </DisplaySmall>
+                </StyledMobileTitleContainer>
+            </StyledMobileTopbar>
+        </>
     );
 
 };
