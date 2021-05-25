@@ -1,4 +1,4 @@
-import { Button, Flexbox } from '@core/components';
+import { Button } from '@core/components';
 import {
     GithubIcon,
     MediumIcon,
@@ -9,9 +9,6 @@ import {
 import {
     StyledSidebar,
     StyledMenu,
-    StyledLogo,
-    StyledLogoText,
-    StyledSection,
     StyledSocialList,
     StyledSocialIcon
 } from './sidebar.mobile.styles';
@@ -93,7 +90,7 @@ const SidebarMobile = ({
                     trade degov
                 </Button>
             </div>
-            
+
             <StyledSocialList>
                 {renderSocialList()}
             </StyledSocialList>
