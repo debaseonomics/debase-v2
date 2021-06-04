@@ -1,4 +1,4 @@
-import { DegovEthLpPool, DebaseDaiLpPool, DebaseEthLpPool, RandomizedCounterPool, DM88Pool } from './views';
+import { DegovEthLpPool, DebaseDaiLpPool, DebaseEthLpPool, RandomizedCounterPool, DM88Pool, DKR } from './views';
 
 const POOLS_ROUTES = [
 	{
@@ -10,6 +10,11 @@ const POOLS_ROUTES = [
 		label: 'DEBASE-ETH LP Pool',
 		path: '/dashboard/pools/active/debase-eth-lp-pool',
 		component: <DebaseEthLpPool />
+	},
+	{
+		label: 'DKR',
+		path: '/dashboard/pools/active/dkr',
+		component: <DKR />
 	},
 	{
 		label: 'DM88 Pool',
