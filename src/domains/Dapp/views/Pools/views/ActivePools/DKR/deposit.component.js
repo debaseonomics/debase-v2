@@ -3,14 +3,15 @@ import useSWR from 'swr';
 import { useWeb3React } from '@web3-react/core';
 import { formatEther } from 'ethers/lib/utils';
 import { Contract } from 'ethers/lib/ethers';
-import { ABI_POOL, ABI_LP } from '@constants';
+import { ABI_LP } from '@constants';
 import { fetcher } from '@utils';
 import { List, Button, Input, Flexbox, Spinner } from '@core/components';
-import { StyledPoolStake, StyledCardInner } from './deposit.styles';
+import { StyledPoolStake, StyledCardInner, StyledConversionText } from './deposit.styles';
 import { parseEther } from 'ethers/lib/utils';
 import { SnackbarManagerContext } from '@dapp/managers';
-import InfoCard from '../InfoCard/infocard.component';
 import CONTRACT_ADDRESS from '@constants/contract-address.constant';
+import { InfoCard } from '@dapp/components/index';
+import { TextMini } from '@core/components/index';
 
 const Deposit = ({ poolABI, poolAddress }) => {
 	const { library, account } = useWeb3React();
@@ -21,7 +22,7 @@ const Deposit = ({ poolABI, poolAddress }) => {
 	const [ isDepositDebaseActive, setIsDepositDebaseActive ] = useState(false);
 	const [ isDepositDegovActive, setIsDepositDegovActive ] = useState(false);
 
-	const [ debaseInputValue, setStakeInputValue ] = useState('');
+	const [ debaseInputValue, setDebaseInputValue ] = useState('');
 	const [ degovInputValue, setDegovInputValue ] = useState('');
 
 	const { openSnackbar } = useContext(SnackbarManagerContext);
@@ -123,14 +124,14 @@ const Deposit = ({ poolABI, poolAddress }) => {
 
 	const iouData = [
 		{
-			label: 'IOU Balance',
-			value: debaseBalance ? parseFloat(formatEther(iouBalance)).toFixed(4) * 1 : <Spinner size="xsmall" />,
+			label: 'Your IOU Balance',
+			value: iouBalance ? parseFloat(formatEther(iouBalance)).toFixed(4) * 1 : <Spinner size="xsmall" />,
 			tooltip: 'Your current balance that can be staked into the pool.'
 		}
 	];
 
 	// functions
-	async function handleDebaseDeposit() {
+	async function handleDebase() {
 		if (!isDepositDebaseActive) return setIsDepositDebaseActive(true);
 		setIsDepositDebaseLoading(true);
 		const poolContract = new Contract(poolAddress, poolABI, library.getSigner());
@@ -146,20 +147,20 @@ const Deposit = ({ poolABI, poolAddress }) => {
 			transaction = await poolContract.depositDebase(toStake);
 			await transaction.wait(1);
 			openSnackbar({
-				message: 'Staking success',
+				message: 'Deposit success',
 				status: 'success'
 			});
 		} catch (error) {
 			openSnackbar({
-				message: 'Staking failed',
+				message: 'Deposit failed',
 				status: 'error'
 			});
 		}
 		setIsDepositDebaseLoading(false);
 	}
-	async function handleDegovDeposit() {
+	async function handleDegov() {
 		if (!isDepositDegovActive) return setIsDepositDegovActive(true);
-		setIsDepositDegovActive(true);
+		setIsDepositDegovLoading(true);
 		const poolContract = new Contract(poolAddress, poolABI, library.getSigner());
 		const tokenContract = new Contract(CONTRACT_ADDRESS.degov, ABI_LP, library.getSigner());
 		try {
@@ -173,28 +174,28 @@ const Deposit = ({ poolABI, poolAddress }) => {
 			transaction = await poolContract.depositDegov(toStake);
 			await transaction.wait(1);
 			openSnackbar({
-				message: 'Staking success',
+				message: 'Deposit success',
 				status: 'success'
 			});
 		} catch (error) {
 			openSnackbar({
-				message: 'Staking failed',
+				message: 'Deposit failed',
 				status: 'error'
 			});
 		}
 		setIsDepositDegovActive(false);
 	}
 
-	const handleDebaseDeposit = () => {
-		setStakeInputValue(formatEther(walletBalance));
+	const handleDebaseMax = () => {
+		setDebaseInputValue(formatEther(debaseBalance));
 	};
-	const handleMaxDegov = () => {
-		setDegovInputValue(formatEther(userStakedBalance));
+	const handleDegovMax = () => {
+		setDegovInputValue(formatEther(degovBalance));
 	};
-	const onChangeStakeInput = (value) => {
-		setStakeInputValue(value);
+	const onChangeDebaseInput = (value) => {
+		setDebaseInputValue(value);
 	};
-	const onChangeUnstakeInput = (value) => {
+	const onChangeDegovInput = (value) => {
 		setDegovInputValue(value);
 	};
 
@@ -208,37 +209,49 @@ const Deposit = ({ poolABI, poolAddress }) => {
 				</StyledCardInner>
 			</InfoCard>
 
-			{poolEnabled !== undefined && (
-				<InfoCard gutter={20}>
-					{isDepositDebaseActive && (
-						<Flexbox direction="horizontal" gap="10px">
-							<Input value={debaseInputValue} placeholder="Stake amount" onChange={onChangeStakeInput} />
-							<Button color="primary" onClick={handleMaxDebase}>
-								max
-							</Button>
-						</Flexbox>
-					)}
-					<Button isLoading={isDepositDebaseLoading} onClick={handleDebaseDeposit}>
-						Deposit Debase
-					</Button>
-
-					{isDepositDegovActive && (
+			<InfoCard gutter={20}>
+				{isDepositDebaseActive && (
+					<Flexbox gap="15px">
 						<Flexbox direction="horizontal" gap="10px">
 							<Input
-								value={degovInputValue}
-								placeholder="Unstake amount"
-								onChange={onChangeUnstakeInput}
+								value={debaseInputValue}
+								placeholder="Debase amount"
+								onChange={onChangeDebaseInput}
 							/>
-							<Button color="primary" onClick={handleMaxDegov}>
+							<Button color="primary" onClick={handleDebaseMax}>
 								max
 							</Button>
 						</Flexbox>
-					)}
-					<Button isLoading={isDepositDegovLoading} onClick={handleDegovDeposit}>
-						Deposit Degov
-					</Button>
-				</InfoCard>
-			)}
+						{1 && (
+							<StyledConversionText>
+								<TextMini>converts to {1 * parseFloat(formatEther(1)).toFixed(4)} UwU</TextMini>
+							</StyledConversionText>
+						)}
+					</Flexbox>
+				)}
+				<Button isLoading={isDepositDebaseLoading} onClick={handleDebase}>
+					Deposit Debase
+				</Button>
+
+				{isDepositDegovActive && (
+					<Flexbox gap="15px">
+						<Flexbox direction="horizontal" gap="10px">
+							<Input value={degovInputValue} placeholder="Degov amount" onChange={onChangeDegovInput} />
+							<Button color="primary" onClick={handleDegovMax}>
+								max
+							</Button>
+						</Flexbox>
+						{1 && (
+							<StyledConversionText>
+								<TextMini>converts to {1 * parseFloat(formatEther(1)).toFixed(4)} UwU</TextMini>
+							</StyledConversionText>
+						)}
+					</Flexbox>
+				)}
+				<Button isLoading={isDepositDegovLoading} onClick={handleDegov}>
+					Deposit Degov
+				</Button>
+			</InfoCard>
 		</StyledPoolStake>
 	);
 };

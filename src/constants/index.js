@@ -6,9 +6,11 @@ import ABI_ORCHESTRATOR from './abi-orchestrator.constant';
 import ABI_UNI from './abi-uni.constant';
 import ABI_ORACLE from './abi-oracle.constant';
 import ABI_MPH88 from './abi-mph88.constant';
+import ABI_DKR from './abi-dkr.constant';
 import CONTRACT_ADDRESS from './contract-address.constant';
 
 export {
+	ABI_DKR,
 	ABI_DEBASEPOLICY,
 	ABI_POOL,
 	ABI_POOL_TRIPLE,
