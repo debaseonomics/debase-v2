@@ -12,60 +12,62 @@ import { SnackbarManagerContext } from '@dapp/managers';
 import InfoCard from '../InfoCard/infocard.component';
 import CONTRACT_ADDRESS from '@constants/contract-address.constant';
 
-const Deposit = ({ poolABI, poolAddress, lpAddress, stakeText, apy, apr }) => {
+const Deposit = ({ poolABI, poolAddress }) => {
 	const { library, account } = useWeb3React();
 
-	const [ isStakeLoading, setIsStakeLoading ] = useState(false);
-	const [ isUnstakeLoading, setIsUnstakeLoading ] = useState(false);
-	const [ isClaimLoading, setIsClaimLoading ] = useState(false);
-	const [ isClaimAndUnstakeLoading, setIsClaimAndUnstakeLoading ] = useState(false);
+	const [ isDepositDebaseLoading, setIsDepositDebaseLoading ] = useState(false);
+	const [ isDepositDegovLoading, setIsDepositDegovLoading ] = useState(false);
 
-	const [ isStakingActive, setIsStakingActive ] = useState(false);
-	const [ isUnstakingActive, setIsUnstakingActive ] = useState(false);
+	const [ isDepositDebaseActive, setIsDepositDebaseActive ] = useState(false);
+	const [ isDepositDegovActive, setIsDepositDegovActive ] = useState(false);
 
-	const [ stakeInputValue, setStakeInputValue ] = useState('');
-	const [ unstakeInputValue, setUnstakeInputValue ] = useState('');
+	const [ debaseInputValue, setStakeInputValue ] = useState('');
+	const [ degovInputValue, setDegovInputValue ] = useState('');
 
 	const { openSnackbar } = useContext(SnackbarManagerContext);
 
-	const { data: poolEnabled, mutate: getPoolEnabled } = useSWR([ poolAddress, 'poolEnabled' ], {
+	const { data: debaseExchangeRate, mutate: getDebaseExchangeRate } = useSWR([ poolAddress, 'debaseExchangeRate' ], {
+		fetcher: fetcher(library, poolABI)
+	});
+	const { data: degovExchangeRate, mutate: getDegovExchangeRate } = useSWR([ poolAddress, 'degovExchangeRate' ], {
+		fetcher: fetcher(library, poolABI)
+	});
+	const { data: debaseDeposited, mutate: getDebaseDeposited } = useSWR([ poolAddress, 'debaseDeposited', account ], {
+		fetcher: fetcher(library, poolABI)
+	});
+	const { data: degovDeposited, mutate: getDegovDeposited } = useSWR([ poolAddress, 'degovDeposited', account ], {
+		fetcher: fetcher(library, poolABI)
+	});
+	const { data: iouBalance, mutate: getIouBalance } = useSWR([ poolAddress, 'getIouBalance', account ], {
 		fetcher: fetcher(library, poolABI)
 	});
 
-	const { data: poolLpLimit } = useSWR([ poolAddress, 'poolLpLimit' ], {
-		fetcher: fetcher(library, poolABI)
+	const { data: debaseBalance, mutate: getDebaseBalance } = useSWR(
+		[ CONTRACT_ADDRESS.debase, 'balanceOf', account ],
+		{
+			fetcher: fetcher(library, ABI_LP)
+		}
+	);
+
+	const { data: degovBalance, mutate: getDegovBalance } = useSWR([ CONTRACT_ADDRESS.degov, 'balanceOf', account ], {
+		fetcher: fetcher(library, ABI_LP)
 	});
 
-	const { data: userLpLimit } = useSWR([ poolAddress, 'userLpLimit' ], {
-		fetcher: fetcher(library, poolABI)
-	});
-
-	const { data: earned, mutate: getEarned } = useSWR([ poolAddress, 'earned', account ], {
-		fetcher: fetcher(library, poolABI)
-	});
-	const { data: userStakedBalance, mutate: getUserStakedBalance } = useSWR([ poolAddress, 'balanceOf', account ], {
-		fetcher: fetcher(library, poolABI)
-	});
-	const { data: walletBalance, mutate: getWalletBalance } = useSWR([ lpAddress, 'balanceOf', account ], {
-		fetcher: fetcher(library, poolABI)
-	});
-	const { data: totalStakedBalance, mutate: getTotalStakedBalance } = useSWR([ poolAddress, 'totalSupply' ], {
-		fetcher: fetcher(library, poolABI)
-	});
-
-	const { data: debaseSupply, mutate: getDebaseSupply } = useSWR([ CONTRACT_ADDRESS.debase, 'totalSupply' ], {
+	const { data: duration, mutate: getDuration } = useSWR([ poolAddress, 'duration' ], {
 		fetcher: fetcher(library, poolABI)
 	});
 
 	useEffect(
 		() => {
 			library.on('block', () => {
-				getEarned(undefined, true);
-				getUserStakedBalance(undefined, true);
-				getWalletBalance(undefined, true);
-				getTotalStakedBalance(undefined, true);
-				getPoolEnabled(undefined, true);
-				getDebaseSupply(undefined, true);
+				getDebaseExchangeRate(undefined, true);
+				getDegovExchangeRate(undefined, true);
+				getDegovBalance(undefined, true);
+				getDebaseDeposited(undefined, true);
+				getDegovDeposited(undefined, true);
+				getDebaseBalance(undefined, true);
+				getIouBalance(undefined, true);
+				getDuration(undefined, true);
 			});
 			return () => {
 				library && library.removeAllListeners('block');
@@ -73,95 +75,75 @@ const Deposit = ({ poolABI, poolAddress, lpAddress, stakeText, apy, apr }) => {
 		},
 		[
 			library,
-			getEarned,
-			getPoolEnabled,
-			getDebaseSupply,
-			getUserStakedBalance,
-			getWalletBalance,
-			getTotalStakedBalance
+			getDegovBalance,
+			getDebaseBalance,
+			getDebaseExchangeRate,
+			getDegovExchangeRate,
+			getDebaseDeposited,
+			getDegovDeposited,
+			getIouBalance,
+			getDuration
 		]
 	);
 
 	// List data arrays
 	const poolListData = [
 		{
-			label: 'User LP Limit',
-			value:
-				userLpLimit && walletBalance ? (
-					parseFloat(formatEther(walletBalance)).toFixed(2) +
-					' / ' +
-					parseFloat(formatEther(userLpLimit)).toFixed(2) +
-					' LP'
-				) : (
-					<Spinner size="xsmall" />
-				),
+			label: 'Debase Deposited By You',
+			value: debaseDeposited ? (
+				parseFloat(formatEther(debaseDeposited)).toFixed(2) + ' Debase'
+			) : (
+				<Spinner size="xsmall" />
+			),
 			tooltip: 'LP limit per wallet'
 		},
 		{
-			label: 'Total Pool Limit',
-			value:
-				poolLpLimit && totalStakedBalance ? (
-					parseFloat(formatEther(totalStakedBalance)).toFixed(2) +
-					' / ' +
-					parseFloat(formatEther(poolLpLimit)).toFixed(2) +
-					' LP'
-				) : (
-					<Spinner size="xsmall" />
-				),
+			label: 'Degov Deposited By You',
+			value: degovDeposited ? (
+				parseFloat(formatEther(degovDeposited)).toFixed(2) + ' Degov'
+			) : (
+				<Spinner size="xsmall" />
+			),
 			tooltip: 'Total LP limit per pool'
 		}
 	];
 
 	const userListData = [
 		{
-			label: 'Unstaked (' + stakeText + ')',
-			value: walletBalance ? parseFloat(formatEther(walletBalance)).toFixed(4) * 1 : <Spinner size="xsmall" />,
+			label: 'Debase Balance',
+			value: debaseBalance ? parseFloat(formatEther(debaseBalance)).toFixed(4) * 1 : <Spinner size="xsmall" />,
 			tooltip: 'Your current balance that can be staked into the pool.'
 		},
 		{
-			label: 'Staked (' + stakeText + ')',
-			value: userStakedBalance ? (
-				parseFloat(formatEther(userStakedBalance)).toFixed(4) * 1
-			) : (
-				<Spinner size="xsmall" />
-			),
+			label: 'Degov Balance',
+			value: degovBalance ? parseFloat(formatEther(degovBalance)).toFixed(4) * 1 : <Spinner size="xsmall" />,
 			tooltip: 'Your current staked balance in the pool.'
-		},
-		{
-			label: 'Earned (DEBASE)',
-			value:
-				earned && debaseSupply ? (
-					parseFloat(formatEther(earned.mul(debaseSupply).div(parseEther('1')))).toFixed(4) * 1
-				) : (
-					<Spinner size="xsmall" />
-				),
-			tooltip: 'Amount of DEBASE reward you have earned.'
 		}
 	];
 
-	const aprListData = [
+	const iouData = [
 		{
-			label: 'Temp APR/APY',
-			value: apr + '/' + apy,
-			tooltip: 'Compounded Daily'
+			label: 'IOU Balance',
+			value: debaseBalance ? parseFloat(formatEther(iouBalance)).toFixed(4) * 1 : <Spinner size="xsmall" />,
+			tooltip: 'Your current balance that can be staked into the pool.'
 		}
 	];
 
 	// functions
-	async function handleStake() {
-		if (!isStakingActive) return setIsStakingActive(true);
-		setIsStakeLoading(true);
-		const poolContract = new Contract(poolAddress, ABI_POOL, library.getSigner());
-		const tokenContract = new Contract(lpAddress, ABI_LP, library.getSigner());
+	async function handleDebaseDeposit() {
+		if (!isDepositDebaseActive) return setIsDepositDebaseActive(true);
+		setIsDepositDebaseLoading(true);
+		const poolContract = new Contract(poolAddress, poolABI, library.getSigner());
+		const tokenContract = new Contract(CONTRACT_ADDRESS.debase, ABI_LP, library.getSigner());
 		try {
-			const toStake = parseEther(stakeInputValue);
+			const toStake = parseEther(debaseInputValue);
 			let allowance = await tokenContract.allowance(account, poolAddress);
 			let transaction;
 			if (allowance.lt(toStake)) {
-				transaction = await tokenContract.approve(poolAddress, toStake, { gasPrice: 20000000000 });
+				transaction = await tokenContract.approve(poolAddress, toStake);
 				await transaction.wait(1);
 			}
-			transaction = await poolContract.stake(toStake, { gasPrice: 20000000000 });
+			transaction = await poolContract.depositDebase(toStake);
 			await transaction.wait(1);
 			openSnackbar({
 				message: 'Staking success',
@@ -173,80 +155,47 @@ const Deposit = ({ poolABI, poolAddress, lpAddress, stakeText, apy, apr }) => {
 				status: 'error'
 			});
 		}
-		setIsStakeLoading(false);
+		setIsDepositDebaseLoading(false);
 	}
-	async function handleUnstake() {
-		if (!isUnstakingActive) return setIsUnstakingActive(true);
-		setIsUnstakeLoading(true);
-		const poolContract = new Contract(poolAddress, ABI_POOL, library.getSigner());
+	async function handleDegovDeposit() {
+		if (!isDepositDegovActive) return setIsDepositDegovActive(true);
+		setIsDepositDegovActive(true);
+		const poolContract = new Contract(poolAddress, poolABI, library.getSigner());
+		const tokenContract = new Contract(CONTRACT_ADDRESS.degov, ABI_LP, library.getSigner());
 		try {
-			const toWithdraw = parseEther(unstakeInputValue);
-			let transaction = await poolContract.withdraw(toWithdraw, { gasPrice: 20000000000 });
+			const toStake = parseEther(debaseInputValue);
+			let allowance = await tokenContract.allowance(account, poolAddress);
+			let transaction;
+			if (allowance.lt(toStake)) {
+				transaction = await tokenContract.approve(poolAddress, toStake);
+				await transaction.wait(1);
+			}
+			transaction = await poolContract.depositDegov(toStake);
 			await transaction.wait(1);
 			openSnackbar({
-				message: 'Unstaking success',
+				message: 'Staking success',
 				status: 'success'
 			});
 		} catch (error) {
 			openSnackbar({
-				message: 'Unstaking failed',
+				message: 'Staking failed',
 				status: 'error'
 			});
 		}
-		setIsUnstakeLoading(false);
-	}
-	async function handleClaim() {
-		setIsClaimLoading(true);
-		const poolContract = new Contract(poolAddress, ABI_POOL, library.getSigner());
-		try {
-			let transaction = await poolContract.getReward({ gasPrice: 20000000000 });
-			await transaction.wait(1);
-			getEarned(undefined, true);
-			openSnackbar({
-				message: 'Claimed reward',
-				status: 'success'
-			});
-		} catch (error) {
-			openSnackbar({
-				message: 'Claiming reward failed',
-				status: 'error'
-			});
-		}
-		setIsClaimLoading(false);
+		setIsDepositDegovActive(false);
 	}
 
-	async function handleClaimRewardThenUnstake() {
-		setIsClaimAndUnstakeLoading(true);
-		const poolContract = new Contract(poolAddress, ABI_POOL, library.getSigner());
-
-		try {
-			const transaction = await poolContract.exit();
-			await transaction.wait(1);
-
-			openSnackbar({
-				message: 'Claim and unstake successfully executed',
-				status: 'success'
-			});
-		} catch (error) {
-			openSnackbar({
-				message: 'Claim and unstake failed, please try again',
-				status: 'error'
-			});
-		}
-		setIsClaimAndUnstakeLoading(false);
-	}
-
-	const handleMaxStake = () => {
+	const handleDebaseDeposit = () => {
 		setStakeInputValue(formatEther(walletBalance));
 	};
-	const handleMaxUnstake = () => {
-		setUnstakeInputValue(formatEther(userStakedBalance));
+	const handleMaxDegov = () => {
+		setDegovInputValue(formatEther(userStakedBalance));
 	};
 	const onChangeStakeInput = (value) => {
 		setStakeInputValue(value);
 	};
 	const onChangeUnstakeInput = (value) => {
-		setUnstakeInputValue(value);
+		setDegovInputValue(value);
 	};
 
 	return (
@@ -255,46 +204,38 @@ const Deposit = ({ poolABI, poolAddress, lpAddress, stakeText, apy, apr }) => {
 				<StyledCardInner>
 					<List data={poolListData} />
 					<List color="primary" data={userListData} />
-					<List color="secundary" data={aprListData} />
+					<List color="secundary" data={iouData} />
 				</StyledCardInner>
 			</InfoCard>
 
 			{poolEnabled !== undefined && (
 				<InfoCard gutter={20}>
-					{isStakingActive && (
+					{isDepositDebaseActive && (
 						<Flexbox direction="horizontal" gap="10px">
-							<Input value={stakeInputValue} placeholder="Stake amount" onChange={onChangeStakeInput} />
-							<Button color="primary" onClick={handleMaxStake}>
+							<Input value={debaseInputValue} placeholder="Stake amount" onChange={onChangeStakeInput} />
+							<Button color="primary" onClick={handleMaxDebase}>
 								max
 							</Button>
 						</Flexbox>
 					)}
-					{poolEnabled && (
-						<Button isLoading={isStakeLoading} onClick={handleStake}>
-							stake
-						</Button>
-					)}
+					<Button isLoading={isDepositDebaseLoading} onClick={handleDebaseDeposit}>
+						Deposit Debase
+					</Button>
 
-					{isUnstakingActive && (
+					{isDepositDegovActive && (
 						<Flexbox direction="horizontal" gap="10px">
 							<Input
-								value={unstakeInputValue}
+								value={degovInputValue}
 								placeholder="Unstake amount"
 								onChange={onChangeUnstakeInput}
 							/>
-							<Button color="primary" onClick={handleMaxUnstake}>
+							<Button color="primary" onClick={handleMaxDegov}>
 								max
 							</Button>
 						</Flexbox>
 					)}
-					<Button isLoading={isUnstakeLoading} onClick={handleUnstake}>
-						unstake
-					</Button>
-					<Button isLoading={isClaimLoading} onClick={handleClaim}>
-						claim reward
-					</Button>
-					<Button isLoading={isClaimAndUnstakeLoading} onClick={handleClaimRewardThenUnstake}>
-						claim reward and unstake
+					<Button isLoading={isDepositDegovLoading} onClick={handleDegovDeposit}>
+						Deposit Degov
 					</Button>
 				</InfoCard>
 			)}
