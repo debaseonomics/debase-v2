@@ -15,7 +15,7 @@ const DRK = () => {
 					<DisconnectedWalletCard />
 				) : (
 					<Grid>
-						<Deposit poolAddress={CONTRACT_ADDRESS.degovEthPool} poolABI={ABI_DKR} />
+						<Deposit poolAddress={CONTRACT_ADDRESS.dkr} poolABI={ABI_DKR} />
 					</Grid>
 				)}
 			</Section>

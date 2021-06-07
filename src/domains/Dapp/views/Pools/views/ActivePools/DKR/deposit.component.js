@@ -39,16 +39,13 @@ const Deposit = ({ poolABI, poolAddress }) => {
 	const { data: degovDeposited, mutate: getDegovDeposited } = useSWR([ poolAddress, 'degovDeposited', account ], {
 		fetcher: fetcher(library, poolABI)
 	});
-	const { data: iouBalance, mutate: getIouBalance } = useSWR([ poolAddress, 'getIouBalance', account ], {
+	const { data: iouBalance, mutate: getIouBalance } = useSWR([ poolAddress, 'iouBalance', account ], {
 		fetcher: fetcher(library, poolABI)
 	});
 
-	const { data: depositEnabled, mutate: getDepositEnabled } = useSWR(
-		[ CONTRACT_ADDRESS.debase, 'depositEnabled', account ],
-		{
-			fetcher: fetcher(library, ABI_LP)
-		}
-	);
+	const { data: depositEnabled, mutate: getDepositEnabled } = useSWR([ poolAddress, 'depositEnabled' ], {
+		fetcher: fetcher(library, poolABI)
+	});
 
 	const { data: debaseBalance, mutate: getDebaseBalance } = useSWR(
 		[ CONTRACT_ADDRESS.debase, 'balanceOf', account ],
