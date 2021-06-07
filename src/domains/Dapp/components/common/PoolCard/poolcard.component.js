@@ -6,7 +6,7 @@ import { StatusIndicator } from '@dapp/components';
 
 import { StyledPoolCard, StyledPoolCardInner, StyledHeader, StyledInfoIcon } from './poolcard.styles';
 
-const PoolCard = ({ children, type, label = 'pool', info, linkData, routePath = '/', isActive = false }) => {
+const PoolCard = ({ children, type, label = 'pool', info, linkData, routePath = '/', isActive = false, burn }) => {
 	return (
 		<StyledPoolCard>
 			<StyledPoolCardInner>
@@ -29,7 +29,7 @@ const PoolCard = ({ children, type, label = 'pool', info, linkData, routePath = 
 					{children}
 				</Card>
 				<Button as={Link} to={routePath}>
-					{type !== 'inactive' ? 'Stake/Claim' : 'Withdraw/Claim'}
+					{burn ? 'Burn' : type !== 'inactive' ? 'Stake/Claim' : 'Withdraw/Claim'}
 				</Button>
 			</StyledPoolCardInner>
 

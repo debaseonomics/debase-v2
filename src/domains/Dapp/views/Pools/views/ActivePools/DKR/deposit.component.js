@@ -161,7 +161,7 @@ const Deposit = ({ poolABI, poolAddress }) => {
 		const poolContract = new Contract(poolAddress, poolABI, library.getSigner());
 		const tokenContract = new Contract(CONTRACT_ADDRESS.degov, ABI_LP, library.getSigner());
 		try {
-			const toStake = parseEther(debaseInputValue);
+			const toStake = parseEther(degovInputValue);
 			let allowance = await tokenContract.allowance(account, poolAddress);
 			let transaction;
 			if (allowance.lt(toStake)) {

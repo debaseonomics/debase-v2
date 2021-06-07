@@ -145,6 +145,7 @@ const Pools = () => {
 				</PoolCard>
 				<PoolCard
 					label="DKR"
+					burn={true}
 					routePath="/dashboard/pools/active/dkr"
 					type="active"
 					linkData={[
