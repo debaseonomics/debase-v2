@@ -92,17 +92,17 @@ const Deposit = ({ poolABI, poolAddress }) => {
 		{
 			label: 'Swap Enabled',
 			value: depositEnabled !== undefined ? depositEnabled ? 'True' : 'False' : <Spinner size="xsmall" />,
-			tooltip: 'LP limit per wallet'
+			tooltip: 'Whether Swap for IOUs is enabled.'
 		},
 		{
 			label: 'Debase Deposited By You',
 			value: debaseDeposited ? parseFloat(formatEther(debaseDeposited)).toFixed(2) : <Spinner size="xsmall" />,
-			tooltip: 'LP limit per wallet'
+			tooltip: 'Debase deposited by you for IOUs.'
 		},
 		{
 			label: 'Degov Deposited By You',
 			value: degovDeposited ? parseFloat(formatEther(degovDeposited)).toFixed(2) : <Spinner size="xsmall" />,
-			tooltip: 'Total LP limit per pool'
+			tooltip: 'Degov deposited by you for IOUs.'
 		}
 	];
 
@@ -110,12 +110,12 @@ const Deposit = ({ poolABI, poolAddress }) => {
 		{
 			label: 'Debase Balance',
 			value: debaseBalance ? parseFloat(formatEther(debaseBalance)).toFixed(4) * 1 : <Spinner size="xsmall" />,
-			tooltip: 'Your current balance that can be staked into the pool.'
+			tooltip: 'Your current debase balance that can be deposited into the pool.'
 		},
 		{
 			label: 'Degov Balance',
 			value: degovBalance ? parseFloat(formatEther(degovBalance)).toFixed(4) * 1 : <Spinner size="xsmall" />,
-			tooltip: 'Your current staked balance in the pool.'
+			tooltip: 'Your current degov balance that can be deposited into the pool.'
 		}
 	];
 
@@ -123,7 +123,7 @@ const Deposit = ({ poolABI, poolAddress }) => {
 		{
 			label: 'Your IOU Balance',
 			value: iouBalance ? parseFloat(formatEther(iouBalance)).toFixed(4) * 1 : <Spinner size="xsmall" />,
-			tooltip: 'Your current balance that can be staked into the pool.'
+			tooltip: 'Your current IOU balance.'
 		}
 	];
 
