@@ -43,6 +43,13 @@ const Deposit = ({ poolABI, poolAddress }) => {
 		fetcher: fetcher(library, poolABI)
 	});
 
+	const { data: depositEnabled, mutate: getDepositEnabled } = useSWR(
+		[ CONTRACT_ADDRESS.debase, 'depositEnabled', account ],
+		{
+			fetcher: fetcher(library, ABI_LP)
+		}
+	);
+
 	const { data: debaseBalance, mutate: getDebaseBalance } = useSWR(
 		[ CONTRACT_ADDRESS.debase, 'balanceOf', account ],
 		{
@@ -54,10 +61,6 @@ const Deposit = ({ poolABI, poolAddress }) => {
 		fetcher: fetcher(library, ABI_LP)
 	});
 
-	const { data: duration, mutate: getDuration } = useSWR([ poolAddress, 'duration' ], {
-		fetcher: fetcher(library, poolABI)
-	});
-
 	useEffect(
 		() => {
 			library.on('block', () => {
@@ -67,8 +70,8 @@ const Deposit = ({ poolABI, poolAddress }) => {
 				getDebaseDeposited(undefined, true);
 				getDegovDeposited(undefined, true);
 				getDebaseBalance(undefined, true);
+				getDepositEnabled(undefined, true);
 				getIouBalance(undefined, true);
-				getDuration(undefined, true);
 			});
 			return () => {
 				library && library.removeAllListeners('block');
@@ -79,16 +82,21 @@ const Deposit = ({ poolABI, poolAddress }) => {
 			getDegovBalance,
 			getDebaseBalance,
 			getDebaseExchangeRate,
+			getDepositEnabled,
 			getDegovExchangeRate,
 			getDebaseDeposited,
 			getDegovDeposited,
-			getIouBalance,
-			getDuration
+			getIouBalance
 		]
 	);
 
 	// List data arrays
 	const poolListData = [
+		{
+			label: 'Swap Enabled',
+			value: depositEnabled !== undefined ? depositEnabled ? 'True' : 'False' : <Spinner size="xsmall" />,
+			tooltip: 'LP limit per wallet'
+		},
 		{
 			label: 'Debase Deposited By You',
 			value: debaseDeposited ? (
@@ -209,49 +217,61 @@ const Deposit = ({ poolABI, poolAddress }) => {
 				</StyledCardInner>
 			</InfoCard>
 
-			<InfoCard gutter={20}>
-				{isDepositDebaseActive && (
-					<Flexbox gap="15px">
-						<Flexbox direction="horizontal" gap="10px">
-							<Input
-								value={debaseInputValue}
-								placeholder="Debase amount"
-								onChange={onChangeDebaseInput}
-							/>
-							<Button color="primary" onClick={handleDebaseMax}>
-								max
-							</Button>
+			{depositEnabled && (
+				<InfoCard gutter={20}>
+					{isDepositDebaseActive && (
+						<Flexbox gap="15px">
+							<Flexbox direction="horizontal" gap="10px">
+								<Input
+									value={debaseInputValue}
+									placeholder="Debase amount"
+									onChange={onChangeDebaseInput}
+								/>
+								<Button color="primary" onClick={handleDebaseMax}>
+									max
+								</Button>
+							</Flexbox>
+							{debaseExchangeRate && (
+								<StyledConversionText>
+									<TextMini>
+										converts to{' '}
+										{debaseExchangeRate * parseFloat(formatEther(debaseInputValue)).toFixed(4)} IOU
+									</TextMini>
+								</StyledConversionText>
+							)}
 						</Flexbox>
-						{1 && (
-							<StyledConversionText>
-								<TextMini>converts to {1 * parseFloat(formatEther(1)).toFixed(4)} UwU</TextMini>
-							</StyledConversionText>
-						)}
-					</Flexbox>
-				)}
-				<Button isLoading={isDepositDebaseLoading} onClick={handleDebase}>
-					Deposit Debase
-				</Button>
+					)}
+					<Button isLoading={isDepositDebaseLoading} onClick={handleDebase}>
+						Deposit Debase
+					</Button>
 
-				{isDepositDegovActive && (
-					<Flexbox gap="15px">
-						<Flexbox direction="horizontal" gap="10px">
-							<Input value={degovInputValue} placeholder="Degov amount" onChange={onChangeDegovInput} />
-							<Button color="primary" onClick={handleDegovMax}>
-								max
-							</Button>
+					{isDepositDegovActive && (
+						<Flexbox gap="15px">
+							<Flexbox direction="horizontal" gap="10px">
+								<Input
+									value={degovInputValue}
+									placeholder="Degov amount"
+									onChange={onChangeDegovInput}
+								/>
+								<Button color="primary" onClick={handleDegovMax}>
+									max
+								</Button>
+							</Flexbox>
+							{degovExchangeRate && (
+								<StyledConversionText>
+									<TextMini>
+										converts to{' '}
+										{degovExchangeRate * parseFloat(formatEther(degovInputValue)).toFixed(4)} IOU
+									</TextMini>
+								</StyledConversionText>
+							)}
 						</Flexbox>
-						{1 && (
-							<StyledConversionText>
-								<TextMini>converts to {1 * parseFloat(formatEther(1)).toFixed(4)} UwU</TextMini>
-							</StyledConversionText>
-						)}
-					</Flexbox>
-				)}
-				<Button isLoading={isDepositDegovLoading} onClick={handleDegov}>
-					Deposit Degov
-				</Button>
-			</InfoCard>
+					)}
+					<Button isLoading={isDepositDegovLoading} onClick={handleDegov}>
+						Deposit Degov
+					</Button>
+				</InfoCard>
+			)}
 		</StyledPoolStake>
 	);
 };

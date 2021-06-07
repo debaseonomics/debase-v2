@@ -10,7 +10,7 @@ const DRK = () => {
 
 	return (
 		<Fragment>
-			<Section label="DRK" info="**update**">
+			<Section label="DKR IOUs" info="**update**">
 				{!active ? (
 					<DisconnectedWalletCard />
 				) : (
