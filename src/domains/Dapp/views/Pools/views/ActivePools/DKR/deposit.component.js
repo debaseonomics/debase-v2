@@ -96,20 +96,12 @@ const Deposit = ({ poolABI, poolAddress }) => {
 		},
 		{
 			label: 'Debase Deposited By You',
-			value: debaseDeposited ? (
-				parseFloat(formatEther(debaseDeposited)).toFixed(2) + ' Debase'
-			) : (
-				<Spinner size="xsmall" />
-			),
+			value: debaseDeposited ? parseFloat(formatEther(debaseDeposited)).toFixed(2) : <Spinner size="xsmall" />,
 			tooltip: 'LP limit per wallet'
 		},
 		{
 			label: 'Degov Deposited By You',
-			value: degovDeposited ? (
-				parseFloat(formatEther(degovDeposited)).toFixed(2) + ' Degov'
-			) : (
-				<Spinner size="xsmall" />
-			),
+			value: degovDeposited ? parseFloat(formatEther(degovDeposited)).toFixed(2) : <Spinner size="xsmall" />,
 			tooltip: 'Total LP limit per pool'
 		}
 	];
