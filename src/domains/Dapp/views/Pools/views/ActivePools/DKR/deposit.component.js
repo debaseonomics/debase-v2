@@ -224,7 +224,7 @@ const Deposit = ({ poolABI, poolAddress }) => {
 								<StyledConversionText>
 									<TextMini>
 										converts to{' '}
-										{debaseExchangeRate * parseFloat(formatEther(debaseInputValue)).toFixed(4)} IOU
+										{debaseInputValue * parseFloat(formatEther(debaseExchangeRate)).toFixed(4)} IOU
 									</TextMini>
 								</StyledConversionText>
 							)}
@@ -250,7 +250,7 @@ const Deposit = ({ poolABI, poolAddress }) => {
 								<StyledConversionText>
 									<TextMini>
 										converts to{' '}
-										{degovExchangeRate * parseFloat(formatEther(degovInputValue)).toFixed(4)} IOU
+										{degovInputValue * parseFloat(formatEther(degovExchangeRate)).toFixed(4)} IOU
 									</TextMini>
 								</StyledConversionText>
 							)}
