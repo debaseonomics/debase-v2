@@ -18,7 +18,7 @@ const CONTRACT_ADDRESS = {
 	randomizedCounter: '0x800479a76dc74c3a9FAAE25320A0EE4E8740996b',
 	debaseEthLp: '0xa8e5533d1e22be2df5e9ad9f67dd22a4e7d5b371',
 	mph88Pool: '0x36f1F4125B4066cA4b768F9F5f9a737Bd4FA8f62',
-	dkr: ''
+	dkr: '0xb9890022b896040b8f4223048d37e613fefd1fec'
 };
 
 export default CONTRACT_ADDRESS;
