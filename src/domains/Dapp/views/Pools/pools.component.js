@@ -35,7 +35,7 @@ const Pools = () => {
 
 	const dkrListData = [
 		{
-			label: 'Staked Token',
+			label: 'Input Token',
 			value: 'DEBASE/DEGOV',
 			tooltip: 'Tokens pool accepts'
 		}
