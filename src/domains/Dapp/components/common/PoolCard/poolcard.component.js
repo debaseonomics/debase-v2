@@ -29,7 +29,7 @@ const PoolCard = ({ children, type, label = 'pool', info, linkData, routePath = 
 					{children}
 				</Card>
 				<Button as={Link} to={routePath}>
-					{burn ? 'Burn' : type !== 'inactive' ? 'Stake/Claim' : 'Withdraw/Claim'}
+					{burn ? 'burn' : type !== 'inactive' ? 'Stake/Claim' : 'Withdraw/Claim'}
 				</Button>
 			</StyledPoolCardInner>
 
