@@ -152,7 +152,7 @@ const Pools = () => {
 						{
 							icon: <CodeIcon />,
 							info: 'Contract Link',
-							url: 'https://etherscan.io/address/0x4789519821ae0f49d95203b1a2ed805141bf0dae'
+							url: 'https://etherscan.io/address/0xb9890022b896040b8f4223048d37e613fefd1fec'
 						}
 					]}
 					isActive={pools.degovEthPool ? pools.degovEthPool.enabled : false}
