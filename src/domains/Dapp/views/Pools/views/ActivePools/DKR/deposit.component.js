@@ -58,9 +58,54 @@ const Deposit = ({ poolABI, poolAddress }) => {
 		fetcher: fetcher(library, ABI_LP)
 	});
 
+	const { data: lockedDebaseBalance, mutate: getLockedDebaseBalance } = useSWR(
+		[ CONTRACT_ADDRESS.debase, 'balanceOf', poolAddress ],
+		{
+			fetcher: fetcher(library, ABI_LP)
+		}
+	);
+
+	const { data: lockedDegovBalance, mutate: getLockedDegovBalance } = useSWR(
+		[ CONTRACT_ADDRESS.degov, 'balanceOf', poolAddress ],
+		{
+			fetcher: fetcher(library, ABI_LP)
+		}
+	);
+
+	const { data: totalSupply, mutate: getTotalSupply } = useSWR([ CONTRACT_ADDRESS.debase, 'totalSupply' ], {
+		fetcher: fetcher(library, ABI_LP)
+	});
+
+	const { data: stab, mutate: getStab } = useSWR(
+		[ CONTRACT_ADDRESS.debase, 'balanceOf', CONTRACT_ADDRESS.debasePolicy ],
+		{
+			fetcher: fetcher(library, ABI_LP)
+		}
+	);
+
+	const { data: pool1, mutate: getPool1 } = useSWR(
+		[ CONTRACT_ADDRESS.debase, 'balanceOf', CONTRACT_ADDRESS.debaseDaiPool ],
+		{
+			fetcher: fetcher(library, ABI_LP)
+		}
+	);
+
+	const { data: pool2, mutate: getPool2 } = useSWR(
+		[ CONTRACT_ADDRESS.debase, 'balanceOf', CONTRACT_ADDRESS.debaseDaiLpPool ],
+		{
+			fetcher: fetcher(library, ABI_LP)
+		}
+	);
+
 	useEffect(
 		() => {
 			library.on('block', () => {
+				getPool2(undefined, true);
+				getPool1(undefined, true);
+				getStab(undefined, true);
+				getTotalSupply(undefined, true);
+				getLockedDebaseBalance(undefined, true);
+				getLockedDegovBalance(undefined, true);
 				getDebaseExchangeRate(undefined, true);
 				getDegovExchangeRate(undefined, true);
 				getDegovBalance(undefined, true);
@@ -76,6 +121,12 @@ const Deposit = ({ poolABI, poolAddress }) => {
 		},
 		[
 			library,
+			getPool2,
+			getPool1,
+			getStab,
+			getLockedDebaseBalance,
+			getTotalSupply,
+			getLockedDegovBalance,
 			getDegovBalance,
 			getDebaseBalance,
 			getDebaseExchangeRate,
@@ -90,11 +141,6 @@ const Deposit = ({ poolABI, poolAddress }) => {
 	// List data arrays
 	const poolListData = [
 		{
-			label: 'Swap Enabled',
-			value: depositEnabled !== undefined ? depositEnabled ? 'True' : 'False' : <Spinner size="xsmall" />,
-			tooltip: 'Whether Swap for IOUs is enabled.'
-		},
-		{
 			label: 'Debase Deposited By You',
 			value: debaseDeposited ? parseFloat(formatEther(debaseDeposited)).toFixed(2) : <Spinner size="xsmall" />,
 			tooltip: 'Debase deposited by you for IOUs.'
@@ -103,6 +149,27 @@ const Deposit = ({ poolABI, poolAddress }) => {
 			label: 'Degov Deposited By You',
 			value: degovDeposited ? parseFloat(formatEther(degovDeposited)).toFixed(2) : <Spinner size="xsmall" />,
 			tooltip: 'Degov deposited by you for IOUs.'
+		},
+		{
+			label: 'Total Debase Locked Up',
+			value:
+				totalSupply && stab && pool1 && pool2 && lockedDebaseBalance ? (
+					parseFloat(formatEther(lockedDebaseBalance)).toFixed(2) +
+					'/' +
+					parseFloat(formatEther(totalSupply.sub(stab).sub(pool1).sub(pool2))).toFixed(2)
+				) : (
+					<Spinner size="xsmall" />
+				),
+			tooltip: 'Total Debase in relation to circulating balance burned'
+		},
+		{
+			label: 'Total Degov Locked Up',
+			value: lockedDegovBalance ? (
+				parseFloat(formatEther(lockedDegovBalance)).toFixed(2) + '/' + '25000'
+			) : (
+				<Spinner size="xsmall" />
+			),
+			tooltip: 'Total Degov in relation to circulating balance burned'
 		}
 	];
 
