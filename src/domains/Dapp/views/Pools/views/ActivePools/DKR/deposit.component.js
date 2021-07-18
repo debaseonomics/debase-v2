@@ -43,6 +43,13 @@ const Deposit = ({ poolABI, poolAddress }) => {
 		fetcher: fetcher(library, poolABI)
 	});
 
+	const { data: iouBalance2, mutate: getIouBalance2 } = useSWR(
+		[ '0xb9890022b896040b8f4223048d37e613fefd1fec', 'iouBalance', account ],
+		{
+			fetcher: fetcher(library, poolABI)
+		}
+	);
+
 	const { data: depositEnabled, mutate: getDepositEnabled } = useSWR([ poolAddress, 'depositEnabled' ], {
 		fetcher: fetcher(library, poolABI)
 	});
@@ -114,6 +121,7 @@ const Deposit = ({ poolABI, poolAddress }) => {
 	useEffect(
 		() => {
 			library.on('block', () => {
+				getIouBalance2(undefined, true);
 				getPool2(undefined, true);
 				getPool1(undefined, true);
 				getStab(undefined, true);
@@ -138,6 +146,7 @@ const Deposit = ({ poolABI, poolAddress }) => {
 		[
 			library,
 			getPool2,
+			getIouBalance2,
 			getPool1,
 			getStab,
 			getLockedDegovBalance2,
@@ -214,7 +223,13 @@ const Deposit = ({ poolABI, poolAddress }) => {
 	const iouData = [
 		{
 			label: 'Your IOU Balance',
-			value: iouBalance ? parseFloat(formatEther(iouBalance)).toFixed(4) * 1 : <Spinner size="xsmall" />,
+			value:
+				iouBalance && iouBalance2 ? (
+					parseFloat(parseFloat(formatEther(iouBalance)) + parseFloat(formatEther(iouBalance2))).toFixed(4) *
+					1
+				) : (
+					<Spinner size="xsmall" />
+				),
 			tooltip: 'Your current IOU balance.'
 		}
 	];
