@@ -72,6 +72,20 @@ const Deposit = ({ poolABI, poolAddress }) => {
 		}
 	);
 
+	const { data: lockedDebaseBalance2, mutate: getLockedDebaseBalance2 } = useSWR(
+		[ CONTRACT_ADDRESS.debase, 'balanceOf', '0xb9890022b896040b8f4223048d37e613fefd1fec' ],
+		{
+			fetcher: fetcher(library, ABI_LP)
+		}
+	);
+
+	const { data: lockedDegovBalance2, mutate: getLockedDegovBalance2 } = useSWR(
+		[ CONTRACT_ADDRESS.degov, 'balanceOf', '0xb9890022b896040b8f4223048d37e613fefd1fec' ],
+		{
+			fetcher: fetcher(library, ABI_LP)
+		}
+	);
+
 	const { data: totalSupply, mutate: getTotalSupply } = useSWR([ CONTRACT_ADDRESS.debase, 'totalSupply' ], {
 		fetcher: fetcher(library, ABI_LP)
 	});
@@ -104,6 +118,8 @@ const Deposit = ({ poolABI, poolAddress }) => {
 				getPool1(undefined, true);
 				getStab(undefined, true);
 				getTotalSupply(undefined, true);
+				getLockedDegovBalance2(undefined, true);
+				getLockedDebaseBalance2(undefined, true);
 				getLockedDebaseBalance(undefined, true);
 				getLockedDegovBalance(undefined, true);
 				getDebaseExchangeRate(undefined, true);
@@ -124,6 +140,8 @@ const Deposit = ({ poolABI, poolAddress }) => {
 			getPool2,
 			getPool1,
 			getStab,
+			getLockedDegovBalance2,
+			getLockedDebaseBalance2,
 			getLockedDebaseBalance,
 			getTotalSupply,
 			getLockedDegovBalance,
@@ -153,8 +171,10 @@ const Deposit = ({ poolABI, poolAddress }) => {
 		{
 			label: 'Total Debase Locked Up',
 			value:
-				totalSupply && stab && pool1 && pool2 && lockedDebaseBalance ? (
-					parseFloat(formatEther(lockedDebaseBalance)).toFixed(2) +
+				totalSupply && stab && pool1 && pool2 && lockedDebaseBalance && lockedDebaseBalance2 ? (
+					parseFloat(
+						parseFloat(formatEther(lockedDebaseBalance2)) + parseFloat(formatEther(lockedDebaseBalance))
+					).toFixed(2) +
 					'/' +
 					parseFloat(formatEther(totalSupply.sub(stab).sub(pool1).sub(pool2))).toFixed(2)
 				) : (
@@ -164,11 +184,16 @@ const Deposit = ({ poolABI, poolAddress }) => {
 		},
 		{
 			label: 'Total Degov Locked Up',
-			value: lockedDegovBalance ? (
-				parseFloat(formatEther(lockedDegovBalance)).toFixed(2) + '/' + '25000'
-			) : (
-				<Spinner size="xsmall" />
-			),
+			value:
+				lockedDegovBalance && lockedDegovBalance2 ? (
+					parseFloat(
+						parseFloat(formatEther(lockedDegovBalance)) + parseFloat(formatEther(lockedDegovBalance2))
+					).toFixed(2) +
+					'/' +
+					'25000'
+				) : (
+					<Spinner size="xsmall" />
+				),
 			tooltip: 'Total Degov in relation to circulating balance burned'
 		}
 	];
